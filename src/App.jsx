@@ -12,8 +12,6 @@ import Header from "./components/header/Header";
 import PasswordRecoveryEmail from "./components/layoutForms/PasswordRecoveryEmail";
 import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
 
-import Date from "./components/layoutForms/Date";
-
 const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -34,7 +32,6 @@ const App = () => {
         <Route path="/createReport" element={<CreateReport />} />
         <Route path="/recoverPassword" element={<PasswordRecoveryEmail />} />
         <Route path="/resetPassword" element={<PasswordResetForm />} />
-        <Route path="/date" element={<Date />} />
       </Routes>
     </div>
   );
