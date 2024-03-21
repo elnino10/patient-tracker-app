@@ -15,13 +15,13 @@ const Header = (props) => {
       <div className="max-w-7xl mx-auto items-center flex justify-between p-2.5">
         <div>
           <Link to="/">
-            <span className="flex md:hidden">
+            <span className="flex md:hidden text-slate-200">
               <HomeIcon />
             </span>
             <span className="hidden md:flex">Home</span>
           </Link>
         </div>
-        <div onClick={toggleMenuHandler} className="md:hidden">
+        <div onClick={toggleMenuHandler} className="md:hidden text-slate-200">
           {props.menuVisible ? <MenuOpen /> : <MenuIcon />}
         </div>
         <nav
@@ -31,7 +31,15 @@ const Header = (props) => {
           md:static md:w-auto md:bg-inherit md:p-0 md:flex`}
         >
           <ul nav-bar="nav" className="md:flex md:flex-row">
-            <li className="list-none mr-4 text-white">
+            <li className="list-none mr-7 text-white">
+              <Link
+                to="/our-doctors"
+                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+              >
+                Our Doctors
+              </Link>
+            </li>
+            <li className="list-none mr-7 text-white">
               <Link
                 to="/about"
                 className="w-full flex text-base hover:text-blue-200 cursor-pointer"
@@ -39,7 +47,7 @@ const Header = (props) => {
                 About
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none mr-7 text-white">
               <Link
                 to="/services"
                 className="w-full flex text-base hover:text-blue-200 cursor-pointer"
@@ -47,7 +55,7 @@ const Header = (props) => {
                 Services
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none mr-7 text-white">
               <Link
                 to="/login"
                 className="w-full flex text-base hover:text-blue-200 cursor-pointer"
@@ -55,7 +63,7 @@ const Header = (props) => {
                 Login
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none text-white">
               <Link
                 to="/createReport"
                 className="w-full flex text-base hover:text-blue-200 cursor-pointer"

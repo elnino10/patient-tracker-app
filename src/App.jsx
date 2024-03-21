@@ -3,14 +3,16 @@ import { Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
+import Medics from "./pages/Medics";
 import ServicesPage from "./pages/ServicesPage";
 import Login from "./components/layoutForms/LoginForm";
 import RegisterPatient from "./components/layoutForms/RegisterPatientForm";
 import RegisterMedic from "./components/layoutForms/RegisterMedicForm";
 import CreateReport from "./components/layoutForms/CreateReportForm";
-import Header from "./components/header/Header";
+import Header from "./components/layout/Header";
 import PasswordRecoveryEmail from "./components/layoutForms/PasswordRecoveryEmail";
 import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
+import Footer from "./components/layout/Footer";
 
 const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -27,12 +29,14 @@ const App = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/services" element={<ServicesPage />} />
-        <Route path="/registerPatient" element={<RegisterPatient />} />
-        <Route path="/registerMedic" element={<RegisterMedic />} />
-        <Route path="/createReport" element={<CreateReport />} />
-        <Route path="/recoverPassword" element={<PasswordRecoveryEmail />} />
-        <Route path="/resetPassword" element={<PasswordResetForm />} />
+        <Route path="/register-patient" element={<RegisterPatient />} />
+        <Route path="/register-medic" element={<RegisterMedic />} />
+        <Route path="/create-report" element={<CreateReport />} />
+        <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
+        <Route path="/reset-password" element={<PasswordResetForm />} />
+        <Route path="/our-doctors" element={<Medics />} />
       </Routes>
+      <Footer />
     </div>
   );
 };
