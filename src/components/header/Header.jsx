@@ -11,7 +11,7 @@ const Header = (props) => {
   };
 
   return (
-    <header className="bg-primary sticky top-0 z-20">
+    <header className="bg-blue-700 sticky top-0 z-20">
       <div className="max-w-7xl mx-auto items-center flex justify-between p-2.5">
         <div>
           <Link to="/">
@@ -27,38 +27,38 @@ const Header = (props) => {
         <nav
           className={`${
             !props.menuVisible && "hidden"
-          } absolute z-20 bg-slate-100 flex flex-col top-full right-0 p-2
+          } absolute z-20 bg-blue-100 flex flex-col top-full right-0 p-2
           md:static md:w-auto md:bg-inherit md:p-0 md:flex`}
         >
           <ul nav-bar="nav" className="md:flex md:flex-row">
-            <li className="list-none mr-4 text-white">
+            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/about"
-                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
               >
                 About
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/services"
-                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
               >
                 Services
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/login"
-                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
               >
                 Login
               </Link>
             </li>
-            <li className="list-none mr-4 text-white">
+            <li className="list-none py-2 mr-4 md:text-white">
               <Link
                 to="/createReport"
-                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
               >
                 Create Report
               </Link>
