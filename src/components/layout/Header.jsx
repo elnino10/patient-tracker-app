@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MenuOpen } from "@mui/icons-material";
 import HomeIcon from "@mui/icons-material/Home";
 
 const Header = (props) => {
+  const [activePage, setActivePage] = useState("home");
+
   const toggleMenuHandler = (e) => {
     e.stopPropagation();
     props.setMenuVisible(!props.menuVisible);
@@ -31,18 +33,25 @@ const Header = (props) => {
           md:static md:w-auto md:bg-inherit md:p-0 md:flex`}
         >
           <ul nav-bar="nav" className="md:flex md:flex-row">
-            <li className="list-none mr-7 text-white">
+            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/our-doctors"
-                className="w-full flex text-base hover:text-blue-200 cursor-pointer"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${
+                  activePage === "our-doctors" &&
+                  "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => setActivePage("our-doctors")}
               >
-                Our Doctors
+                Our Doctor
               </Link>
             </li>
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/about"
-                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${activePage === "about" && "text-blue-700 md:text-blue-200"}`}
+                onClick={() => setActivePage("about")}
               >
                 About
               </Link>
@@ -50,7 +59,11 @@ const Header = (props) => {
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/services"
-                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${
+                  activePage === "services" && "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => setActivePage("services")}
               >
                 Services
               </Link>
@@ -58,15 +71,22 @@ const Header = (props) => {
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
                 to="/login"
-                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${activePage === "login" && "text-blue-700 md:text-blue-200"}`}
+                onClick={() => setActivePage("login")}
               >
                 Login
               </Link>
             </li>
             <li className="list-none py-2 mr-4 md:text-white">
               <Link
-                to="/createReport"
-                className="w-full flex text-base md:hover:text-blue-200 cursor-pointer"
+                to="/create-report"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${
+                  activePage === "create-report" &&
+                  "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => setActivePage("create-report")}
               >
                 Create Report
               </Link>
