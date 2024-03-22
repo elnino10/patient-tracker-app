@@ -13,6 +13,7 @@ import Header from "./components/layout/Header";
 import PasswordRecoveryEmail from "./components/layoutForms/PasswordRecoveryEmail";
 import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
 import Footer from "./components/layout/Footer";
+import Patients from "./pages/Patients";
 
 const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
+        <Route path="/all-patients" element={<Patients />} />
       </Routes>
       <Footer />
     </div>
