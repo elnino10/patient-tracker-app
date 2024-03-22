@@ -1,13 +1,18 @@
 """Application entry point"""
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+cor = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 # Routes and other application logic go here
+@app.route('/status', methods=['GET'], strict_slashes=False)
+def status():
+    """ Status of API """
+    return jsonify({"status": "OK"})
+
 @app.route("/api/patients", methods=["GET"], strict_slashes=False)
 def patients():
     """get all users"""
