@@ -6,7 +6,7 @@ from api.v1.views import app_views
 def patients():
     """get all users"""
     return jsonify(
-        {"name": "John Doe", "age": 30, "email": "foobar@foo.com"},
+        {"name": "Jon Doe", "age": 30, "email": "foobar@foo.com"},
         {"name": "Jane Smith", "age": 40, "email": "jane.smith@mail.com"},
         {"name": "John Smith", "age": 35, "email": "johnSmith@mail.com"},
         {"name": "Jane Doe", "age": 25, "email": "bar@foo.com"},
