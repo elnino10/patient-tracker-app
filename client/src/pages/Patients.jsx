@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import avatar from "../assets/images/avatar.png";
 
+const URL = "http://localhost:5000/api/v1/patients";
 const Patients = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/patients")
+      .get(URL)
       .then((response) => {
         setData(response.data);
         console.log(response.data);
