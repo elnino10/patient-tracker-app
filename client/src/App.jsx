@@ -37,6 +37,7 @@ const App = () => {
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
         <Route path="/all-patients" element={<Patients />} />
+        
       </Routes>
       <Footer />
     </div>
