@@ -15,12 +15,12 @@ const Header = (props) => {
   return (
     <header className="bg-blue-700 sticky top-0 z-20">
       <div className="max-w-7xl mx-auto items-center flex justify-between p-2.5">
-        <div>
+        <div onClick={() => setActivePage("home")}>
           <Link to="/">
             <span className="flex md:hidden text-slate-200">
               <HomeIcon />
             </span>
-            <span className="hidden md:flex">Home</span>
+            <span className="hidden text-white md:flex">Home</span>
           </Link>
         </div>
         <div onClick={toggleMenuHandler} className="md:hidden text-slate-200">

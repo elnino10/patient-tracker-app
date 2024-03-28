@@ -1,13 +1,15 @@
 """Patient routes module"""
-from flask import jsonify
-from api.v1.views import app_views
 
-@app_views.route("/patients", methods=["GET"], strict_slashes=False)
+from flask import jsonify
+
+# from flask_server.api.v1.views import app_views
+from flask_server.app import app, supabase
+
+
+# @app_views.route("/patients", methods=["GET"], strict_slashes=False)
+@app.route("api/v1/patients", methods=["GET"], strict_slashes=False)
 def patients():
     """get all users"""
-    return jsonify(
-        {"name": "Jon Doe", "age": 30, "email": "foobar@foo.com"},
-        {"name": "Jane Smith", "age": 40, "email": "jane.smith@mail.com"},
-        {"name": "John Smith", "age": 35, "email": "johnSmith@mail.com"},
-        {"name": "Jane Doe", "age": 25, "email": "bar@foo.com"},
-    )
+    data = supabase.table("patients").select("*").execute()
+
+    return jsonify(data.model_dump_json())
