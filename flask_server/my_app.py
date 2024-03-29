@@ -14,9 +14,11 @@ from . import (
     time,
 )
 
+
 load_dotenv()
 url = environ.get("SUPABASE_URL")
 key = environ.get("SUPABASE_API_KEY")
+
 
 supabase = create_client(url, key)
 
@@ -31,6 +33,7 @@ def not_found(error):
         description: a resource was not found
     """
     return make_response(jsonify({"error": "Not found"}), 404)
+
 
 # check status route
 @app.route("/status", methods=["GET"], strict_slashes=False)
@@ -111,6 +114,115 @@ def delete_medical_history(patient_id):
         supabase.table("medical_record").delete().eq("patient_id", patient_id).execute()
     )
     return data.model_dump_json()
+
+
+@app.route("/api/v1/patients/<patient_id>", methods=["GET"], strict_slashes=False)
+def patients_by_id(patient_id):
+    """get all users"""
+    data = supabase.table("patients").select("*").eq("id", patient_id).execute()
+
+    return data.model_dump_json()
+
+
+@app.route(
+    "/api/v1/patients/<patient_id>", methods=["PUT", "PATCH"], strict_slashes=False
+)
+def update_patients(patient_id):
+    """get all users"""
+    data = supabase.table("patients").select("*").eq("id", patient_id).execute()
+    if not data:
+        return jsonify({"message": "Patient not found!"}), 404
+    patient_data = request.get_json()
+    update_patient = (
+        supabase.table("patients").update(patient_data).eq("id", patient_id).execute()
+    )
+
+    return update_patient.model_dump_json()
+
+
+@app.route("/api/v1/patients/<patient_id>", methods=["DELETE"], strict_slashes=False)
+def delete_patients_by_id(patient_id):
+    """get all users"""
+    data = supabase.table("patients").delete().eq("id", patient_id).execute()
+
+    if data:
+        return ({"message": "Patient deleted successfully!"}), 200
+
+
+@app.route("/api/v1/medics", methods=["GET"], strict_slashes=False)
+def medics():
+    """get all users"""
+    data = supabase.table("medics").select("*").execute()
+
+    return data.model_dump_json()
+
+
+@app.route("/api/v1/medics/<medic_id>", methods=["GET"], strict_slashes=False)
+def pmedic_by_id(medic_id):
+    """get all users"""
+    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+
+    return data.model_dump_json()
+
+
+@app.route("/api/v1/medics/<medic_id>", methods=["PUT", "PATCH"], strict_slashes=False)
+def update_medics(medic_id):
+    """get all users"""
+    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+    if not data:
+        return jsonify({"message": "Medic not found!"}), 404
+    medic_data = request.get_json()
+    update_medic = (
+        supabase.table("medics").update(medic_data).eq("id", medic_id).execute()
+    )
+
+    return update_medic.model_dump_json()
+
+
+@app.route("/api/v1/medics/<medic_id>", methods=["DELETE"], strict_slashes=False)
+def delete_medic_by_id(medic_id):
+    """get all users"""
+    data = supabase.table("medics").delete().eq("id", medic_id).execute()
+
+    if data:
+        return ({"message": "Medic deleted successfully!"}), 200
+
+
+@app.route("/api/v1/users", methods=["GET"], strict_slashes=False)
+def users():
+    """get all users"""
+    data = supabase.table("users").select("*").execute()
+
+    return data.model_dump_json()
+
+
+@app.route("/api/v1/users/<user_id>", methods=["GET"], strict_slashes=False)
+def user_by_id(user_id):
+    """get all users"""
+    data = supabase.table("users").select("*").eq("id", user_id).execute()
+
+    return data.model_dump_json()
+
+
+@app.route("/api/v1/users/<user_id>", methods=["PUT"], strict_slashes=False)
+def update_user_data(user_id):
+    """get all users"""
+    data = supabase.table("users").select("*").eq("id", user_id).execute()
+    if not data:
+        return jsonify({"message": "Patient not found!"}), 404
+    user_data = request.get_json()
+    update_user = supabase.table("users").update(user_data).eq("id", user_id).execute()
+
+    return update_user.model_dump_json()
+
+
+@app.route("/api/v1/users/<user_id>", methods=["DELETE"], strict_slashes=False)
+def delete_user_by_id(user_id):
+    """get all users"""
+    data = supabase.table("users").delete().eq("id", user_id).execute()
+
+    if data:
+        return ({"message": "User deleted successfully!"}), 200
 
 
 ########################   authentication routes   #############################
