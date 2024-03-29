@@ -41,15 +41,47 @@ def status():
     """Status of API"""
     return jsonify({"status": "OK"})
 
-######################      api routes for patients      ######################
-@app.route("/api/v1/patients", methods=["GET"], strict_slashes=False)
-def patients():
-    """get all users"""
-    data = supabase.table("patients").select("*").execute()
+
+#######################      api routes for medics      #######################
+# get all medics
+@app.route("/api/v1/medics", methods=["GET"], strict_slashes=False)
+def medics():
+    """get all medics"""
+    data = supabase.table("medics").select("*").execute()
 
     return data.model_dump_json()
 
-#######################      api routes for medics      #######################
+# get medic by id
+@app.route("/api/v1/medics/<medic_id>", methods=["GET"], strict_slashes=False)
+def pmedic_by_id(medic_id):
+    """get medic by id"""
+    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+
+    return data.model_dump_json()
+
+# update medic by id
+@app.route("/api/v1/medics/<medic_id>", methods=["PUT", "PATCH"], strict_slashes=False)
+def update_medics(medic_id):
+    """update medic by id"""
+    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+    if not data:
+        return jsonify({"message": "Medic not found!"}), 404
+    medic_data = request.get_json()
+    update_medic = (
+        supabase.table("medics").update(medic_data).eq("id", medic_id).execute()
+    )
+
+    return update_medic.model_dump_json()
+
+# delete medic by id
+@app.route("/api/v1/medics/<medic_id>", methods=["DELETE"], strict_slashes=False)
+def delete_medic_by_id(medic_id):
+    """get all users"""
+    data = supabase.table("medics").delete().eq("id", medic_id).execute()
+
+    if data:
+        return ({"message": "Medic deleted successfully!"}), 200
+    return {}
 
 
 ###################      api route for medical history     ####################
@@ -67,13 +99,13 @@ def create_medical_history(patient_id):
     return data.model_dump_json()
 
 
-# get patient's medical history
+# get patient's medical record
 @app.route(
     "/api/v1/patients/<patient_id>/medical_record",
     methods=["GET"],
     strict_slashes=False,
 )
-def get_medical_history(patient_id):
+def get_medical_record(patient_id):
     """get medical record"""
     data = (
         supabase.table("medical_record")
@@ -84,13 +116,13 @@ def get_medical_history(patient_id):
     return data.model_dump_json()
 
 
-# update patient's medical history
+# update patient's medical record
 @app.route(
     "/api/v1/patients/<patient_id>/medical_record",
     methods=["PATCH"],
     strict_slashes=False,
 )
-def update_medical_history(patient_id):
+def update_medical_record(patient_id):
     """update medical record"""
     req_data = request.get_json()
     data = (
@@ -102,13 +134,13 @@ def update_medical_history(patient_id):
     return data.model_dump_json()
 
 
-# delete patient's medical history
+# delete patient's medical record
 @app.route(
     "/api/v1/patients/<patient_id>/medical_record",
     methods=["DELETE"],
     strict_slashes=False,
 )
-def delete_medical_history(patient_id):
+def delete_medical_record(patient_id):
     """delete medical record"""
     data = (
         supabase.table("medical_record").delete().eq("patient_id", patient_id).execute()
@@ -116,19 +148,29 @@ def delete_medical_history(patient_id):
     return data.model_dump_json()
 
 
+######################      api routes for patients      ######################
+# get all patients
+@app.route("/api/v1/patients", methods=["GET"], strict_slashes=False)
+def patients():
+    """get all users"""
+    data = supabase.table("patients").select("*").execute()
+
+    return data.model_dump_json()
+
+# get patient by id
 @app.route("/api/v1/patients/<patient_id>", methods=["GET"], strict_slashes=False)
 def patients_by_id(patient_id):
-    """get all users"""
+    """get patient by id"""
     data = supabase.table("patients").select("*").eq("id", patient_id).execute()
 
     return data.model_dump_json()
 
-
+# update patient by id
 @app.route(
     "/api/v1/patients/<patient_id>", methods=["PUT", "PATCH"], strict_slashes=False
 )
 def update_patients(patient_id):
-    """get all users"""
+    """update patient by id"""
     data = supabase.table("patients").select("*").eq("id", patient_id).execute()
     if not data:
         return jsonify({"message": "Patient not found!"}), 404
@@ -139,53 +181,15 @@ def update_patients(patient_id):
 
     return update_patient.model_dump_json()
 
-
+# delete patient by id
 @app.route("/api/v1/patients/<patient_id>", methods=["DELETE"], strict_slashes=False)
 def delete_patients_by_id(patient_id):
-    """get all users"""
+    """delete patient by id"""
     data = supabase.table("patients").delete().eq("id", patient_id).execute()
 
-    if data:
-        return ({"message": "Patient deleted successfully!"}), 200
-
-
-@app.route("/api/v1/medics", methods=["GET"], strict_slashes=False)
-def medics():
-    """get all users"""
-    data = supabase.table("medics").select("*").execute()
-
-    return data.model_dump_json()
-
-
-@app.route("/api/v1/medics/<medic_id>", methods=["GET"], strict_slashes=False)
-def pmedic_by_id(medic_id):
-    """get all users"""
-    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
-
-    return data.model_dump_json()
-
-
-@app.route("/api/v1/medics/<medic_id>", methods=["PUT", "PATCH"], strict_slashes=False)
-def update_medics(medic_id):
-    """get all users"""
-    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
     if not data:
-        return jsonify({"message": "Medic not found!"}), 404
-    medic_data = request.get_json()
-    update_medic = (
-        supabase.table("medics").update(medic_data).eq("id", medic_id).execute()
-    )
-
-    return update_medic.model_dump_json()
-
-
-@app.route("/api/v1/medics/<medic_id>", methods=["DELETE"], strict_slashes=False)
-def delete_medic_by_id(medic_id):
-    """get all users"""
-    data = supabase.table("medics").delete().eq("id", medic_id).execute()
-
-    if data:
-        return ({"message": "Medic deleted successfully!"}), 200
+        return ("Could not delete patient")
+    return ({"message": "Patient deleted successfully!"}), 200
 
 
 @app.route("/api/v1/users", methods=["GET"], strict_slashes=False)
