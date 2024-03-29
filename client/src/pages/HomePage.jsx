@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from 'react';
 import sideImg from "../assets/images/doc.png";
+import securityIcon from "../assets/images/icon1.png";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -43,12 +44,29 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
-      {/* About Section */}
-      <div className="bg-gray-200 py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">About Us</h2>
-          <p className="text-lg">Learn more about our team and mission.</p>
+      <div className="bg-[#d5dbda] text-[#696969] container mx-auto py-20 flex px-8 pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <div className="rounded-md border-solid bg-[#FFFFFF] shadow-md col-span-1 md:col-span-1">
+            <div className='p-8'>
+            <h2 className="text-3xl font-bold mb-4"><img src={securityIcon} alt="secuirtyIcon"/><strong>Secure</strong></h2>
+            <p className='text-[#696969]'>Store sensitive and confidential patient records in a secure cloud-based electronic medical records system that is compliant with data privacy standards for encryption, data integrity, and availability.</p>
+            </div>
+          </div>
+          {/* Feature 2 */}
+          <div className="rounded-md border-solid bg-[#FFFFFF] col-span-1 shadow-md md:col-span-1">
+            <div className='p-8'>
+            <h2 className="text-3xl font-bold mb-4"><strong>Feature 2</strong></h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+          {/* Feature 3 */}
+          <div className="rounded-md border-solid bg-[#FFFFFF] shadow-md col-span-1 md:col-span-1">
+            <div className='p-8'>
+            <h2 className="text-3xl font-bold mb-4"><strong>Feature 3</strong></h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
