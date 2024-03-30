@@ -51,12 +51,13 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="bg-gray-100 py-20">
-      <div className="container mx-auto">
+    <div className="bg-gray-100 py-10">
+      <div className="container mx-auto px-4">
         {/* Medical Records Section */}
-        <div className="mb-8 md:flex md:justify-between">
-          <div className="mb-6 md:mb-0 md:w-1/2 md:pr-4">
-            <h2 className="text-2xl text-center font-bold mb-4">Medical Records</h2>
+        <div className="mb-8 md:flex md:text-center">
+          <div className=''>
+            <h2 className="text-base text-center font-bold mb-4 font-bold">About PatientTracker</h2>
+            <div><p className='text-center text-4xl pb-8 pt-0 font-bold text-[#428df5]'>FEATURES AND BENEFITS</p></div>
             <p className='text-center'>PatientTracker is an accessible, flexible, and
               secure application that helps medical doctors
               store and access patient records in one place.
@@ -71,9 +72,9 @@ const AboutPage = () => {
         </div>
         
         {/* Feature Sections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 */}
-          <div className="px-card bg-white rounded-lg shadow-md p-6 md:w-2/5 md:text-sm">
+          <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Monitor Patients</h3>
             <ul>
               <li>Records Patient Information</li>
@@ -82,8 +83,8 @@ const AboutPage = () => {
             </ul>
           </div>
           {/* Column 2 */}
-            <div className='md:pr-28'>
-            <div className="px-card bg-white rounded-lg shadow-md p-6 md:w-2/5 md:text-sm">
+            <div>
+            <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Monitor Patients</h3>
             <ul>
               <li>Records Patient Information</li>
@@ -93,7 +94,7 @@ const AboutPage = () => {
           </div>
           </div>
           {/* Column 3 */}
-          <div className="px-card bg-white rounded-lg shadow-md p-6 md:w-2/5 md:text-sm">
+          <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Convenient to Use</h3>
             <ul>
               <li>Accessible Anytime and Anywhere</li>
