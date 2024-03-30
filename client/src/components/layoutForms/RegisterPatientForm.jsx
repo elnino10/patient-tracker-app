@@ -78,7 +78,7 @@ const RegisterPatient = () => {
           </Typography>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link to="/registerMedic" variant="body2">
+              <Link to="/register-medic" variant="body2">
                 Medical Practitioner? Sign up Here
               </Link>
             </Grid>
