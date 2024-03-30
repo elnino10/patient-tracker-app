@@ -5,6 +5,7 @@ from . import (
     AuthRetryableError,
     app,
     create_client,
+    datetime,
     environ,
     json,
     jsonify,
@@ -296,13 +297,31 @@ def signup():
                 "password": user_data.get("password"),
             }
         )
-        time.sleep(2)
 
+        birthdate = user_data.get("dob")
+        birthdate = birthdate[:15]
+        string_format = "%a %b %d %Y"
+
+        # convert birthdate to datetime object
+        birthdate_obj = datetime.strptime(birthdate, string_format)
+
+        # Get today's date
+        today = datetime.today()
+
+        # Calculate the difference between today's date and the birthdate
+        age_years = today.year - birthdate_obj.year
+        age_months = today.month - birthdate_obj.month
+        if age_months < 0:
+            age_years -= 1
+            age_months += 12
+
+        time.sleep(2)
         # check if the user is signed up
         if session is not None:
             # Retrieve additional profile information
             session_data = json.loads(session.model_dump_json())
             user_id = session_data.get("user", {}).get("id")
+
             data = (
                 supabase.table("users")
                 .update(
@@ -310,9 +329,10 @@ def signup():
                         "first_name": user_data.get("first_name"),
                         "last_name": user_data.get("last_name"),
                         "category": user_data.get("category"),
-                        "age": user_data.get("age"),
+                        "age_years": age_years,
+                        "age_months": age_months,
                         "specialization": user_data.get("specialization"),
-                        "dob": user_data.get("dob"),
+                        "dob": birthdate,
                         "gender": user_data.get("gender"),
                     }
                 )
