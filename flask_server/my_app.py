@@ -1,7 +1,6 @@
 """Application entry point"""
 
 from . import (
-    APIError,
     AuthApiError,
     AuthRetryableError,
     app,
