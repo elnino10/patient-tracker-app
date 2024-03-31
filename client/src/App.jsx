@@ -14,6 +14,8 @@ import PasswordRecoveryEmail from "./components/layoutForms/PasswordRecoveryEmai
 import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
 import Footer from "./components/layout/Footer";
 import Patients from "./pages/Patients";
+import MedicDashboard from "./pages/MedicDashboard.jsx";
+
 
 const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -37,6 +39,7 @@ const App = () => {
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
         <Route path="/all-patients" element={<Patients />} />
+	      <Route path="/medic-dashboard" element={<MedicDashboard />} />  
         
       </Routes>
       <Footer />

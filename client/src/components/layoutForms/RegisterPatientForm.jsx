@@ -55,6 +55,8 @@ const RegisterPatient = () => {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       dob: value.$d,
+      gender: data.get("gender"),
+      category: "patient"
     });
   };
 

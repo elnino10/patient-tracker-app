@@ -45,6 +45,7 @@ const RegisterMedic = () => {
       specialization: data.get("specialization"),
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
+      category: "medic"
     });
   };
 
