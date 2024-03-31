@@ -5,6 +5,7 @@ from . import (
     AuthRetryableError,
     app,
     create_client,
+    datetime,
     environ,
     json,
     jsonify,
@@ -13,7 +14,6 @@ from . import (
     request,
     time,
 )
-
 
 load_dotenv()
 url = environ.get("SUPABASE_URL")
@@ -32,7 +32,7 @@ def not_found(error):
       404:
         description: a resource was not found
     """
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return make_response(jsonify({"error": "Not found", "message": error}), 404)
 
 
 # check status route
@@ -45,43 +45,54 @@ def status():
 #######################      api routes for medics      #######################
 # get all medics
 @app.route("/api/v1/medics", methods=["GET"], strict_slashes=False)
-def medics():
+def get_medics():
     """get all medics"""
-    data = supabase.table("medics").select("*").execute()
+    try:
+        data = supabase.table("medics").select("*").execute()
+        # Assert we pulled real data.
+        if not len(data.data) > 0:
+            return jsonify({"message": "No medic found!"}), 404
+        return jsonify({"count": len(data.data), "data": data.data}), 200
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return data.model_dump_json()
 
 # get medic by id
 @app.route("/api/v1/medics/<medic_id>", methods=["GET"], strict_slashes=False)
-def pmedic_by_id(medic_id):
+def get_medic_by_id(medic_id):
     """get medic by id"""
-    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+    try:
+        data = supabase.table("medics").select("*").eq("id", medic_id).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "Medic not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return data.model_dump_json()
 
 # update medic by id
-@app.route("/api/v1/medics/<medic_id>", methods=["PUT", "PATCH"], strict_slashes=False)
-def update_medics(medic_id):
+@app.route("/api/v1/medics/<medic_id>", methods=["PATCH"], strict_slashes=False)
+def update_medic(medic_id):
     """update medic by id"""
-    data = supabase.table("medics").select("*").eq("id", medic_id).execute()
-    if not data:
-        return jsonify({"message": "Medic not found!"}), 404
-    medic_data = request.get_json()
-    update_medic = (
-        supabase.table("medics").update(medic_data).eq("id", medic_id).execute()
-    )
+    try:
+        medic_data = request.get_json()
+        data = supabase.table("medics").update(medic_data).eq("id", medic_id).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "Medic not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return update_medic.model_dump_json()
 
 # delete medic by id
 @app.route("/api/v1/medics/<medic_id>", methods=["DELETE"], strict_slashes=False)
 def delete_medic_by_id(medic_id):
     """get all users"""
-    data = supabase.table("medics").delete().eq("id", medic_id).execute()
-
-    if data:
-        return ({"message": "Medic deleted successfully!"}), 200
-    return {}
+    try:
+        supabase.table("medics").delete().eq("id", medic_id).execute()
+        return {}
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 
 ###################      api route for medical history     ####################
@@ -91,12 +102,17 @@ def delete_medic_by_id(medic_id):
     methods=["POST"],
     strict_slashes=False,
 )
-def create_medical_history(patient_id):
+def create_medical_record(patient_id):
     """create medical record"""
-    req_data = request.get_json()
-    req_data["patient_id"] = patient_id
-    data = supabase.table("medical_record").insert(req_data).execute()
-    return data.model_dump_json()
+    try:
+        req_data = request.get_json()
+        req_data["patient_id"] = patient_id
+        data = supabase.table("medical_records").insert(req_data).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "Could not create medical record!"})
+        return data.data, 201
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 
 # get patient's medical record
@@ -107,14 +123,18 @@ def create_medical_history(patient_id):
 )
 def get_medical_record(patient_id):
     """get medical record"""
-    data = (
-        supabase.table("medical_record")
-        .select("*")
-        .eq("patient_id", patient_id)
-        .execute()
-    )
-    return data.model_dump_json()
-
+    try:
+        data = (
+            supabase.table("medical_records")
+            .select("*")
+            .eq("patient_id", patient_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return jsonify({"message": "Medical record not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 # update patient's medical record
 @app.route(
@@ -124,14 +144,19 @@ def get_medical_record(patient_id):
 )
 def update_medical_record(patient_id):
     """update medical record"""
-    req_data = request.get_json()
-    data = (
-        supabase.table("medical_record")
-        .update(req_data)
-        .eq("patient_id", patient_id)
-        .execute()
-    )
-    return data.model_dump_json()
+    try:
+        req_data = request.get_json()
+        data = (
+            supabase.table("medical_records")
+            .update(req_data)
+            .eq("patient_id", patient_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return jsonify({"message": "Medical record not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 
 # delete patient's medical record
@@ -142,28 +167,40 @@ def update_medical_record(patient_id):
 )
 def delete_medical_record(patient_id):
     """delete medical record"""
-    data = (
-        supabase.table("medical_record").delete().eq("patient_id", patient_id).execute()
-    )
-    return data.model_dump_json()
+    try:
+        supabase.table("medical_records").delete().eq(
+            "patient_id", patient_id
+        ).execute()
+        return {}
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 
 ######################      api routes for patients      ######################
 # get all patients
 @app.route("/api/v1/patients", methods=["GET"], strict_slashes=False)
-def patients():
+def get_patients():
     """get all users"""
-    data = supabase.table("patients").select("*").execute()
+    try:
+        data = supabase.table("patients").select("*").execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "No patient found!"}), 404
+        return jsonify({"count": len(data.data), "data": data.data}), 200
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return data.model_dump_json()
 
 # get patient by id
 @app.route("/api/v1/patients/<patient_id>", methods=["GET"], strict_slashes=False)
 def patients_by_id(patient_id):
     """get patient by id"""
-    data = supabase.table("patients").select("*").eq("id", patient_id).execute()
-
-    return data.model_dump_json()
+    try:
+        data = supabase.table("patients").select("*").eq("id", patient_id).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "Patient not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 # update patient by id
 @app.route(
@@ -171,62 +208,79 @@ def patients_by_id(patient_id):
 )
 def update_patients(patient_id):
     """update patient by id"""
-    data = supabase.table("patients").select("*").eq("id", patient_id).execute()
-    if not data:
-        return jsonify({"message": "Patient not found!"}), 404
-    patient_data = request.get_json()
-    update_patient = (
-        supabase.table("patients").update(patient_data).eq("id", patient_id).execute()
-    )
-
-    return update_patient.model_dump_json()
+    try:
+        update_data = request.get_json()
+        data = (
+            supabase.table("patients")
+            .update(update_data)
+            .eq("id", patient_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return jsonify({"message": "Patient not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 # delete patient by id
 @app.route("/api/v1/patients/<patient_id>", methods=["DELETE"], strict_slashes=False)
 def delete_patients_by_id(patient_id):
     """delete patient by id"""
-    data = supabase.table("patients").delete().eq("id", patient_id).execute()
+    try:
+        supabase.table("patients").delete().eq("id", patient_id).execute()
+        return {}
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    if not data:
-        return ("Could not delete patient")
-    return ({"message": "Patient deleted successfully!"}), 200
 
-
+######################      api routes for users      ######################
+# get all users
 @app.route("/api/v1/users", methods=["GET"], strict_slashes=False)
 def users():
     """get all users"""
-    data = supabase.table("users").select("*").execute()
+    try:
+        data = supabase.table("users").select("*").execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "No user found!"}), 404
+        return jsonify({"count": len(data.data), "data": data.data}), 200
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return data.model_dump_json()
-
-
+# get user by id
 @app.route("/api/v1/users/<user_id>", methods=["GET"], strict_slashes=False)
 def user_by_id(user_id):
     """get all users"""
-    data = supabase.table("users").select("*").eq("id", user_id).execute()
+    try:
+        data = supabase.table("users").select("*").eq("id", user_id).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "User not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return data.model_dump_json()
-
-
+# update user by id
 @app.route("/api/v1/users/<user_id>", methods=["PUT"], strict_slashes=False)
 def update_user_data(user_id):
     """get all users"""
-    data = supabase.table("users").select("*").eq("id", user_id).execute()
-    if not data:
-        return jsonify({"message": "Patient not found!"}), 404
-    user_data = request.get_json()
-    update_user = supabase.table("users").update(user_data).eq("id", user_id).execute()
+    try:
+        update_data = request.get_json()
+        data = supabase.table("users").update(update_data).eq("id", user_id).execute()
+        if not len(data.data) > 0:
+            return jsonify({"message": "User not found!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
-    return update_user.model_dump_json()
-
-
+# delete user by id
 @app.route("/api/v1/users/<user_id>", methods=["DELETE"], strict_slashes=False)
 def delete_user_by_id(user_id):
     """get all users"""
-    data = supabase.table("users").delete().eq("id", user_id).execute()
+    try:
+        supabase.table("users").delete().eq("id", user_id).execute()
 
-    if data:
-        return ({"message": "User deleted successfully!"}), 200
+        return {}
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
 
 
 ########################   authentication routes   #############################
@@ -243,13 +297,31 @@ def signup():
                 "password": user_data.get("password"),
             }
         )
-        time.sleep(2)
 
+        birthdate = user_data.get("dob")
+        birthdate = birthdate[:15]
+        string_format = "%a %b %d %Y"
+
+        # convert birthdate to datetime object
+        birthdate_obj = datetime.strptime(birthdate, string_format)
+
+        # Get today's date
+        today = datetime.today()
+
+        # Calculate the difference between today's date and the birthdate
+        age_years = today.year - birthdate_obj.year
+        age_months = today.month - birthdate_obj.month
+        if age_months < 0:
+            age_years -= 1
+            age_months += 12
+
+        time.sleep(2)
         # check if the user is signed up
         if session is not None:
             # Retrieve additional profile information
             session_data = json.loads(session.model_dump_json())
             user_id = session_data.get("user", {}).get("id")
+
             data = (
                 supabase.table("users")
                 .update(
@@ -257,17 +329,19 @@ def signup():
                         "first_name": user_data.get("first_name"),
                         "last_name": user_data.get("last_name"),
                         "category": user_data.get("category"),
-                        "age": user_data.get("age"),
+                        "age_years": age_years,
+                        "age_months": age_months,
                         "specialization": user_data.get("specialization"),
-                        "dob": user_data.get("dob"),
+                        "dob": birthdate,
                         "gender": user_data.get("gender"),
                     }
                 )
                 .eq("id", user_id)
                 .execute()
             )
-            print(data.model_dump_json())
-        return data.model_dump_json()
+            if not len(data.data) > 0:
+                return "Could not create user!"
+        return data.data
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign up failed!", "error": error.message})
 
@@ -285,7 +359,7 @@ def signin():
                 "password": user_data.get("password"),
             }
         )
-        return session.model_dump_json()
+        return session.data
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign in failed!", "error": error.message})
 
