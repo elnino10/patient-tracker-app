@@ -1,6 +1,7 @@
 // import * as React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -43,20 +44,35 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+const reqUrl = 'http://127.0.0.1:5000/auth/v1/signup';
+
 const RegisterPatient = () => {
   const [value, setValue] = useState(dayjs("2024-03-20"));
+  const [submit, setSubmit] = useState(false);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setSubmit(true);
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    // make a post request to the server
+    axios.post(reqUrl, {
       email: data.get("email"),
       password: data.get("password"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
+      first_name: data.get("firstName"),
+      last_name: data.get("lastName"),
+      address: data.get("address"),
       dob: value.$d,
       gender: data.get("gender"),
       category: "patient"
+    })
+    .then(response => {
+      setSubmit(false);
+      console.log('Response data:', response.data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
     });
   };
 
@@ -94,7 +110,7 @@ const RegisterPatient = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
+                  autoComplete="firstName"
                   name="firstName"
                   required
                   fullWidth
@@ -110,7 +126,7 @@ const RegisterPatient = () => {
                   id="lastName"
                   label="Last Name"
                   name="lastName"
-                  autoComplete="family-name"
+                  autoComplete="lastName"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -139,15 +155,26 @@ const RegisterPatient = () => {
                   required
                   fullWidth
                   name="gender"
-                  label="gender"
+                  label="Gender"
                   type="gender"
                   id="gender"
                   autoComplete="gender"
                 />
               </Grid>
               <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="address"
+                  label="Address"
+                  type="address"
+                  id="address"
+                  autoComplete="address"
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoItem label="DOB">
+                  <DemoItem label="dob">
                     <DesktopDatePicker
                       value={value}
                       onChange={(val) => setValue(val)}
@@ -171,7 +198,7 @@ const RegisterPatient = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {submit ? "Submitting..." : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

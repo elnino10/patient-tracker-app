@@ -17,5 +17,5 @@ from postgrest.exceptions import APIError
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 # app.register_blueprint(app_views)
-# cor = CORS(app, resources={r"/api/*": {"origins": "*"}})
-cor = CORS(app)
+# cor = CORS(app, resources={r"/*": {"origins": "*"}})
+# cor = CORS(app)
