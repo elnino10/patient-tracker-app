@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -35,18 +36,38 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+const reqUrl = 'http://127.0.0.1:5000/auth/v1/signup';
+
 const RegisterMedic = () => {
+  const [submit, setSubmit] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setSubmit(true);
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
       specialization: data.get("specialization"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
+      first_name: data.get("firstName"),
+      last_name: data.get("lastName"),
       category: "medic"
     });
+    // axios.post(reqUrl, {
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    //   specialization: data.get("specialization"),
+    //   first_name: data.get("firstName"),
+    //   last_name: data.get("lastName"),
+    //   category: "medic"
+    // })
+    // .then(response => {
+    //   setSubmit(false);
+    //   console.log('Response data:', response.data);
+    // })
+    // .catch(error => {
+    //   console.error({"Error": error});
+    // })
   };
 
   return (
@@ -133,7 +154,7 @@ const RegisterMedic = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {submit ? "Submitting..." : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

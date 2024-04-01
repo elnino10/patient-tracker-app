@@ -51,13 +51,13 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="bg-gray-100 py-10">
+    <div className="bg-gray-100 pt-10 h-screen">
       <div className="container mx-auto px-4">
         {/* Medical Records Section */}
         <div className="mb-8 md:flex md:text-center">
           <div className=''>
-            <h2 className="text-base text-center font-bold mb-4 font-bold">About PatientTracker</h2>
-            <div><p className='text-center text-4xl pb-8 pt-0 font-bold text-[#428df5]'>FEATURES AND BENEFITS</p></div>
+            <h2 className="text-base text-center font-bold mb-4">About PatientTracker</h2>
+            <div><p className='text-center text-4xl pb-8 font-bold text-[#428df5]'>FEATURES AND BENEFITS</p></div>
             <p className='text-center'>PatientTracker is an accessible, flexible, and
               secure application that helps medical doctors
               store and access patient records in one place.
@@ -74,7 +74,7 @@ const AboutPage = () => {
         {/* Feature Sections */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 */}
-          <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
+          <div className="bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Monitor Patients</h3>
             <ul>
               <li>Records Patient Information</li>
@@ -84,7 +84,7 @@ const AboutPage = () => {
           </div>
           {/* Column 2 */}
             <div>
-            <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
+            <div className="bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Monitor Patients</h3>
             <ul>
               <li>Records Patient Information</li>
@@ -94,7 +94,7 @@ const AboutPage = () => {
           </div>
           </div>
           {/* Column 3 */}
-          <div className="px-card bg-white rounded-lg shadow-md p-6 md:text-sm">
+          <div className="bg-white rounded-lg shadow-md p-6 md:text-sm">
             <h3 className="text-xl font-bold mb-4">Convenient to Use</h3>
             <ul>
               <li>Accessible Anytime and Anywhere</li>

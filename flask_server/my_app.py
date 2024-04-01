@@ -13,8 +13,10 @@ from . import (
     make_response,
     request,
     time,
+    CORS
 )
 
+cor = CORS(app, resources={r"/*": {"origins": "*"}})
 load_dotenv()
 url = environ.get("SUPABASE_URL")
 key = environ.get("SUPABASE_API_KEY")
@@ -304,8 +306,8 @@ def signup():
         # check if user is patient
         if user_data.get("category") == "patient":
             birthdate = user_data.get("dob")
-            birthdate = birthdate[:15]
-            string_format = "%a %b %d %Y"
+            birthdate = birthdate[:10]
+            string_format = "%Y-%m-%d"
 
             # convert birthdate to datetime object
             birthdate_obj = datetime.strptime(birthdate, string_format)
@@ -339,6 +341,7 @@ def signup():
                         "specialization": user_data.get("specialization"),
                         "dob": birthdate,
                         "gender": user_data.get("gender"),
+                        "address": user_data.get("address"),
                     }
                 )
                 .eq("id", user_id)
@@ -346,7 +349,7 @@ def signup():
             )
             if not len(data.data) > 0:
                 return "Could not create user!"
-        return data.model_dump_json()
+        return data.data
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign up failed!", "error": error.message})
 
@@ -364,7 +367,8 @@ def signin():
                 "password": user_data.get("password"),
             }
         )
-        return session.model_dump_json()
+        data = json.loads(session.session.model_dump_json())
+        return jsonify({"access_token": data["access_token"], })
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign in failed!", "error": error.message})
 
