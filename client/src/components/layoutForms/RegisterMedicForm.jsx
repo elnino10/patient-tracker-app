@@ -45,29 +45,21 @@ const RegisterMedic = () => {
     event.preventDefault();
     setSubmit(true);
     const data = new FormData(event.currentTarget);
-    console.log({
+    axios.post(reqUrl, {
       email: data.get("email"),
       password: data.get("password"),
       specialization: data.get("specialization"),
       first_name: data.get("firstName"),
       last_name: data.get("lastName"),
       category: "medic"
-    });
-    // axios.post(reqUrl, {
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    //   specialization: data.get("specialization"),
-    //   first_name: data.get("firstName"),
-    //   last_name: data.get("lastName"),
-    //   category: "medic"
-    // })
-    // .then(response => {
-    //   setSubmit(false);
-    //   console.log('Response data:', response.data);
-    // })
-    // .catch(error => {
-    //   console.error({"Error": error});
-    // })
+    })
+    .then(response => {
+      setSubmit(false);
+      console.log('Response data:', response.data);
+    })
+    .catch(error => {
+      console.error({"Error": error});
+    })
   };
 
   return (
