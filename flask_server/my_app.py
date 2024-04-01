@@ -298,22 +298,27 @@ def signup():
             }
         )
 
-        birthdate = user_data.get("dob")
-        birthdate = birthdate[:15]
-        string_format = "%a %b %d %Y"
+        age_years = None
+        age_months = None
+        birthdate = None
+        # check if user is patient
+        if user_data.get("category") == "patient":
+            birthdate = user_data.get("dob")
+            birthdate = birthdate[:15]
+            string_format = "%a %b %d %Y"
 
-        # convert birthdate to datetime object
-        birthdate_obj = datetime.strptime(birthdate, string_format)
+            # convert birthdate to datetime object
+            birthdate_obj = datetime.strptime(birthdate, string_format)
 
-        # Get today's date
-        today = datetime.today()
+            # Get today's date
+            today = datetime.today()
 
-        # Calculate the difference between today's date and the birthdate
-        age_years = today.year - birthdate_obj.year
-        age_months = today.month - birthdate_obj.month
-        if age_months < 0:
-            age_years -= 1
-            age_months += 12
+            # Calculate the difference between today's date and the birthdate
+            age_years = today.year - birthdate_obj.year
+            age_months = today.month - birthdate_obj.month
+            if age_months < 0:
+                age_years -= 1
+                age_months += 12
 
         time.sleep(2)
         # check if the user is signed up
@@ -341,7 +346,7 @@ def signup():
             )
             if not len(data.data) > 0:
                 return "Could not create user!"
-        return data.data
+        return data.model_dump_json()
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign up failed!", "error": error.message})
 
@@ -359,7 +364,7 @@ def signin():
                 "password": user_data.get("password"),
             }
         )
-        return session.data
+        return session.model_dump_json()
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign in failed!", "error": error.message})
 
