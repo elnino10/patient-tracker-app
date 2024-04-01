@@ -15,6 +15,7 @@ import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
 import Footer from "./components/layout/Footer";
 import Patients from "./pages/Patients";
 import MedicDashboard from "./pages/MedicDashboard.jsx";
+import Patient from "./pages/PatientPage.jsx";
 
 
 const App = () => {
@@ -38,9 +39,10 @@ const App = () => {
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
-        <Route path="/all-patients" element={<Patients />} />
-	      <Route path="/medic-dashboard" element={<MedicDashboard />} />  
-        
+        <Route path="/patients" element={<Patients />} />
+	      <Route path="/medic-dashboard" element={<MedicDashboard />} />
+        <Route path="/patients/:id" element={<Patient />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <Footer />
     </div>
