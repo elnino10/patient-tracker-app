@@ -52,10 +52,13 @@ const Login = () => {
         password: data.get("password"),
       });
       const {access_token} = response.data;
-      localStorage.setItem("access_token", access_token);
+      console.log(access_token);
+      localStorage.setItem("access_token", JSON.stringify(access_token));
       setSubmit(false);
       {/* redirect to user dashboard*/}
-      }
+
+      event.target.reset();
+    }
     catch (error) {
       console.error("Error logging in: ", error);
     }

@@ -56,6 +56,8 @@ const RegisterMedic = () => {
     .then(response => {
       setSubmit(false);
       console.log('Response data:', response.data);
+
+      event.target.reset();
     })
     .catch(error => {
       console.error({"Error": error});

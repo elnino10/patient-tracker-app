@@ -69,7 +69,8 @@ const RegisterPatient = () => {
     })
     .then(response => {
       setSubmit(false);
-      console.log('Response data:', response.data);
+      alert('Registration successful! please check your email for verification link.')
+      event.target.reset();
     })
     .catch(error => {
       console.error('Error:', error);
