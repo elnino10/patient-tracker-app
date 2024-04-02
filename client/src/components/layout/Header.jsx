@@ -1,15 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MenuOpen } from "@mui/icons-material";
 import HomeIcon from "@mui/icons-material/Home";
+import axios from "axios";
 
 const Header = (props) => {
   const [activePage, setActivePage] = useState("home");
+  const navigate = useNavigate();
+
+  const reqURL = "http://127.0.0.1:5000/auth/v1/signout";
+  const token = localStorage.getItem("access_token");
 
   const toggleMenuHandler = (e) => {
     e.stopPropagation();
     props.setMenuVisible(!props.menuVisible);
+  };
+
+  const handleSignout = () => {
+    localStorage.removeItem("access_token");
+    axios.post(reqURL);
+    navigate("/login");
   };
 
   return (
@@ -68,29 +79,26 @@ const Header = (props) => {
                 Services
               </Link>
             </li>
-            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
-              <Link
-                to="/login"
-                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+            {!token ? (
+              <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
+                <Link
+                  to="/login"
+                  className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${activePage === "login" && "text-blue-700 md:text-blue-200"}`}
-                onClick={() => setActivePage("login")}
+                  onClick={() => setActivePage("login")}
+                >
+                  Login
+                </Link>
+              </li>
+            ) : (
+              <li
+                className="list-none py-2 mr-4 md:text-white w-full flex text-base
+                          md:hover:text-blue-200 cursor-pointer"
+                onClick={handleSignout}
               >
-                Login
-              </Link>
-            </li>
-            <li className="list-none py-2 mr-4 md:text-white">
-              <Link
-                to="/create-report"
-                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
-                ${
-                  activePage === "create-report" &&
-                  "text-blue-700 md:text-blue-200"
-                }`}
-                onClick={() => setActivePage("create-report")}
-              >
-                Create Report
-              </Link>
-            </li>
+                Sign out
+              </li>
+            )}
           </ul>
         </nav>
       </div>

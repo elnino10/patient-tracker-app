@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Avatar from "@mui/material/Avatar";
@@ -39,6 +39,7 @@ const defaultTheme = createTheme();
 
 const Login = () => {
   const [submit, setSubmit] = useState(false);
+  const navigate = useNavigate();
 
   const loginURL = "http://127.0.0.1:5000/auth/v1/signin";
   const handleSubmit = async (event) => {
@@ -56,7 +57,7 @@ const Login = () => {
       localStorage.setItem("access_token", JSON.stringify(access_token));
       setSubmit(false);
       {/* redirect to user dashboard*/}
-
+      navigate("/");
       event.target.reset();
     }
     catch (error) {
