@@ -1,6 +1,7 @@
 """Application entry point"""
 
 from . import (
+    CORS,
     AuthApiError,
     AuthRetryableError,
     app,
@@ -9,11 +10,12 @@ from . import (
     environ,
     json,
     jsonify,
+    jwt,
     load_dotenv,
     make_response,
     request,
     time,
-    CORS
+    timedelta,
 )
 
 cor = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -322,9 +324,9 @@ def signup():
                 age_years -= 1
                 age_months += 12
 
-        time.sleep(2)
         # check if the user is signed up
         if session is not None:
+            time.sleep(2)
             # Retrieve additional profile information
             session_data = json.loads(session.model_dump_json())
             user_id = session_data.get("user", {}).get("id")
@@ -367,10 +369,43 @@ def signin():
                 "password": user_data.get("password"),
             }
         )
-        data = json.loads(session.session.model_dump_json())
-        return jsonify({"access_token": data["access_token"], })
+
+        if session is not None:
+            time.sleep(2)
+            session_data = json.loads(session.model_dump_json())
+            user_id = session_data.get("user", {}).get("id")
+            user_email = session_data.get("user", {}).get("email")
+
+            user_category = supabase.table("users").select("category").eq(
+                "email", user_data["email"]
+            ).execute()
+
+            token = generate_token(
+                user_id=user_id,
+                email=user_email,
+                category=user_category.data[0]["category"],
+            )
+            return jsonify({"access_token": token})
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign in failed!", "error": error.message})
+
+
+# generate access token for user authorization
+def generate_token(user_id, email, category):
+    """generate token"""
+    custom_claims = {
+        "sub": user_id,
+        "email": email,
+        "category": category,
+    }
+
+    payload = {
+        **custom_claims,
+        "exp": datetime.utcnow() + timedelta(days=1),
+    }
+    secret_key = environ.get("SECRET_KEY")
+    token = jwt.encode(payload, secret_key, algorithm="HS256")
+    return token
 
 
 # sign out route
@@ -378,9 +413,9 @@ def signin():
 def signout():
     """signout function"""
     try:
-        user_data = request.get_json()
-        supabase.auth.sign_out(user_data.get("access_token"))
-        return jsonify({"message": "Sign out successful!"})
+        supabase.auth.sign_out()
+        if not supabase.auth.get_session():
+            return jsonify({"message": "Sign out successful!"})
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign out failed!", "error": error.message})
 
