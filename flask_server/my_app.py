@@ -127,7 +127,7 @@ def authorize_medic(func):
     methods=["POST"],
     strict_slashes=False,
 )
-@authorize_medic
+# @authorize_medic
 def create_medical_record(patient_id):
     """create medical record"""
     try:
@@ -168,7 +168,7 @@ def get_medical_record(patient_id):
     methods=["PATCH"],
     strict_slashes=False,
 )
-@authorize_medic
+# @authorize_medic
 def update_medical_record(patient_id):
     """update medical record"""
     try:
@@ -192,7 +192,7 @@ def update_medical_record(patient_id):
     methods=["DELETE"],
     strict_slashes=False,
 )
-@authorize_medic
+# @authorize_medic
 def delete_medical_record(patient_id):
     """delete medical record"""
     try:

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -36,31 +37,28 @@ const CreateReportForm = () => {
   const { id } = useParams();
   const [submit, setSubmit] = useState(false);
   
-  const reqURL = `/api/v1/patients/${id}/medical_record`;
+  const reqURL = `http://127.0.0.1:5000/api/v1/patients/${id}/medical_record`;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmit(true);
-    const data = new FormData(event.currentTarget);
-    console.log({
-      allergies: data.get("allergies"),
-      medication: data.get("medication"),
-      diagnosis: data.get("diagnosis"),
-      history: data.get("history"),
-      medical_info: data.get("medical_info"),
-      patient_id: id,
-    });
-
-    axios.post(reqURL, {
-      allergies: data.get("allergies"),
-      medication: data.get("medication"),
-      diagnosis: data.get("diagnosis"),
-      history: data.get("history"),
-      medical_info: data.get("medical_info"),
-      patient_id: id,
-    }, {headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`
-    }});
+    try {
+      const data = new FormData(event.currentTarget);
+      axios.post(reqURL, {
+        allergies: data.get("allergies"),
+        medication: data.get("medication"),
+        diagnosis: data.get("diagnosis"),
+        history: data.get("history"),
+        medical_info: data.get("medical_info"),
+        patient_id: id,
+      }, {headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+      }});
+      setSubmit(false);
+      event.target.reset();
+    } catch (error) {
+      console.error("Error occured:", error);
+    }
   };
 
   return (
@@ -124,7 +122,7 @@ const CreateReportForm = () => {
               id="medical_info"
             />
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Enter
+              {submit ? "Please wait..." : "Submit"}
             </Button>
           </Box>
         </Box>
