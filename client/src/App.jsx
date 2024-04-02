@@ -35,7 +35,6 @@ const App = () => {
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/register-patient" element={<RegisterPatient />} />
         <Route path="/register-medic" element={<RegisterMedic />} />
-        <Route path="/create-report" element={<CreateReport />} />
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />

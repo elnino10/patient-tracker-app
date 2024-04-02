@@ -16,6 +16,8 @@ from . import (
     request,
     time,
     timedelta,
+    wraps,
+    g
 )
 
 cor = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -100,12 +102,32 @@ def delete_medic_by_id(medic_id):
 
 
 ###################      api route for medical history     ####################
+# create an authorization decorator
+def authorize_medic(func):
+    """routes are protected and accessed by medics only"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        """functools wrapper function"""
+        token = request.headers.get("Authorization").split("Bearer ")[1]
+        try:
+            payload = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=["HS256"])
+            if payload["category"] == "medic":
+                g.user = payload
+                return func(*args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            return jsonify({"message": "Token expired!"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"message": "Invalid token!"}), 401
+
+    return wrapper
+
 # create patient's medical record
 @app.route(
     "/api/v1/patients/<patient_id>/medical_record",
     methods=["POST"],
     strict_slashes=False,
 )
+@authorize_medic
 def create_medical_record(patient_id):
     """create medical record"""
     try:
@@ -146,6 +168,7 @@ def get_medical_record(patient_id):
     methods=["PATCH"],
     strict_slashes=False,
 )
+@authorize_medic
 def update_medical_record(patient_id):
     """update medical record"""
     try:
@@ -169,6 +192,7 @@ def update_medical_record(patient_id):
     methods=["DELETE"],
     strict_slashes=False,
 )
+@authorize_medic
 def delete_medical_record(patient_id):
     """delete medical record"""
     try:

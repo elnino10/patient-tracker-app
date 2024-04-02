@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -31,9 +31,16 @@ const Copyright = (props) => {
 
 const defaultTheme = createTheme();
 
+
 const CreateReportForm = () => {
+  const { id } = useParams();
+  const [submit, setSubmit] = useState(false);
+  
+  const reqURL = `/api/v1/patients/${id}/medical_record`;
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setSubmit(true);
     const data = new FormData(event.currentTarget);
     console.log({
       allergies: data.get("allergies"),
@@ -41,7 +48,19 @@ const CreateReportForm = () => {
       diagnosis: data.get("diagnosis"),
       history: data.get("history"),
       medical_info: data.get("medical_info"),
+      patient_id: id,
     });
+
+    axios.post(reqURL, {
+      allergies: data.get("allergies"),
+      medication: data.get("medication"),
+      diagnosis: data.get("diagnosis"),
+      history: data.get("history"),
+      medical_info: data.get("medical_info"),
+      patient_id: id,
+    }, {headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`
+    }});
   };
 
   return (
