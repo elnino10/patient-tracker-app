@@ -24,7 +24,7 @@ const Patients = () => {
     <div className="h-screen">
       <div className="w-full text-center">
         <input
-          className="border rounded mt-5 p-1 w-1/2"
+          className="border rounded mt-5 text-center p-1 w-1/3 md:w-1/4 lg:w-1/5"
           placeholder="search by name"
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -51,9 +51,10 @@ const Patients = () => {
                 <h3 className="text-gray-600">{patient.first_name} {patient.last_name}</h3>
               </div>
               <div>
-                <p className="text-gray-600">email: {patient.email}</p>
+                <p className="text-gray-600 pt-11">Email: {patient.email}</p>
               </div>
-              <Link to={`/patients/${patient.id}`}>view patient's details</Link>
+              <Link 
+              to={`/patients/${patient.id}`} className="pt-11">view patient's details</Link>
             </div>
           ))}
     </div>
