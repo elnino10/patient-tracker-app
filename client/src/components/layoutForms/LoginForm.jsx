@@ -1,4 +1,7 @@
-import * as React from "react";
+import {useState} from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,7 +14,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 
 const Copyright = (props) => {
   return (
@@ -36,13 +38,27 @@ const Copyright = (props) => {
 const defaultTheme = createTheme();
 
 const Login = () => {
-  const handleSubmit = (event) => {
+  const [submit, setSubmit] = useState(false);
+
+  const loginURL = "http://127.0.0.1:5000/auth/v1/signin";
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    setSubmit(true);
+    try {
+      const data = new FormData(event.currentTarget);
+
+      const response = await axios.post(loginURL, {
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+      const {access_token} = response.data;
+      localStorage.setItem("access_token", access_token);
+      setSubmit(false);
+      {/* redirect to user dashboard*/}
+      }
+    catch (error) {
+      console.error("Error logging in: ", error);
+    }
   };
 
   return (
@@ -99,7 +115,7 @@ const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {submit ? "Please wait..." : "Sign In"}
             </Button>
             <Grid container>
               <Grid item xs>
