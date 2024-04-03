@@ -1,21 +1,25 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
-import Medics from "./pages/Medics";
-import ServicesPage from "./pages/ServicesPage";
-import Login from "./components/layoutForms/LoginForm";
-import RegisterPatient from "./components/layoutForms/RegisterPatientForm";
-import RegisterMedic from "./components/layoutForms/RegisterMedicForm";
-import CreateReport from "./components/layoutForms/CreateReportForm";
-import Header from "./components/layout/Header";
-import PasswordRecoveryEmail from "./components/layoutForms/PasswordRecoveryEmail";
-import PasswordResetForm from "./components/layoutForms/PasswordResetForm";
-import Footer from "./components/layout/Footer";
-import Patients from "./pages/Patients";
-import MedicDashboard from "./pages/MedicDashboard.jsx";
-import Patient from "./pages/PatientPage.jsx";
+import {
+  HomePage,
+  AboutPage,
+  Medics,
+  ServicesPage,
+  Patients,
+  UserDashboard,
+  PatientPage,
+} from "./pages";
+import {
+  Login,
+  RegisterPatient,
+  RegisterMedic,
+  CreateReport,
+  Header,
+  PasswordRecoveryEmail,
+  PasswordResetForm,
+  Footer,
+} from "./components";
 
 
 const App = () => {
@@ -39,8 +43,8 @@ const App = () => {
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
         <Route path="/patients" element={<Patients />} />
-	      <Route path="/medic-dashboard" element={<MedicDashboard />} />
-        <Route path="/patients/:id" element={<Patient />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/patients/:id" element={<PatientPage />} />
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

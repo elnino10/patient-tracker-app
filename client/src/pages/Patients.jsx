@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import avatar from "../assets/images/avatar.png";
 
-const URL = "http://localhost:5000/api/v1/patients";
 const Patients = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+  
+  const URL = `${apiURL}/api/v1/patients`;
 
   useEffect(() => {
     axios
