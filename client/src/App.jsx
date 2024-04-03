@@ -52,7 +52,7 @@ const App = () => {
   useEffect(() => {
     if (!token) {
       setToken(null);
-      navigate("/login");
+      navigate("/");
     }
   }, [token]);
 
@@ -65,7 +65,7 @@ const App = () => {
         setToken={setToken}
       />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage token={token} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/services" element={<ServicesPage />} />
