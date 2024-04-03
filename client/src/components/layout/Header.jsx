@@ -7,12 +7,10 @@ import axios from "axios";
 
 const Header = (props) => {
   const [activePage, setActivePage] = useState("home");
-  const navigate = useNavigate();
-  
+
   const apiURL = import.meta.env.VITE_API_BASE_URL;
 
   const reqURL = `${apiURL}/auth/v1/signout`;
-  const token = localStorage.getItem("access_token");
 
   const toggleMenuHandler = (e) => {
     e.stopPropagation();
@@ -21,8 +19,8 @@ const Header = (props) => {
 
   const handleSignout = () => {
     localStorage.removeItem("access_token");
+    props.setToken(null);
     axios.post(reqURL);
-    navigate("/login");
   };
 
   return (
@@ -81,8 +79,8 @@ const Header = (props) => {
                 Services
               </Link>
             </li>
-            {token === "undefined" ? (
-              <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
+            {!props.token ? (
+              <li className="list-none py-2 mr-4 md:text-white">
                 <Link
                   to="/login"
                   className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
@@ -94,8 +92,8 @@ const Header = (props) => {
               </li>
             ) : (
               <li
-                className="list-none py-2 mr-4 md:text-white w-full flex text-base
-                          md:hover:text-blue-200 cursor-pointer"
+                className="list-none py-2 mr-4 
+                md:text-white w-full flex text-base md:hover:text-blue-200 cursor-pointer"
                 onClick={handleSignout}
               >
                 Sign out

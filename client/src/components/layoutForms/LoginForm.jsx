@@ -34,7 +34,7 @@ const Copyright = (props) => {
 };
 const defaultTheme = createTheme();
 
-const Login = () => {
+const Login = ({setToken}) => {
   const [submit, setSubmit] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,12 +63,12 @@ const Login = () => {
       }
       const { access_token } = response.data;
       localStorage.setItem("access_token", JSON.stringify(access_token));
-      console.log(response.data);
+      setToken(access_token);
       setSubmit(false);
       {
         /* redirect to user dashboard*/
       }
-      access_token && navigate("/");
+      access_token && navigate("/user-dashboard");
       event.target.reset();
     } catch (error) {
       console.error("Error logging in: ", error);
@@ -77,7 +77,7 @@ const Login = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="h-screen">
         <CssBaseline />
         <Box
           sx={{
