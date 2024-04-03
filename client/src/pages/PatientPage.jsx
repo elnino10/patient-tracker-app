@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
-const URL = "http://localhost:5000/api/v1/patients";
 
 function PatientPage() {
   const { id } = useParams();
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState(null);
+
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+  
+  const URL = `${apiURL}/api/v1/patients`;
 
   useEffect(() => {
     axios

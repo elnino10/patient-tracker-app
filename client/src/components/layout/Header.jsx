@@ -8,8 +8,10 @@ import axios from "axios";
 const Header = (props) => {
   const [activePage, setActivePage] = useState("home");
   const navigate = useNavigate();
+  
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
 
-  const reqURL = "http://127.0.0.1:5000/auth/v1/signout";
+  const reqURL = `${apiURL}/auth/v1/signout`;
   const token = localStorage.getItem("access_token");
 
   const toggleMenuHandler = (e) => {
@@ -79,7 +81,7 @@ const Header = (props) => {
                 Services
               </Link>
             </li>
-            {!token ? (
+            {token === "undefined" ? (
               <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
                 <Link
                   to="/login"

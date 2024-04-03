@@ -27,17 +27,15 @@ const Copyright = (props) => {
     </Typography>
   );
 };
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
-
 
 const CreateReportForm = () => {
   const { id } = useParams();
   const [submit, setSubmit] = useState(false);
+
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
   
-  const reqURL = `http://127.0.0.1:5000/api/v1/patients/${id}/medical_record`;
+  const reqURL = `${apiURL}/api/v1/patients/${id}/medical_record`;
 
   const handleSubmit = (event) => {
     event.preventDefault();

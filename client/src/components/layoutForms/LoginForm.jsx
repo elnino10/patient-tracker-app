@@ -32,16 +32,17 @@ const Copyright = (props) => {
     </Typography>
   );
 };
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 const Login = () => {
   const [submit, setSubmit] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const loginURL = "http://127.0.0.1:5000/auth/v1/signin";
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+
+  const loginURL = `${apiURL}/auth/v1/signin`;
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmit(true);
@@ -52,15 +53,24 @@ const Login = () => {
         email: data.get("email"),
         password: data.get("password"),
       });
-      const {access_token} = response.data;
-      console.log(access_token);
+
+      if (response.data.error) {
+        setError(true);
+        setSubmit(false);
+        setErrorMessage(response.data.message);
+        event.target.reset();
+        return;
+      }
+      const { access_token } = response.data;
       localStorage.setItem("access_token", JSON.stringify(access_token));
+      console.log(response.data);
       setSubmit(false);
-      {/* redirect to user dashboard*/}
-      navigate("/");
+      {
+        /* redirect to user dashboard*/
+      }
+      access_token && navigate("/");
       event.target.reset();
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error logging in: ", error);
     }
   };
@@ -83,6 +93,13 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          <div
+            className={`text-center justify-center ${
+              error ? "flex" : "invisible"
+            }`}
+          >
+            <p className="text-red-500 text-sm py-0">{errorMessage}</p>
+          </div>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -98,6 +115,7 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setError(false)}
             />
             <TextField
               margin="normal"
@@ -108,6 +126,7 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setError(false)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

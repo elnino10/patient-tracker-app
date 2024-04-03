@@ -39,17 +39,15 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
-
-const reqUrl = 'http://127.0.0.1:5000/auth/v1/signup';
 
 const RegisterPatient = () => {
   const [value, setValue] = useState(dayjs("2024-03-20"));
   const [submit, setSubmit] = useState(false);
 
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+  
+  const reqUrl = `${apiURL}/auth/v1/signup`;
 
   const handleSubmit = (event) => {
     event.preventDefault();
