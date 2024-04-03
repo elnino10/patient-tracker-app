@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import avatar from "../assets/images/avatar.png";
 
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 const Patients = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
@@ -55,6 +59,16 @@ const Patients = () => {
               </div>
               <div>
                 <p className="text-gray-600 pt-11">Email: {patient.email}</p>
+              </div>
+              <div className="pt-11">
+                <IconButton>
+                  <EditIcon fontSize="small"/>
+                </IconButton>
+              </div>
+              <div className="pt-11">
+                <IconButton size="small">
+                    <DeleteIcon fontSize="small"/>
+                </IconButton>
               </div>
               <Link 
               to={`/patients/${patient.id}`} className="pt-11">view patient's details</Link>
