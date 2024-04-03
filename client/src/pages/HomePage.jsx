@@ -1,9 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import React from 'react';
 import sideImg from "../assets/images/doc.png";
 import securityIcon from "../assets/images/icon1.png";
 
 const HomePage = ({ token }) => {
+  const [showBMI, setShowBMI] = useState(false);
+  const [showSymptomChecker, setSymptomChecker] = useState(false);
+
+  const handleShowBMI = () => {
+    setShowBMI(!showBMI);
+    setSymptomChecker(false);
+  };
+
+  const handleSymptomChecker = () => {
+    setShowBMI(false);
+    setSymptomChecker(!showSymptomChecker);
+  };
+
+  const handleClose = () => {
+    setShowBMI(false);
+    setSymptomChecker(false);
+  };
+
   return (
     <div className="bg-[#F9F7F0]">
       <div className="text-black py-20 px-6 md:flex items-center justify-between">
@@ -56,18 +74,59 @@ const HomePage = ({ token }) => {
         <div className="flex flex-wrap justify-center">
           {/* AI Response Button */}
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-6">
-            <button className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700">
+            <button
+              onClick={handleSymptomChecker}
+              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700"
+            >
               Get AI Response for Symptoms
             </button>
           </div>
           {/* BMI Checker Button */}
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-6">
-            <button className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700">
+            <button
+              onClick={handleShowBMI}
+              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700"
+            >
               Check Your BMI
             </button>
           </div>
         </div>
       </div>
+
+      {/* ////////////////////////////////////////////////////////////////////////////// */}
+
+      {/* BMI and Symptoms check Section */}
+      <div className="mb-5">
+        {showBMI && (
+          <div className="flex justify-between bg-[#87e6d6]">
+            <div className=" text-[#696969] container mx-auto py-20 flex px-8 pt-8">
+              BMI: Show BMI section
+            </div>
+            <span
+              onClick={handleClose}
+              className="border border-black rounded-full p-1 mt-2 mr-2 h-5 flex items-center"
+            >
+              x
+            </span>
+          </div>
+        )}
+        {showSymptomChecker && (
+          <div className="flex justify-between bg-[#87e6d6]">
+            <div className="text-[#696969] container mx-auto py-20 flex px-8 pt-8">
+              Symptoms: show symptom section
+            </div>
+            <span
+              onClick={handleClose}
+              className="border border-black rounded-full p-1 mt-2 mr-2 h-5 flex items-center"
+            >
+              x
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ////////////////////////////////////////////////////////////////////////////// */}
+
       <div className="bg-[#d5dbda] text-[#696969] container mx-auto py-20 flex px-8 pt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Feature 1 */}
@@ -116,4 +175,3 @@ const HomePage = ({ token }) => {
 };
 
 export default HomePage;
-
