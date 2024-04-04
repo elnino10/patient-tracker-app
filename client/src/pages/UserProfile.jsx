@@ -3,7 +3,7 @@ import { KJUR } from "jsrsasign";
 import axios from "axios";
 
 import avatar from "../assets/images/avatar.png";
-import { IconButton } from "@mui/material";
+import { Box, CircularProgress, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 const UserProfile = ({ token }) => {
@@ -77,6 +77,17 @@ const UserProfile = ({ token }) => {
     }
     console.log(profileData);
   };
+
+  if (!category_ && !userId) {
+    return (
+      <div>
+        <Box sx={{ display: "flex" }} className="p-10">
+          <CircularProgress />
+        </Box>
+        {/* <p>Loading...</p> */}
+      </div>
+    );
+  }
 
   return (
     <div className="h-full">

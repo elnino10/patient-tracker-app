@@ -143,7 +143,7 @@ def create_medical_record(patient_id):
 
 # get patient's medical record
 @app.route(
-    "/api/v1/patients/<patient_id>/medical_record",
+    "/api/v1/patients/<patient_id>/medical-record",
     methods=["GET"],
     strict_slashes=False,
 )

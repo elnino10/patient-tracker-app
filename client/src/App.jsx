@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { KJUR } from "jsrsasign";
 
 import {
   HomePage,
@@ -10,7 +11,7 @@ import {
   Patients,
   UserProfile,
   PatientPage,
-  UserDashboard
+  UserDashboard,
 } from "./pages";
 import {
   Login,
@@ -26,6 +27,7 @@ import {
 const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("access_token"));
+  const [decodedToken, setDecodedToken] = useState(null);
   const navigate = useNavigate();
 
   const clickAwayHandler = () => {
@@ -48,7 +50,7 @@ const App = () => {
     return () => {
       delete axios.defaults.headers.common["Authorization"];
     };
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (!token) {
@@ -56,6 +58,11 @@ const App = () => {
       navigate("/");
     }
   }, [token]);
+
+  if (localStorage.getItem("access_token") && !decodedToken) {
+    const decoded = KJUR.jws.JWS.parse(token);
+    setDecodedToken(decoded?.payloadObj);
+  }
 
   return (
     <div onClick={clickAwayHandler}>
@@ -82,9 +89,9 @@ const App = () => {
         />
         <Route
           path="/user-dashboard"
-          element={<UserDashboard token={token} />}
+          element={<UserDashboard decodedToken={decodedToken} />}
         />
-        <Route path="/patients/:id/user-dashboard" element={<UserDashboard />} />
+        {/* <Route path="/patients/:id/user-dashboard" element={<UserDashboard />} /> */}
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
