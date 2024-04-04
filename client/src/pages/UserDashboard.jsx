@@ -13,8 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 const UserDashboard = ({ decodedToken }) => {
   const [userData, setUserData] = useState({});
   const [medicalRecord, setMedicalRecord] = useState({});
-  //   const [error, setError] = useState(null);
-  //   const [category_, setCategory_] = useState("");
+
   const category_ = decodedToken?.category;
   const userId = decodedToken?.sub;
 
@@ -68,7 +67,7 @@ const UserDashboard = ({ decodedToken }) => {
     );
   }
   return (
-    <div>
+    <div className="h-full">
       <div className="m-8 border-solid rounded-md border-2 border-indigo-600">
         <div className="p-6 flex">
           <div className="pt-4">
@@ -95,6 +94,11 @@ const UserDashboard = ({ decodedToken }) => {
               <div>
                 <p>Phone: {userData?.phone}</p>
               </div>
+              {category_ === "medic" && (
+                <div>
+                  <p>Specialization: {userData?.specialization}</p>
+                </div>
+              )}
               {category_ === "patient" && (
                 <div>
                   <p>Address: {userData?.address}</p>
@@ -167,7 +171,9 @@ const UserDashboard = ({ decodedToken }) => {
                   </Link>
                 </div>
                 <div>
-                  <Link to={`/user-profile/${userData?.id}`}>Edit my profile</Link>
+                  <Link to={`/user-profile/${userData?.id}`}>
+                    Edit my profile
+                  </Link>
                 </div>
               </div>
             </div>

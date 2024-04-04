@@ -10,7 +10,7 @@ import {
   ServicesPage,
   Patients,
   UserProfile,
-  PatientPage,
+  PatientDetailsPage,
   UserDashboard,
 } from "./pages";
 import {
@@ -28,12 +28,17 @@ const App = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("access_token"));
   const [decodedToken, setDecodedToken] = useState(null);
+  const [category_, setCategory_] = useState("");
+  const [userId, setUserId] = useState("");
+  const [authUserData, setAuthUserData] = useState({});
   const navigate = useNavigate();
 
-  const clickAwayHandler = () => {
-    setMenuVisible(false);
-  };
-
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+  let reqURL;
+  if (category_ && userId) {
+    reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
+  }
+  
   useEffect(() => {
     const updateAxiosHeaders = () => {
       if (token) {
@@ -44,25 +49,44 @@ const App = () => {
         localStorage.removeItem("access_token");
       }
     };
-
+    
+    if (reqURL) {
+      axios
+      .get(reqURL)
+      .then((res) => {
+        setAuthUserData(res.data[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+    
     updateAxiosHeaders();
 
     return () => {
       delete axios.defaults.headers.common["Authorization"];
     };
-  }, []);
-
+  }, [token]);
+  
   useEffect(() => {
     if (!token) {
-      setToken(null);
+      setAuthUserData({});
+      setDecodedToken(null);
       navigate("/");
+    } else {
     }
   }, [token]);
-
+  
   if (localStorage.getItem("access_token") && !decodedToken) {
     const decoded = KJUR.jws.JWS.parse(token);
     setDecodedToken(decoded?.payloadObj);
+    setCategory_(decoded?.payloadObj.category);
+    setUserId(decoded?.payloadObj.sub);
   }
+  
+  const clickAwayHandler = () => {
+    setMenuVisible(false);
+  };
 
   return (
     <div onClick={clickAwayHandler}>
@@ -71,6 +95,8 @@ const App = () => {
         menuVisible={menuVisible}
         token={token}
         setToken={setToken}
+        decodedToken={decodedToken}
+        setAuthUserData={setAuthUserData}
       />
       <Routes>
         <Route path="/" element={<HomePage token={token} />} />
@@ -83,9 +109,10 @@ const App = () => {
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
         <Route path="/patients" element={<Patients />} />
+        <Route path="/patients/:id" element={<PatientDetailsPage />} />
         <Route
           path="/user-profile/:id"
-          element={<UserProfile token={token} />}
+          element={<UserProfile decodedToken={decodedToken} authUserData={authUserData} />}
         />
         <Route
           path="/user-dashboard"
