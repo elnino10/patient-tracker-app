@@ -8,8 +8,9 @@ import {
   Medics,
   ServicesPage,
   Patients,
-  UserDashboard,
+  UserProfile,
   PatientPage,
+  UserDashboard
 } from "./pages";
 import {
   Login,
@@ -75,6 +76,10 @@ const App = () => {
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
         <Route path="/patients" element={<Patients />} />
+        <Route
+          path="/user-profile/:id"
+          element={<UserProfile token={token} />}
+        />
         <Route
           path="/user-dashboard"
           element={<UserDashboard token={token} />}

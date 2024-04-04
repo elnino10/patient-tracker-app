@@ -50,28 +50,33 @@ const Patients = () => {
               className="my-2 mx-1 rounded-md flex items-start justify-between p-5 border"
             >
               <div>
-                <img
-                  src={avatar}
-                  alt="patient-image"
-                  className="w-12 h-12 rounded-full bg-gray-300"
-                />
-                <h3 className="text-gray-600">{patient.first_name} {patient.last_name}</h3>
+                <div className="flex relative">
+                  <img
+                    src={avatar}
+                    alt="patient-image"
+                    className="w-12 h-12 rounded-full bg-gray-300"
+                  />
+                </div>
+                <h3 className="text-gray-600">
+                  {patient.first_name} {patient.last_name}
+                </h3>
               </div>
               <div>
                 <p className="text-gray-600 pt-11">Email: {patient.email}</p>
               </div>
               <div className="pt-11">
                 <IconButton>
-                  <EditIcon fontSize="small"/>
+                  <EditIcon fontSize="small" />
                 </IconButton>
               </div>
               <div className="pt-11">
                 <IconButton size="small">
-                    <DeleteIcon fontSize="small"/>
+                  <DeleteIcon fontSize="small" />
                 </IconButton>
               </div>
-              <Link 
-              to={`/patients/${patient.id}`} className="pt-11">view patient's details</Link>
+              <Link to={`/patients/${patient.id}`} className="pt-11">
+                view patient's details
+              </Link>
             </div>
           ))}
     </div>
