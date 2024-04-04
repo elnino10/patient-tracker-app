@@ -445,6 +445,41 @@ def signout():
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign out failed!", "error": error.message})
 
+########################   storage route   #############################
+# user profile picture upload
+@app.route("/profile_pic_upload", methods=["POST"], strict_slashes=False)
+def profile_pic_upload():
+    """upload profile picture"""
+    try:
+        file = request.files["file"]
+        req_token = request.headers.get("Authorization").split("Bearer ")[1]
+        payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
+        user_id = payload["sub"]
+
+        file_name = file.filename
+        file.save(f"images/{user_id}.png")
+
+        data = (
+            supabase.storage.from_("profile_image")
+            .upload(f"images/{user_id}.png", f"{file_name}")
+        )
+
+        if not len(data.data) > 0:
+            return jsonify({"message": "Could not upload file!"}), 404
+
+        # update user profile picture
+        data = (
+            supabase.table("users")
+            .update({"profile_pic": data.data[0]["url"]})
+            .eq("id", user_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return jsonify({"message": "Could not update user profile picture!"}), 404
+        return data.data
+    except Exception as error:
+        return jsonify({"message": "An error occurred!", "error": error})
+
 
 if __name__ == "__main__":
     HOST = environ.get("SERVER_HOST", "localhost")

@@ -9,8 +9,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { KJUR } from "jsrsasign";
+import { Link } from "react-router-dom";
 
-const MedicDashboard = ({ token }) => {
+
+const UserDashboard = ({ token }) => {
   const { id } = useParams();
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState(null);
@@ -21,8 +23,10 @@ const MedicDashboard = ({ token }) => {
 
   // Decode JWT token
   let decodedToken;
+  let user_id;
   if (token) {
     decodedToken = KJUR.jws.JWS.parse(token);
+    user_id = decodedToken?.payloadObj.sub;
   }
   //   console.log(token && token);
 
@@ -108,6 +112,6 @@ const MedicDashboard = ({ token }) => {
       </div>
     </div>
   );
-};
+}
 
-export default MedicDashboard;
+export default UserDashboard;
