@@ -51,12 +51,12 @@ const MedicDashboard = ({ token }) => {
       </div>;
   }
   return (
-    <div className="h-screen">
+    <div>
       User Dashboard for a{" "}
       <span className="font-bold">'{decodedToken?.payloadObj.category}'</span>
-      <div className="grid md:grid-cols-3 gap-8">
       {/* <div>Patients id: {id}</div> */}
-      <div className="flex">
+    <div className="m-8 border-solid rounded-md border-2 border-indigo-600">
+      <div className="p-6 flex">
       <div className="pt-4">
           <img
             src={avatar}
@@ -66,7 +66,10 @@ const MedicDashboard = ({ token }) => {
       </div>
       <h2>{patient.first_name}</h2>
       </div>
-      <div className="rounded-md border-solid bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1 md:pt-20">
+      <div className="pl-4 grid md:grid-cols-3 gap-8">
+      <div>
+        <p className="p-6 text-center">Basic Information</p>
+      <div className="p-8 rounded-md border-solid border-2 bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1">
         <div><p>Name: {patient.first_name} {patient.last_name}</p></div>
         <div><p>Email: {patient.email}</p></div>
         <div><p>Phone: {patient.phone}</p></div>
@@ -74,12 +77,14 @@ const MedicDashboard = ({ token }) => {
         <div><p>DOB: {patient.dob}</p></div>
         <div><p>Gender: {patient.gender}</p></div>
       </div>
-      <div className="p-6 rounded-md border-solid bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1">
-        <h2>Medical Record</h2>
+      </div>
+      <div>
+        <p className="p-6 text-center">Medical Record</p>
+      <div className="p-8 rounded-md border-solid border-2 bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1">
         <p>Allegies: {patient.Allergies}</p>
         {/* Add more details here */}
       </div>
-      <div className="flex">
+      <div className="flex justify-end bg-pink-300">
       <div>
           <IconButton>
             <EditIcon fontSize="small"/>
@@ -98,6 +103,8 @@ const MedicDashboard = ({ token }) => {
         </Link>
         </div>
         </div>
+        </div>
+      </div>
       </div>
     </div>
   );
