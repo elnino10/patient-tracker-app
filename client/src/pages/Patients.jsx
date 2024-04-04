@@ -20,7 +20,7 @@ const Patients = () => {
       .get(URL)
       .then((response) => {
         setData(response.data.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.error(error);

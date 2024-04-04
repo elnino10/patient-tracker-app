@@ -1,54 +1,46 @@
 import { useEffect, useState } from "react";
-import { KJUR } from "jsrsasign";
 import axios from "axios";
 
 import avatar from "../assets/images/avatar.png";
 import { Box, CircularProgress, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-const UserProfile = ({ token }) => {
+const UserProfile = ({ decodedToken, authUserData }) => {
   const [patientProfile, setPatientProfile] = useState(false);
   const [category_, setCategory_] = useState("");
   const [userId, setUserId] = useState("");
   const [editInput, setEdit] = useState(false);
-  // const [userData, setUserData] = useState({});
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [specializationName, setSpecializationName] = useState("");
-  const [addressName, setAddressName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
+  const [firstName, setFirstName] = useState(authUserData.first_name);
+  const [lastName, setLastName] = useState(authUserData.last_name);
+  const [specializationName, setSpecializationName] = useState(authUserData.specialization);
+  const [addressName, setAddressName] = useState(authUserData.address);
+  const [emailAddress, setEmailAddress] = useState(authUserData.email);
 
-  const apiURL = import.meta.env.VITE_API_BASE_URL;
-  let reqURL;
-  if (category_ && userId) {
-    reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
-  }
+  // const apiURL = import.meta.env.VITE_API_BASE_URL;
+  // let reqURL;
+  // if (category_ && userId) {
+  //   reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
+  // }
 
   useEffect(() => {
-    if (reqURL) {
-      axios
-        .get(reqURL)
-        .then((res) => {
-          setFirstName(res.data[0].first_name);
-          setLastName(res.data[0].last_name);
-          setSpecializationName(res.data[0].specialization);
-          setAddressName(res.data[0].address);
-          setEmailAddress(res.data[0].email);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [reqURL]);
-
-  let decodedToken;
-  useEffect(() => {
-    // Decode JWT token
-    if (token) {
-      decodedToken = KJUR.jws.JWS.parse(token);
-      setUserId(decodedToken?.payloadObj.sub);
-      if (decodedToken.payloadObj.category === "patient") {
+    // if (reqURL) {
+    //   axios
+    //     .get(reqURL)
+    //     .then((res) => {
+    //       setFirstName(res.data[0].first_name);
+    //       setLastName(res.data[0].last_name);
+    //       setSpecializationName(res.data[0].specialization);
+    //       setAddressName(res.data[0].address);
+    //       setEmailAddress(res.data[0].email);
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
+    if (decodedToken) {
+      setUserId(decodedToken.sub);
+      if (decodedToken.category === "patient") {
         setPatientProfile(true);
         setCategory_("patient");
       } else {
@@ -61,7 +53,7 @@ const UserProfile = ({ token }) => {
   const handleSubmitEdit = () => {
     let profileData;
     if (category_ === "patient") {
-        profileData = {
+      profileData = {
         first_name: firstName,
         last_name: lastName,
         address: addressName,
@@ -78,9 +70,9 @@ const UserProfile = ({ token }) => {
     console.log(profileData);
   };
 
-  if (!category_ && !userId) {
+  if (!firstName) {
     return (
-      <div>
+      <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
           <CircularProgress />
         </Box>
@@ -95,7 +87,7 @@ const UserProfile = ({ token }) => {
         <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
           <div className="flex justify-between">
             <span className="text-xl font-semibold block">
-              <span>{category_}</span> profile
+              <span>{category_}'s</span> profile
             </span>
             <div
               onClick={() => setEdit(!editInput)}
@@ -158,7 +150,7 @@ const UserProfile = ({ token }) => {
                   className="border-1  rounded-r px-4 py-2 w-full"
                   type="text"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)} 
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
             </div>

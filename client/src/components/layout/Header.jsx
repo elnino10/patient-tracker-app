@@ -7,6 +7,12 @@ import axios from "axios";
 
 const Header = (props) => {
   const [activePage, setActivePage] = useState("home");
+  const navigate = useNavigate();
+
+  let userId;
+  if (props.token) {
+    userId = props?.decodedToken.sub;
+  }
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -18,9 +24,9 @@ const Header = (props) => {
   };
 
   const handleSignout = () => {
+    axios.post(reqURL);
     localStorage.removeItem("access_token");
     props.setToken(null);
-    axios.post(reqURL);
   };
 
   return (
@@ -69,18 +75,6 @@ const Header = (props) => {
             </li>
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
               <Link
-                to="/services"
-                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
-                ${
-                  activePage === "services" && "text-blue-700 md:text-blue-200"
-                }`}
-                onClick={() => setActivePage("services")}
-              >
-                Services
-              </Link>
-            </li>
-            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
-              <Link
                 to="/patients"
                 className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${
@@ -91,6 +85,19 @@ const Header = (props) => {
                 patients
               </Link>
             </li>
+            {props.token && <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
+              <Link
+                to={`/user-profile/${userId}`}
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${
+                  activePage === "my_profile" &&
+                  "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => setActivePage("my_profile")}
+              >
+                My Profile
+              </Link>
+            </li>}
             {!props.token ? (
               <li className="list-none py-2 mr-4 md:text-white">
                 <Link
