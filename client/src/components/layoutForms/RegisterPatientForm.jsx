@@ -16,11 +16,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import dayjs from "dayjs";
-import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs"; // Add missing import
+import { DemoItem } from "@mui/x-date-pickers/internals/demo"; // Add missing import
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+
 
 function Copyright(props) {
   return (
@@ -44,6 +49,7 @@ const defaultTheme = createTheme();
 const RegisterPatient = () => {
   const [value, setValue] = useState(dayjs("2024-03-20"));
   const [submit, setSubmit] = useState(false);
+  const [gender, setGender] = useState("");
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
   
@@ -150,15 +156,21 @@ const RegisterPatient = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+               <FormControl fullWidth required>
+                <InputLabel id="gender-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-label"
+                  id="gender"
                   name="gender"
                   label="Gender"
-                  type="gender"
-                  id="gender"
-                  autoComplete="gender"
-                />
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <MenuItem value=""><em>None</em></MenuItem>
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
+                </Select>
+               </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
