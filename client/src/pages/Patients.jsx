@@ -71,7 +71,7 @@ const Patients = () => {
                 </IconButton>
               </div>
               <Link 
-              to={`/patients/${patient.id}`} className="pt-11">view patient's details</Link>
+              to={`/patients/${patient.id}/user-dashboard`} className="pt-11">view patient's details</Link>
             </div>
           ))}
     </div>

@@ -79,7 +79,7 @@ const App = () => {
           path="/user-dashboard"
           element={<UserDashboard token={token} />}
         />
-        <Route path="/patients/:id" element={<PatientPage />} />
+        <Route path="/patients/:id/user-dashboard" element={<UserDashboard />} />
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

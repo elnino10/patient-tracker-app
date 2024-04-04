@@ -79,6 +79,18 @@ const Header = (props) => {
                 Services
               </Link>
             </li>
+            <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
+              <Link
+                to="/patients"
+                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+                ${
+                  activePage === "services" && "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => setActivePage("services")}
+              >
+                patients
+              </Link>
+            </li>
             {!props.token ? (
               <li className="list-none py-2 mr-4 md:text-white">
                 <Link
