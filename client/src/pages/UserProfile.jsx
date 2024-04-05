@@ -5,52 +5,45 @@ import avatar from "../assets/images/avatar.png";
 import { Box, CircularProgress, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-const UserProfile = ({ decodedToken, authUserData }) => {
-  const [patientProfile, setPatientProfile] = useState(false);
-  const [category_, setCategory_] = useState("");
-  const [userId, setUserId] = useState("");
+const UserProfile = ({ decodedToken }) => {
   const [editInput, setEdit] = useState(false);
 
-  const [firstName, setFirstName] = useState(authUserData.first_name);
-  const [lastName, setLastName] = useState(authUserData.last_name);
-  const [specializationName, setSpecializationName] = useState(authUserData.specialization);
-  const [addressName, setAddressName] = useState(authUserData.address);
-  const [emailAddress, setEmailAddress] = useState(authUserData.email);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [specializationName, setSpecializationName] = useState("");
+  const [addressName, setAddressName] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
 
-  // const apiURL = import.meta.env.VITE_API_BASE_URL;
-  // let reqURL;
-  // if (category_ && userId) {
-  //   reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
-  // }
+  const category_ = decodedToken.category;
+  const userId = decodedToken.sub;
+  let patientProfile;
+
+  if (decodedToken.category === "patient") patientProfile = true;
+  else patientProfile = false;
+
+  const apiURL = import.meta.env.VITE_API_BASE_URL;
+  const reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
 
   useEffect(() => {
-    // if (reqURL) {
-    //   axios
-    //     .get(reqURL)
-    //     .then((res) => {
-    //       setFirstName(res.data[0].first_name);
-    //       setLastName(res.data[0].last_name);
-    //       setSpecializationName(res.data[0].specialization);
-    //       setAddressName(res.data[0].address);
-    //       setEmailAddress(res.data[0].email);
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
-    if (decodedToken) {
-      setUserId(decodedToken.sub);
-      if (decodedToken.category === "patient") {
-        setPatientProfile(true);
-        setCategory_("patient");
-      } else {
-        setPatientProfile(false);
-        setCategory_("medic");
-      }
+    if (reqURL && !editInput) {
+      axios
+        .get(reqURL)
+        .then((res) => {
+          console.log(res.data);
+          setFirstName(res.data[0]?.first_name);
+          setLastName(res.data[0].last_name);
+          setSpecializationName(res.data[0].specialization);
+          setAddressName(res.data[0].address);
+          setEmailAddress(res.data[0].email);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, []);
+  }, [editInput]);
 
   const handleSubmitEdit = () => {
+    setEdit(false);
     let profileData;
     if (category_ === "patient") {
       profileData = {
@@ -70,13 +63,18 @@ const UserProfile = ({ decodedToken, authUserData }) => {
     console.log(profileData);
   };
 
-  if (!firstName) {
+  if (
+    !firstName &&
+    !lastName &&
+    !specializationName &&
+    !addressName &&
+    !emailAddress
+  ) {
     return (
       <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
           <CircularProgress />
         </Box>
-        {/* <p>Loading...</p> */}
       </div>
     );
   }

@@ -410,8 +410,7 @@ def signin():
                 category=user_category.data[0]["category"],
             )
             return jsonify({"access_token": token})
-        else:
-            return jsonify({"message": "Sign in failed!"})
+        return jsonify({"message": "Sign in failed!"})
     except (AuthApiError, AuthRetryableError) as error:
         return jsonify({"message": "Sign in failed!", "error": error.message})
 
