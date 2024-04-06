@@ -29,7 +29,7 @@ const UserDashboard = ({ decodedToken }) => {
       axios
         .get(reqURL)
         .then((res) => {
-          setUserData(res.data[0]);
+          setUserData(res.data.data[0]);
         })
         .catch((error) => {
           console.error(error);
@@ -47,7 +47,7 @@ const UserDashboard = ({ decodedToken }) => {
       axios
         .get(medicalRecordURL)
         .then((res) => {
-          setMedicalRecord(res.data[0]);
+          setMedicalRecord(res.data.data[0]);
           // console.log(res.data[0]);
         })
         .catch((error) => {
@@ -68,7 +68,7 @@ const UserDashboard = ({ decodedToken }) => {
   }
   return (
     <div className="h-full">
-      <div className="m-8 border-solid rounded-md border-2 border-indigo-600">
+      <div className="h-screen m-8 border-solid rounded-md border-2 border-indigo-600">
         <div className="p-6 flex">
           <div className="pt-4">
             <img

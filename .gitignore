@@ -41,3 +41,4 @@ secrets.json
 *.swp
 # Ignore Python cache files
 __pycache__/
+*.txt
