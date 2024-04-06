@@ -19,6 +19,7 @@ build/
 
 # Ignore package-lock.json for npm
 package-lock.json
+package.json
 
 # Ignore yarn.lock for Yarn
 yarn.lock
@@ -41,3 +42,5 @@ secrets.json
 *.swp
 # Ignore Python cache files
 __pycache__/
+
+*.txt
