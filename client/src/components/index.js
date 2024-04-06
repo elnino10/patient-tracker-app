@@ -6,7 +6,7 @@ import Header from "../components/layout/Header.jsx";
 import PasswordRecoveryEmail from "../components/layoutForms/PasswordRecoveryEmail.jsx";
 import PasswordResetForm from "../components/layoutForms/PasswordResetForm.jsx";
 import Footer from "../components/layout/Footer.jsx";
-
+import ProfileImageUploader from "./layout/ProfileImageUploader.jsx";
 
 export {
   Login,
@@ -17,4 +17,5 @@ export {
   PasswordRecoveryEmail,
   PasswordResetForm,
   Footer,
+  ProfileImageUploader,
 };

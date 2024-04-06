@@ -35,6 +35,7 @@ const defaultTheme = createTheme();
 
 const RegisterMedic = () => {
   const [submit, setSubmit] = useState(false);
+  const [error, setError] = useState(null);
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
   
@@ -60,6 +61,7 @@ const RegisterMedic = () => {
     })
     .catch(error => {
       console.error({"Error": error});
+      setError(error);
     })
   };
 
@@ -147,7 +149,7 @@ const RegisterMedic = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {submit ? "Submitting..." : "Sign Up"}
+              {submit && !error ? "Submitting..." : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

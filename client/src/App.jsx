@@ -112,7 +112,13 @@ const App = () => {
         <Route path="/patients/:id" element={<PatientDetailsPage />} />
         <Route
           path="/user-profile/:id"
-          element={<UserProfile decodedToken={decodedToken} authUserData={authUserData} />}
+          element={
+            <UserProfile
+              decodedToken={decodedToken}
+              authUserData={authUserData}
+              token={token}
+            />
+          }
         />
         <Route
           path="/user-dashboard"
