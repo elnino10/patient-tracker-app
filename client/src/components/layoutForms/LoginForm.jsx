@@ -138,7 +138,7 @@ const Login = ({setToken}) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {submit ? "Please wait..." : "Sign In"}
+              {submit && !error ? "Please wait..." : "Sign In"}
             </Button>
             <Grid container>
               <Grid item xs>

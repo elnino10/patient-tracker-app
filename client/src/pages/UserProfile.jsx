@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
-import avatar from "../assets/images/avatar.png";
-import { Box, CircularProgress, IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, CircularProgress } from "@mui/material";
+import { ProfileImageUploader } from "../components";
 
-const UserProfile = ({ decodedToken }) => {
+const UserProfile = ({ token, decodedToken }) => {
   const [editInput, setEdit] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [specializationName, setSpecializationName] = useState("");
   const [addressName, setAddressName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
+
+  const firstNameInputRef = useRef();
+  const lastNameInputRef = useRef();
+  const specializationInputRef = useRef();
+  const addressInputRef = useRef();
 
   const category_ = decodedToken.category;
   const userId = decodedToken.sub;
@@ -23,24 +28,46 @@ const UserProfile = ({ decodedToken }) => {
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
   const reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
+  const imageUploadURL = `${apiURL}/api/v1/profile-pic-upload`;
 
   useEffect(() => {
     if (reqURL && !editInput) {
       axios
         .get(reqURL)
         .then((res) => {
-          console.log(res.data);
-          setFirstName(res.data[0]?.first_name);
-          setLastName(res.data[0].last_name);
-          setSpecializationName(res.data[0].specialization);
-          setAddressName(res.data[0].address);
-          setEmailAddress(res.data[0].email);
+          const data = res.data.data[0];
+          setFirstName(data.first_name);
+          setLastName(data.last_name);
+          setSpecializationName(data.specialization);
+          setAddressName(data.address);
+          setEmailAddress(data.email);
         })
         .catch((error) => {
           console.error(error);
         });
     }
   }, [editInput]);
+
+  useEffect(() => {
+    // upload image if profileImage is not null
+    if (profileImage) {
+      const formData = new FormData();
+      formData.append("file", profileImage);
+      axios
+        .post(imageUploadURL, formData, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [profileImage]);
 
   const handleSubmitEdit = () => {
     setEdit(false);
@@ -61,6 +88,25 @@ const UserProfile = ({ decodedToken }) => {
       };
     }
     console.log(profileData);
+
+    // // upload image if profileImage is not null
+    // if (profileImage) {
+    //   const formData = new formData();
+    //   formData.append("file", profileImage);
+    //   axios
+    //     .post(reqURL, formData, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       console.log(res.data);
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
   };
 
   if (
@@ -99,18 +145,10 @@ const UserProfile = ({ decodedToken }) => {
             Edit your profile with new updates
           </span>
           <div className="w-full p-8 mx-2 flex justify-center">
-            <div className="flex relative">
-              <img
-                src={avatar}
-                alt="user-image"
-                className="w-20 h-20 rounded-full bg-gray-300"
-              />
-              <div className="absolute bg-white w-5 h-5 items-center flex justify-center border rounded-md translate-x-16 translate-y-16">
-                <IconButton>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </div>
-            </div>
+            <ProfileImageUploader
+              profileImage={profileImage}
+              setProfileImage={setProfileImage}
+            />
           </div>
         </div>
 
@@ -126,6 +164,7 @@ const UserProfile = ({ decodedToken }) => {
               <div className="flex">
                 <input
                   {...(!editInput ? { disabled: true } : {})}
+                  ref={firstNameInputRef}
                   id="first_name"
                   className="border-1 rounded-r px-4 py-2 w-full"
                   type="text"
@@ -144,6 +183,7 @@ const UserProfile = ({ decodedToken }) => {
               <div className="flex">
                 <input
                   {...(!editInput ? { disabled: true } : {})}
+                  ref={lastNameInputRef}
                   id="last_name"
                   className="border-1  rounded-r px-4 py-2 w-full"
                   type="text"
@@ -163,6 +203,7 @@ const UserProfile = ({ decodedToken }) => {
                 <div className="flex">
                   <input
                     {...(!editInput ? { disabled: true } : {})}
+                    ref={specializationInputRef}
                     id="specialization"
                     className="border-1  rounded-r px-4 py-2 w-full"
                     type="text"
@@ -184,6 +225,7 @@ const UserProfile = ({ decodedToken }) => {
                   <div className="flex">
                     <input
                       {...(!editInput ? { disabled: true } : {})}
+                      ref={addressInputRef}
                       id="address"
                       className="border-1  rounded-r px-4 py-2 w-full"
                       type="text"
@@ -212,12 +254,13 @@ const UserProfile = ({ decodedToken }) => {
                 Clicking on submit means updating your profile details
               </span>
             </div>
-            <div
+            <button
+              disabled
               onClick={handleSubmitEdit}
               className="-mt-2 w-[50%] flex items-center justify-center text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
             >
               Submit
-            </div>
+            </button>
           </div>
         </div>
       </div>
