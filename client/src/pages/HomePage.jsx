@@ -99,8 +99,8 @@ const HomePage = ({ token }) => {
       {/* BMI and Symptoms check Section */}
       <div className="mb-5">
         {showBMI && (
-          <div className="flex justify-between bg-[#87e6d6]">
-            <div className="text-[#696969] container mx-auto py-20 flex px-8 pt-8">
+          <div className="flex justify-between md:justify-center">
+            <div className="container mx-auto py-20 flex px-8 pt-8">
               <BmiCalculator />
             </div>
             <div>
