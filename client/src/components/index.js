@@ -7,6 +7,7 @@ import PasswordRecoveryEmail from "../components/layoutForms/PasswordRecoveryEma
 import PasswordResetForm from "../components/layoutForms/PasswordResetForm.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import ProfileImageUploader from "./layout/ProfileImageUploader.jsx";
+import BMICalculator from "./layout/BMICalculator.jsx";
 
 export {
   Login,
@@ -18,4 +19,5 @@ export {
   PasswordResetForm,
   Footer,
   ProfileImageUploader,
+  BMICalculator,
 };

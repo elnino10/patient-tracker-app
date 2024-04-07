@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import sideImg from "../assets/images/doc.png";
 import securityIcon from "../assets/images/icon1.png";
-import BmiCalculator from "./BmiCalculator.jsx";
+import { BMICalculator } from "../components";
 
 const HomePage = ({ token }) => {
   const [showBMI, setShowBMI] = useState(false);
@@ -99,14 +99,14 @@ const HomePage = ({ token }) => {
       {/* BMI and Symptoms check Section */}
       <div className="mb-5">
         {showBMI && (
-          <div className="flex justify-between md:justify-center">
-            <div className="container mx-auto py-20 flex px-8 pt-8">
-              <BmiCalculator />
+          <div className="flex justify-between md:justify-center bg-slate-200">
+            <div className="container mx-auto py-20 flex px-8 pt-5 justify-center">
+              <BMICalculator />
             </div>
             <div>
               <span
                 onClick={handleClose}
-                className="border border-black rounded-full p-1 mt-2 mr-2 h-5 flex items-center"
+                className="border border-slate-400 shadow-xl rounded-full pb-1 mt-3 mr-3 h-6 w-6 flex justify-center items-center"
               >
                 x
               </span>
