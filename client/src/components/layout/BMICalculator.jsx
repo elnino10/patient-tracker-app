@@ -1,28 +1,25 @@
 import React, { useState } from "react";
 
 const BMICalculator = () => {
-  const [weight, setWeight] = useState(null);
-  const [height, setHeight] = useState(null);
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
   const [weightUnit, setWeightUnit] = useState("kg");
   const [heightUnit, setHeightUnit] = useState("m");
   const [bmiResult, setBMIResult] = useState(null);
   const [resetResult, setResetResult] = useState(false);
 
-  const calculateBMI = () => {
-    let bmi;
-    let weightKg;
-    let heightMeters;
+  const calculateBMI = (weight, height, w_unit, h_unit) => {
+    let weightKg = 0;
+    let heightMeters = 0;
 
-    if (weightUnit === "lbs") weightKg = weight * 0.453592;
+    if (w_unit === "lbs") weightKg = +weight * 0.453592;
     else weightKg = weight;
 
-    if (heightUnit === "ft") heightMeters = height * 0.3048;
+    if (h_unit === "ft") heightMeters = +height * 0.3048;
     else heightMeters = height;
 
-    bmi = weightKg / heightMeters ** 2;
-
-    setBMIResult(bmi);
-    setResetResult(false);
+    const bmi = weightKg / heightMeters ** 2;
+    return bmi;
   };
 
   const handleWeightChange = (e) => {
@@ -30,16 +27,24 @@ const BMICalculator = () => {
     else setWeight(parseFloat(e.target.value));
     setResetResult(true);
   };
-
+  
   const handleHeightChange = (e) => {
     if (e.target.value === "") setHeight(null);
     else setHeight(parseFloat(e.target.value));
     setResetResult(true);
   };
 
+  const calculateBMIHandler = () => {
+    const bmiRes = calculateBMI(weight, height, weightUnit, heightUnit);
+    if (bmiRes) setBMIResult(bmiRes);
+    setResetResult(false);
+  };
+  
   return (
     <div className="pt-1 flex flex-col items-center">
-      <p className="font-bold">Input your weight and height in units of choice</p>
+      <p className="font-bold">
+        Input your weight and height in units of choice
+      </p>
       <div className="pt-3 flex flex-col justify-center items-center mt-3">
         <div className="">
           <label>Weight:</label>
@@ -74,14 +79,14 @@ const BMICalculator = () => {
             className="border border-black rounded-md p-2 ml-2"
           >
             <option value="m">m</option>
-            <option value="in">ft</option>
+            <option value="ft">ft</option>
           </select>
         </div>
       </div>
       <div className="pt-8 pl-4 flex justify-center">
         <button
           disabled={!weight || !height}
-          onClick={calculateBMI}
+          onClick={calculateBMIHandler}
           className={`${
             !weight || !height ? "bg-blue-300" : "bg-blue-600"
           } ml-2  text-white py-2 px-4 rounded-md pt-2 hover:bg-blue-700`}
@@ -97,7 +102,7 @@ const BMICalculator = () => {
         {/* {bmiResult && ( */}
         <div className="mt-5 w-[90%] flex flex-col items-center justify-center text-center md:w-[70%] ">
           <h3 className="font-bold text-lg border border-slate-400 rounded-sm p-2 shadow-xl mb-5 ml-5">
-            Your BMI is: {Math.round(bmiResult)}
+            Your BMI is: {bmiResult?.toFixed(1)}
           </h3>
           {bmiResult < 18.5 && (
             <p>
