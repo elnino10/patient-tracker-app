@@ -30,7 +30,7 @@ const HomePage = ({ token }) => {
           <h1 className="text-[#3256a8] text-4xl font-bold mb-4">
             Your Medical Records, Securely Managed
           </h1>
-          <p className="text-sm">
+          <p className="text-sm text-center">
             In the event of emergencies, quick access to your medical
             information can be crucial. Our app offers secure cloud storage,
             allowing you to retrieve your health records anytime, anywhere,

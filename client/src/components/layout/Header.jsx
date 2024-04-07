@@ -60,7 +60,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => props.setActivePage("our-doctors")}
               >
-                Our Doctor
+                Doctors
               </Link>
             </li>
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
@@ -86,7 +86,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => props.setActivePage("services")}
               >
-                patients
+                Patients
               </Link>
             </li>
             {props.token && (
@@ -98,12 +98,11 @@ const Header = (props) => {
                   props.activePage === "my_profile" &&
                   "text-blue-700 md:text-blue-200"
                 }`}
-                  onClick={() => props.setActivePage("my_profile")}
-                >
-                  My Profile
-                </Link>
-              </li>
-            )}
+                onClick={() => props.setActivePage("my_profile")}
+              >
+                Profile
+              </Link>
+            </li>)}
             {!props.token ? (
               <li className="list-none py-2 mr-4 md:text-white">
                 <Link
