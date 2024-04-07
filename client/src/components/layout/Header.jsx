@@ -86,7 +86,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => props.setActivePage("services")}
               >
-                patients
+                Patients
               </Link>
             </li>
             {props.token && (
