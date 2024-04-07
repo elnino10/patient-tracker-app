@@ -23,13 +23,13 @@ const BMICalculator = () => {
   };
 
   const handleWeightChange = (e) => {
-    if (e.target.value === "") setWeight(null);
+    if (e.target.value === "") setWeight("");
     else setWeight(parseFloat(e.target.value));
     setResetResult(true);
   };
   
   const handleHeightChange = (e) => {
-    if (e.target.value === "") setHeight(null);
+    if (e.target.value === "") setHeight("");
     else setHeight(parseFloat(e.target.value));
     setResetResult(true);
   };

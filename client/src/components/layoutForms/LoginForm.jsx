@@ -34,7 +34,7 @@ const Copyright = (props) => {
 };
 const defaultTheme = createTheme();
 
-const Login = ({setToken}) => {
+const Login = ({ setToken }) => {
   const [submit, setSubmit] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,13 +54,6 @@ const Login = ({setToken}) => {
         password: data.get("password"),
       });
 
-      if (response.data.error) {
-        setError(true);
-        setSubmit(false);
-        setErrorMessage(response.data.message);
-        event.target.reset();
-        return;
-      }
       const { access_token } = response.data;
       localStorage.setItem("access_token", JSON.stringify(access_token));
       setToken(access_token);
@@ -71,7 +64,11 @@ const Login = ({setToken}) => {
       access_token && navigate("/user-dashboard");
       event.target.reset();
     } catch (error) {
-      console.error("Error logging in: ", error);
+      console.error("Error logging in: ", error.response);
+      setError(true);
+      setErrorMessage(error.response.data.error);
+      setSubmit(false);
+      event.target.reset();
     }
   };
 
@@ -115,7 +112,10 @@ const Login = ({setToken}) => {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={(e) => setError(false)}
+              onChange={(e) => {
+                setError(false);
+                setErrorMessage("");
+              }}
             />
             <TextField
               margin="normal"
