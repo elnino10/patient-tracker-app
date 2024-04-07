@@ -87,26 +87,7 @@ const UserProfile = ({ token, decodedToken }) => {
         email: emailAddress,
       };
     }
-    console.log(profileData);
 
-    // // upload image if profileImage is not null
-    // if (profileImage) {
-    //   const formData = new formData();
-    //   formData.append("file", profileImage);
-    //   axios
-    //     .post(reqURL, formData, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       console.log(res.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
   };
 
   if (
