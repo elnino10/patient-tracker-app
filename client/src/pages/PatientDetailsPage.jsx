@@ -18,7 +18,7 @@ function PatientDetailsPage() {
     axios
       .get(`${URL}/${id}`)
       .then((response) => {
-        setPatient(response.data[0]);
+        setPatient(response.data.data[0]);
       })
       .catch((error) => {
         console.error("Error fetching patient data:", error);

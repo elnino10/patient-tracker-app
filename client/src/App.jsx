@@ -31,6 +31,7 @@ const App = () => {
   const [category_, setCategory_] = useState("");
   const [userId, setUserId] = useState("");
   const [authUserData, setAuthUserData] = useState({});
+  const [activePage, setActivePage] = useState("");
   const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -73,6 +74,7 @@ const App = () => {
       setAuthUserData({});
       setDecodedToken(null);
       navigate("/");
+      setActivePage("home");
     } else {
     }
   }, [token]);
@@ -97,11 +99,16 @@ const App = () => {
         setToken={setToken}
         decodedToken={decodedToken}
         setAuthUserData={setAuthUserData}
+        activePage={activePage}
+        setActivePage={setActivePage}
       />
       <Routes>
         <Route path="/" element={<HomePage token={token} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route
+          path="/login"
+          element={<Login setToken={setToken} />}
+        />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/register-patient" element={<RegisterPatient />} />
         <Route path="/register-medic" element={<RegisterMedic />} />

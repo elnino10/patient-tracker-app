@@ -45,9 +45,14 @@ function Copyright(props) {
   );
 }
 const defaultTheme = createTheme();
+const date = new Date();
+const day = date.getDate();
+const month = date.getMonth() + 1;
+const year = date.getFullYear();
+const currentDate = `${year}-${month}-${day}`;
 
 const RegisterPatient = () => {
-  const [value, setValue] = useState(dayjs("2024-03-20"));
+  const [value, setValue] = useState(dayjs(currentDate));
   const [submit, setSubmit] = useState(false);
   const [gender, setGender] = useState("");
 
@@ -169,6 +174,7 @@ const RegisterPatient = () => {
                   <MenuItem value=""><em>None</em></MenuItem>
                   <MenuItem value={"male"}>Male</MenuItem>
                   <MenuItem value={"female"}>Female</MenuItem>
+                  <MenuItem value={"private"}>Prefer not to say</MenuItem>
                 </Select>
                </FormControl>
               </Grid>
@@ -185,11 +191,11 @@ const RegisterPatient = () => {
               </Grid>
               <Grid item xs={12}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoItem label="dob">
+                  <DemoItem label="Birthdate">
                     <DesktopDatePicker
                       value={value}
                       onChange={(val) => setValue(val)}
-                      defaultValue={dayjs("2024-03-20")}
+                      // defaultValue={dayjs("2024-03-20")}
                     />
                   </DemoItem>
                 </LocalizationProvider>

@@ -6,7 +6,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import axios from "axios";
 
 const Header = (props) => {
-  const [activePage, setActivePage] = useState("home");
+  // const [activePage, setActivePage] = useState("home");
   const navigate = useNavigate();
 
   let userId;
@@ -32,7 +32,7 @@ const Header = (props) => {
   return (
     <header className="bg-blue-700 sticky top-0 z-20">
       <div className="max-w-7xl mx-auto items-center flex justify-between p-2.5">
-        <div onClick={() => setActivePage("home")}>
+        <div onClick={() => props.setActivePage("home")}>
           <Link to="/">
             <span className="flex md:hidden text-slate-200">
               <HomeIcon />
@@ -55,10 +55,10 @@ const Header = (props) => {
                 to="/our-doctors"
                 className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${
-                  activePage === "our-doctors" &&
+                  props.activePage === "our-doctors" &&
                   "text-blue-700 md:text-blue-200"
                 }`}
-                onClick={() => setActivePage("our-doctors")}
+                onClick={() => props.setActivePage("our-doctors")}
               >
                 Our Doctor
               </Link>
@@ -67,8 +67,11 @@ const Header = (props) => {
               <Link
                 to="/about"
                 className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
-                ${activePage === "about" && "text-blue-700 md:text-blue-200"}`}
-                onClick={() => setActivePage("about")}
+                ${
+                  props.activePage === "about" &&
+                  "text-blue-700 md:text-blue-200"
+                }`}
+                onClick={() => props.setActivePage("about")}
               >
                 About
               </Link>
@@ -78,33 +81,39 @@ const Header = (props) => {
                 to="/patients"
                 className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${
-                  activePage === "services" && "text-blue-700 md:text-blue-200"
+                  props.activePage === "services" &&
+                  "text-blue-700 md:text-blue-200"
                 }`}
-                onClick={() => setActivePage("services")}
+                onClick={() => props.setActivePage("services")}
               >
                 patients
               </Link>
             </li>
-            {props.token && <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
-              <Link
-                to={`/user-profile/${userId}`}
-                className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
+            {props.token && (
+              <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
+                <Link
+                  to={`/user-profile/${userId}`}
+                  className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${
-                  activePage === "my_profile" &&
+                  props.activePage === "my_profile" &&
                   "text-blue-700 md:text-blue-200"
                 }`}
-                onClick={() => setActivePage("my_profile")}
-              >
-                My Profile
-              </Link>
-            </li>}
+                  onClick={() => props.setActivePage("my_profile")}
+                >
+                  My Profile
+                </Link>
+              </li>
+            )}
             {!props.token ? (
               <li className="list-none py-2 mr-4 md:text-white">
                 <Link
                   to="/login"
                   className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
-                ${activePage === "login" && "text-blue-700 md:text-blue-200"}`}
-                  onClick={() => setActivePage("login")}
+                ${
+                  props.activePage === "login" &&
+                  "text-blue-700 md:text-blue-200"
+                }`}
+                  onClick={() => props.setActivePage("login")}
                 >
                   Login
                 </Link>
