@@ -68,8 +68,8 @@ const UserDashboard = ({ decodedToken }) => {
   }
   return (
     <div className="h-full">
-      <div className="h-screen m-8 border-solid rounded-md border-2 border-indigo-600">
-        <div className="p-6 flex">
+      <div className="h-full m-8 border-solid rounded-md border-2 border-indigo-600">
+        <div className="p-6 flex pt-2">
           <div className="pt-4">
             <img
               src={avatar}
@@ -77,51 +77,73 @@ const UserDashboard = ({ decodedToken }) => {
               className="w-12 h-12 rounded-full justifty-center bg-gray-300"
             />
           </div>
-          <h2>{userData?.first_name}</h2>
-        </div>
-        <div className="pl-4 grid md:grid-cols-3 gap-8">
           <div>
-            <p className="p-6 text-center">Basic Information</p>
+            <h2 className="pl-2 pt-10">{userData?.first_name}</h2>
+          </div>
+        </div>
+        <div className="pl-6 pr-4">
+          <div>
+            <p className="p-6 font-extrabold text-center text-blue-600">
+              Basic Information
+            </p>
             <div className="p-8 rounded-md border-solid border-2 bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1">
               <div>
                 <p>
-                  Name: {userData?.first_name} {userData?.last_name}
+                  <span className="font-bold">Name: </span>
+                  {userData?.first_name} {userData?.last_name}
                 </p>
               </div>
               <div>
-                <p>Email: {userData?.email}</p>
+                <p>
+                  <span className="font-bold">Email: </span>
+                  {userData?.email}
+                </p>
               </div>
               <div>
-                <p>Phone: {userData?.phone}</p>
+                <p>
+                  <span className="font-bold">Phone: </span>
+                  {userData?.phone}
+                </p>
               </div>
               {category_ === "medic" && (
                 <div>
-                  <p>Specialization: {userData?.specialization}</p>
-                </div>
-              )}
-              {category_ === "patient" && (
-                <div>
-                  <p>Address: {userData?.address}</p>
-                </div>
-              )}
-              {category_ === "patient" && (
-                <div>
                   <p>
-                    age: {userData?.age_years} years, {userData?.age_months}{" "}
-                    months
+                    <span className="font-bold">Specialization: </span>
+                    {userData?.specialization}
                   </p>
                 </div>
               )}
               {category_ === "patient" && (
                 <div>
-                  <p>Gender: {userData?.gender}</p>
+                  <p>
+                    <span className="font-bold">Address: </span>
+                    {userData?.address}
+                  </p>
+                </div>
+              )}
+              {category_ === "patient" && (
+                <div>
+                  <p>
+                    <span className="font-bold">Age: </span>
+                    {userData?.age_years} years, {userData?.age_months} months
+                  </p>
+                </div>
+              )}
+              {category_ === "patient" && (
+                <div>
+                  <p>
+                    <span className="font-bold">Gender: </span>
+                    {userData?.gender}
+                  </p>
                 </div>
               )}
             </div>
           </div>
           {category_ === "patient" && (
             <div>
-              <p className="p-6 text-center">Medical Record</p>
+              <p className="p-6 text-center font-extrabold text-blue-600">
+                Medical Record
+              </p>
               <div className="p-8 rounded-md border-solid border-2 bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1">
                 <p>
                   <span className="font-bold">Allergies</span>:{" "}
@@ -152,26 +174,29 @@ const UserDashboard = ({ decodedToken }) => {
                   {medicalRecord?.medical_info}
                 </p>
               </div>
-              <div className="flex justify-end bg-pink-300">
+              <div className="flex justify-end pt-2">
                 <div>
                   <IconButton>
-                    <EditIcon fontSize="small" />
+                    <EditIcon fontSize="small" color="primary" />
                   </IconButton>
                 </div>
                 <div>
                   <IconButton size="small">
-                    <DeleteIcon fontSize="small" />
+                    <DeleteIcon fontSize="small" color="primary" />
                   </IconButton>
                 </div>
                 <div>
                   <Link to="#">
                     <IconButton>
-                      <AddIcon fontSize="medium" />
+                      <AddIcon fontSize="medium" color="primary" />
                     </IconButton>
                   </Link>
                 </div>
                 <div>
-                  <Link to={`/user-profile/${userData?.id}`}>
+                  <Link
+                    to={`/user-profile/${userData?.id}`}
+                    className="pt-4 font-bold text-blue-600"
+                  >
                     Edit my profile
                   </Link>
                 </div>

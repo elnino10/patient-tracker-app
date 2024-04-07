@@ -60,7 +60,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => setActivePage("our-doctors")}
               >
-                Our Doctor
+                Doctors
               </Link>
             </li>
             <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
@@ -95,7 +95,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => setActivePage("my_profile")}
               >
-                My Profile
+                Profile
               </Link>
             </li>}
             {!props.token ? (
