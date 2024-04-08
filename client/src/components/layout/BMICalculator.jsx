@@ -7,6 +7,7 @@ const BMICalculator = () => {
   const [heightUnit, setHeightUnit] = useState("m");
   const [bmiResult, setBMIResult] = useState(null);
   const [resetResult, setResetResult] = useState(false);
+  const [inch, setInch] = useState("");
 
   const calculateBMI = (weight, height, w_unit, h_unit) => {
     let weightKg = 0;
@@ -15,8 +16,10 @@ const BMICalculator = () => {
     if (w_unit === "lbs") weightKg = +weight * 0.453592;
     else weightKg = weight;
 
-    if (h_unit === "ft") heightMeters = +height * 0.3048;
-    else heightMeters = height;
+    if (h_unit === "ft") {
+      const totalInches = +height * 12 + inch;
+      heightMeters = totalInches * 0.0254;
+    } else heightMeters = height;
 
     const bmi = weightKg / heightMeters ** 2;
     return bmi;
@@ -27,7 +30,7 @@ const BMICalculator = () => {
     else setWeight(parseFloat(e.target.value));
     setResetResult(true);
   };
-  
+
   const handleHeightChange = (e) => {
     if (e.target.value === "") setHeight("");
     else setHeight(parseFloat(e.target.value));
@@ -39,7 +42,7 @@ const BMICalculator = () => {
     if (bmiRes) setBMIResult(bmiRes);
     setResetResult(false);
   };
-  
+
   return (
     <div className="pt-1 flex flex-col items-center">
       <p className="font-bold">
@@ -64,23 +67,40 @@ const BMICalculator = () => {
             <option value="lbs">lbs</option>
           </select>
         </div>
-        <div className="pt-6">
-          <label>Height:</label>
-          <input
-            type="number"
-            value={height}
-            placeholder="0"
-            onChange={handleHeightChange}
-            className="border border-black rounded-md p-2 ml-2 w-28 md:w-48"
-          />
-          <select
-            value={heightUnit}
-            onChange={(e) => setHeightUnit(e.target.value)}
-            className="border border-black rounded-md p-2 ml-2"
-          >
-            <option value="m">m</option>
-            <option value="ft">ft</option>
-          </select>
+        <div>
+          <div className="pt-6">
+            <label>Height:</label>
+            <input
+              type="number"
+              value={height}
+              placeholder="0"
+              onChange={handleHeightChange}
+              className="border border-black rounded-md p-2 ml-2 w-28 md:w-48"
+            />
+            <select
+              value={heightUnit}
+              onChange={(e) => setHeightUnit(e.target.value)}
+              className="border border-black rounded-md p-2 ml-2"
+            >
+              <option value="m">m</option>
+              <option value="ft">ft</option>
+            </select>
+          </div>
+          {heightUnit === "ft" && (
+            <div className="pt-6">
+              <label>Inches:</label>
+              <input
+                type="number"
+                value={inch}
+                placeholder="0"
+                onChange={(e) => {
+                  if (e.target.value === "") setInch("");
+                  else setInch(parseFloat(e.target.value));
+                }}
+                className="border border-black rounded-md p-2 ml-2 w-12"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="pt-8 pl-4 flex justify-center">
