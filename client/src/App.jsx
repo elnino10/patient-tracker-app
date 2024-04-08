@@ -32,7 +32,7 @@ const App = () => {
   const [userId, setUserId] = useState("");
   const [authUserData, setAuthUserData] = useState({});
   const [activePage, setActivePage] = useState("");
-  const [image, setImage] = useState(null);
+  const [showImageMenu, setShowImageMenu] = useState(false);
   const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -82,21 +82,6 @@ const App = () => {
     }
   }, [token]);
 
-  // get profile image from storage
-  useEffect(() => {
-    axios
-      .get(`${apiURL}/api/v1/profile-pic/${userId}`)
-      .then((res) => {
-        if (res.data) {
-          setImage(res.data.data[0].profile_pic);
-          // console.log(res.data);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
   if (localStorage.getItem("access_token") && !decodedToken) {
     const decoded = KJUR.jws.JWS.parse(token);
     setDecodedToken(decoded?.payloadObj);
@@ -106,6 +91,7 @@ const App = () => {
 
   const clickAwayHandler = () => {
     setMenuVisible(false);
+    setShowImageMenu(false);
   };
 
   return (
@@ -139,7 +125,8 @@ const App = () => {
               decodedToken={decodedToken}
               authUserData={authUserData}
               token={token}
-              image={image}
+              setShowImageMenu={setShowImageMenu}
+              showImageMenu={showImageMenu}
             />
           }
         />

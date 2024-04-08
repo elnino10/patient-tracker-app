@@ -606,13 +606,13 @@ def allowed_file(filename):
 
 
 # user profile picture upload
-@app.route("/api/v1/profile-pic-upload", methods=["POST"], strict_slashes=False)
-def profile_pic_upload():
+@app.route("/api/v1/profile-pic/<user_id>", methods=["POST"], strict_slashes=False)
+def profile_pic_upload(user_id):
     """upload profile picture"""
     try:
-        req_token = request.headers.get("Authorization").split("Bearer ")[1]
-        payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
-        user_id = payload["sub"]
+        # req_token = request.headers.get("Authorization").split("Bearer ")[1]
+        # payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
+        # user_id = payload["sub"]
 
         # check if the request contains a file
         if "file" not in request.files:
@@ -623,7 +623,7 @@ def profile_pic_upload():
         file = request.files["file"]
         if file and allowed_file(file.filename):
             # construct file name with user id and timestamp
-            save_file_as = f"images/{user_id}_{IMAGE_TIMESTAMP}.jpg"
+            save_file_as = f"{user_id}_{IMAGE_TIMESTAMP}.jpg"
             file_name = secure_filename(file.filename)
 
             # check if file is selected
@@ -716,7 +716,7 @@ def update_profile_image(user_id):
         file = request.files["file"]
         if file and allowed_file(file.filename):
             # construct file name with user id and timestamp
-            save_file_as = f"images/{user_id}_{IMAGE_TIMESTAMP}.jpg"
+            save_file_as = f"{user_id}_{IMAGE_TIMESTAMP}.jpg"
             file_name = secure_filename(file.filename)
 
             # check if file is selected
@@ -729,7 +729,9 @@ def update_profile_image(user_id):
             file.save(file_path)
 
             storage.from_("profile_image").update(
-                save_file_as, file_path, {"content-type": "image/jpg", "upsert": "true"}, 
+                save_file_as,
+                file_path,
+                {"content-type": "image/jpg", "cacheControl": "3600", "upsert": "true"},
             )
 
             # update user profile_pic field in users table
@@ -787,8 +789,10 @@ def remove_image_profile(user_id):
         # get image name
         image_name = image_url.split("/")[-1]
 
+        print(image_name)
+
         # delete image from storage
-        storage.from_("profile_image").remove(image_name)
+        storage.from_("profile_image").remove(f"{image_name}")
 
         # update user profile_pic field in users table
         data = (
