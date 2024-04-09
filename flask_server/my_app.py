@@ -657,6 +657,9 @@ def profile_pic_upload(user_id):
                     ),
                     404,
                 )
+            # remove the temporary directory
+            os.remove(file_path)
+            os.rmdir(temp_dir)
 
             return (
                 jsonify(
@@ -672,10 +675,6 @@ def profile_pic_upload(user_id):
             ),
             400,
         )
-    finally:
-        # remove the temporary directory
-        os.remove(file_path)
-        os.rmdir(temp_dir)
 
 
 # get user profile picture
@@ -690,8 +689,8 @@ def get_profile_pic(user_id):
             .execute()
         )
 
-        if not len(data.data) > 0:
-            return jsonify({"message": "Profile picture not found!", "status": "failed"}), 404
+        if len(data.data) == 0 or not len(data.data) > 0:
+            return jsonify({"data": [], "message": "Profile picture not found!"}), 200
         return jsonify({"data": data.data, "status": "success"}), 200
     except Exception as error:
         return (
@@ -728,7 +727,7 @@ def update_profile_image(user_id):
             file_path = os.path.join(temp_dir, file_name)
             file.save(file_path)
 
-            # get file path to be updated in storage
+            # # get file path to be updated in storage
             data = (
                 supabase.table("uploads")
                 .select("profile_pic")
@@ -746,12 +745,14 @@ def update_profile_image(user_id):
             # get image url
             image_url = data.data[0]["profile_pic"]
             # get image name
-            image_in_storage = image_url.split("/")[-1]
+            image_name = image_url.split("/")[-1]
 
-            storage.from_("profile_image").update(
-                image_in_storage,
-                file_path,
-                {"content-type": "image/jpg", "cacheControl": "3600", "upsert": "true"},
+            # remove old image from storage
+            storage.from_("profile_image").remove(f"{image_name}")
+
+            # upload new profile image to storage
+            storage.from_("profile_image").upload(
+                save_file_as, file_path, {"content-type": "image/jpg"}
             )
 
             # update user profile_pic field in users table
@@ -773,6 +774,9 @@ def update_profile_image(user_id):
                     ),
                     404,
                 )
+            # remove the temporary directory
+            os.remove(file_path)
+            os.rmdir(temp_dir)
             return (
                 jsonify({"data": data.data, "status": "success"}), 201
             )
@@ -784,10 +788,7 @@ def update_profile_image(user_id):
             ),
             400,
         )
-    finally:
-        # remove the temporary directory
-        os.remove(file_path)
-        os.rmdir(temp_dir)
+        
 
 # remove user profile image
 
