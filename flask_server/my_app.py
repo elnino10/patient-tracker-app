@@ -758,6 +758,7 @@ def update_profile_image(user_id):
             # update user profile_pic field in users table
             image_url = "https://oqctaxhqpoexbvokkqbd.supabase.co/"
             image_url += f"storage/v1/object/public/profile_image/{save_file_as}"
+            time.sleep(1)
             data = (
                 supabase.table("uploads")
                 .update({"profile_pic": image_url})
@@ -788,7 +789,7 @@ def update_profile_image(user_id):
             ),
             400,
         )
-        
+
 
 # remove user profile image
 

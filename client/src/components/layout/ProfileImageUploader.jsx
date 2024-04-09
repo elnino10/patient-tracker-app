@@ -73,7 +73,6 @@ const ProfileImageUploader = ({
     imageFile = e.target.files[0];
     setShowImageMenu(false);
     setSubmitting(true);
-    // setProfileImage(null);
     // check if image is selected and there isn't an existing image
     if (imageFile && !profileImage) {
       const formData = new FormData();
