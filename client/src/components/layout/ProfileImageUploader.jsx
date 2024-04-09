@@ -14,8 +14,8 @@ const ProfileImageUploader = ({
   const [profileImage, setProfileImage] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // const [image, setImage] = useState(null);
   const imageInputRef = useRef(null);
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -29,44 +29,51 @@ const ProfileImageUploader = ({
     axios
       .get(imageStorageURL)
       .then((res) => {
-        if (res.data) {
+        if (res.data.data.length > 0) {
           setProfileImage(res.data.data[0].profile_pic);
           setSubmitting(false);
           // console.log(res.data);
+        } else {
+          setSubmitting(false);
         }
       })
       .catch((error) => {
         setProfileImage(null);
         setSubmitting(false);
-        // console.error(error);
+        error.response && setErrorMessage(error.response.data.message);
+        console.error(error);
       });
   }, []);
 
   // get new profile image after upload
   useEffect(() => {
     setFileUploaded(false);
-    if (fileUploaded) {
+    if (fileUploaded && !profileImage) {
+      setSubmitting(true);
       axios
         .get(imageStorageURL)
         .then((res) => {
-          if (res.data) {
+          if (res.data.data.length > 0) {
             setProfileImage(res.data.data[0].profile_pic);
             setSubmitting(false);
             // console.log(res.data);
           }
         })
         .catch((error) => {
-          console.error(error);
           setProfileImage(null);
+          setSubmitting(false);
+          error.response && setErrorMessage(error.response.data.message);
+          console.error(error);
         });
     }
-  }, [fileUploaded, profileImage]);
+  }, [fileUploaded, profileImage, errorMessage]);
 
   // handle profile image upload
   const handleImageUpload = (e) => {
     imageFile = e.target.files[0];
     setShowImageMenu(false);
     setSubmitting(true);
+    // setProfileImage(null);
     // check if image is selected and there isn't an existing image
     if (imageFile && !profileImage) {
       const formData = new FormData();
@@ -79,10 +86,16 @@ const ProfileImageUploader = ({
           },
         })
         .then((res) => {
-          console.log(res.data);
-          setFileUploaded(true);
+          if (res.data.data > 0) {
+            setFileUploaded(true);
+            
+            setSubmitting(false);
+            console.log(res.data);
+          }
         })
         .catch((error) => {
+          setSubmitting(false);
+          error.response && setErrorMessage(error.response.data.message);
           console.error(error);
         });
     } else if (imageFile && profileImage !== null) {
@@ -97,10 +110,15 @@ const ProfileImageUploader = ({
           },
         })
         .then((res) => {
-          console.log(res.data);
-          setFileUploaded(true);
+          if (res.data) {
+            setSubmitting(false);
+            setProfileImage(res.data.data[0].profile_pic);
+            // console.log(res.data.data[0].profile_pic);
+          }
         })
         .catch((error) => {
+          setSubmitting(false);
+          error.response && setErrorMessage(error.response.data.message);
           console.error(error);
         });
     }
@@ -119,27 +137,51 @@ const ProfileImageUploader = ({
 
   // remove image
   const removeImageHandler = () => {
-    setShowImageMenu(false);
     setSubmitting(true);
+    setShowImageMenu(false);
+    setProfileImage(null);
     // make http request to remove image
-    axios
-      .delete(imageStorageURL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setFileUploaded(true);
-        setSubmitting(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (profileImage) {
+      axios
+        .delete(imageStorageURL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.data) {
+            setFileUploaded(true);
+            setSubmitting(false);
+            // console.log(res.data);
+          }
+        })
+        .catch((error) => {
+          error.repsonse && setErrorMessage(error.response.data.message);
+          console.error(error);
+        });
+    } else {
+      setErrorMessage("No image to remove!");
+      setSubmitting(false);
+    }
+  };
+
+  const handleErrorMessage = () => {
+    setSubmitting(false);
+    setErrorMessage("");
   };
 
   return (
     <div className="relative">
+      <div
+        className={`${
+          errorMessage !== "" ? "flex" : "invisible"
+        } text-center justify-between items-center bg-red-100 w-52 px-2 translate-x-[-2rem] translate-y-[13rem] absolute`}
+      >
+        <p className="text-red-500 text-sm py-0">{errorMessage}</p>
+        <span onClick={handleErrorMessage} className="">
+          x
+        </span>
+      </div>
       <img
         src={profileImage ? profileImage : avatar}
         alt="user-image"
@@ -154,26 +196,37 @@ const ProfileImageUploader = ({
           <EditIcon fontSize="small" />
         </IconButton>
       </div>
-      {submitting && (
-        <div className="bg-blue-100 flex justify-center mt-3 text-blue-600">
-          <p>Please wait...</p>
-        </div>
-      )}
+      <div
+        className={`${
+          submitting && !errorMessage ? "flex" : "invisible"
+        } bg-blue-100 flex justify-center mt-3 text-blue-600`}
+      >
+        <p>Please wait...</p>
+      </div>
       <div
         className={`${
           !showImageMenu ? "hidden" : ""
         } border border-slate-200 bg-slate-200
         rounded-md shadow-lg items-center flex justify-center absolute z-10 h-20
-        translate-y-[-5rem] translate-x-[10.5rem]
+        translate-y-[-7rem] translate-x-[10rem]
         `}
       >
         <ul className="text-slate-500 text-sm flex flex-col items-center px-2">
-          <li
-            className="border-b border-slate-400 pb-2"
-            onClick={selectImageHandler}
-          >
-            select
-          </li>
+          {profileImage ? (
+            <li
+              className="border-b border-slate-400 pb-2"
+              onClick={selectImageHandler}
+            >
+              change
+            </li>
+          ) : (
+            <li
+              className="border-b border-slate-400 pb-2"
+              onClick={selectImageHandler}
+            >
+              select
+            </li>
+          )}
           <li className="pt-1" onClick={removeImageHandler}>
             remove
           </li>
