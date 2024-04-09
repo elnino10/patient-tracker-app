@@ -8,6 +8,7 @@ import PasswordResetForm from "../components/layoutForms/PasswordResetForm.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import ProfileImageUploader from "./layout/ProfileImageUploader.jsx";
 import BMICalculator from "./layout/BMICalculator.jsx";
+import SymptomsChecker from "./layout/SymptomsChecker.jsx";
 
 export {
   Login,
@@ -20,4 +21,5 @@ export {
   Footer,
   ProfileImageUploader,
   BMICalculator,
+  SymptomsChecker
 };
