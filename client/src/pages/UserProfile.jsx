@@ -4,9 +4,15 @@ import axios from "axios";
 import { Box, CircularProgress } from "@mui/material";
 import { ProfileImageUploader } from "../components";
 
-const UserProfile = ({ token, decodedToken }) => {
+
+
+const UserProfile = ({
+  token,
+  decodedToken,
+  setShowImageMenu,
+  showImageMenu
+}) => {
   const [editInput, setEdit] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -28,8 +34,8 @@ const UserProfile = ({ token, decodedToken }) => {
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
   const reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
-  const imageUploadURL = `${apiURL}/api/v1/profile-pic-upload`;
 
+  // fetch user data
   useEffect(() => {
     if (reqURL && !editInput) {
       axios
@@ -48,27 +54,7 @@ const UserProfile = ({ token, decodedToken }) => {
     }
   }, [editInput]);
 
-  useEffect(() => {
-    // upload image if profileImage is not null
-    if (profileImage) {
-      const formData = new FormData();
-      formData.append("file", profileImage);
-      axios
-        .post(imageUploadURL, formData, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [profileImage]);
-
+  // handle profile update
   const handleSubmitEdit = () => {
     setEdit(false);
     let profileData;
@@ -87,7 +73,6 @@ const UserProfile = ({ token, decodedToken }) => {
         email: emailAddress,
       };
     }
-
   };
 
   if (
@@ -107,7 +92,7 @@ const UserProfile = ({ token, decodedToken }) => {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-full md:h-screen">
       <div className="border-b-2 block md:flex">
         <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
           <div className="flex justify-between">
@@ -127,12 +112,13 @@ const UserProfile = ({ token, decodedToken }) => {
           </span>
           <div className="w-full p-8 mx-2 flex justify-center">
             <ProfileImageUploader
-              profileImage={profileImage}
-              setProfileImage={setProfileImage}
+              token={token}
+              userId={userId}
+              setShowImageMenu={ setShowImageMenu}
+              showImageMenu={showImageMenu}
             />
           </div>
         </div>
-
         <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
           <div className="rounded  shadow p-6">
             <div className="pb-6">

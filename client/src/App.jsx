@@ -32,6 +32,7 @@ const App = () => {
   const [userId, setUserId] = useState("");
   const [authUserData, setAuthUserData] = useState({});
   const [activePage, setActivePage] = useState("");
+  const [showImageMenu, setShowImageMenu] = useState(false);
   const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -39,7 +40,8 @@ const App = () => {
   if (category_ && userId) {
     reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
   }
-  
+
+  // get authenticated user's data
   useEffect(() => {
     const updateAxiosHeaders = () => {
       if (token) {
@@ -50,25 +52,26 @@ const App = () => {
         localStorage.removeItem("access_token");
       }
     };
-    
+
     if (reqURL) {
       axios
-      .get(reqURL)
-      .then((res) => {
-        setAuthUserData(res.data[0]);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        .get(reqURL)
+        .then((res) => {
+          setAuthUserData(res.data[0]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-    
+
     updateAxiosHeaders();
 
     return () => {
       delete axios.defaults.headers.common["Authorization"];
     };
   }, [token]);
-  
+
+  // if token is null, reset authUserData and decodedToken
   useEffect(() => {
     if (!token) {
       setAuthUserData({});
@@ -78,16 +81,17 @@ const App = () => {
     } else {
     }
   }, [token]);
-  
+
   if (localStorage.getItem("access_token") && !decodedToken) {
     const decoded = KJUR.jws.JWS.parse(token);
     setDecodedToken(decoded?.payloadObj);
     setCategory_(decoded?.payloadObj.category);
     setUserId(decoded?.payloadObj.sub);
   }
-  
+
   const clickAwayHandler = () => {
     setMenuVisible(false);
+    setShowImageMenu(false);
   };
 
   return (
@@ -105,10 +109,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage token={token} />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route
-          path="/login"
-          element={<Login setToken={setToken} />}
-        />
+        <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/register-patient" element={<RegisterPatient />} />
         <Route path="/register-medic" element={<RegisterMedic />} />
@@ -124,6 +125,8 @@ const App = () => {
               decodedToken={decodedToken}
               authUserData={authUserData}
               token={token}
+              setShowImageMenu={setShowImageMenu}
+              showImageMenu={showImageMenu}
             />
           }
         />
@@ -131,7 +134,6 @@ const App = () => {
           path="/user-dashboard"
           element={<UserDashboard decodedToken={decodedToken} />}
         />
-        {/* <Route path="/patients/:id/user-dashboard" element={<UserDashboard />} /> */}
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

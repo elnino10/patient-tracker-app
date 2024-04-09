@@ -37,6 +37,8 @@ storage.list_buckets()
 
 # allowed file extensions
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+# image upload timestamp
+IMAGE_TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 # error handler
@@ -604,13 +606,13 @@ def allowed_file(filename):
 
 
 # user profile picture upload
-@app.route("/api/v1/profile-pic-upload", methods=["POST"], strict_slashes=False)
-def profile_pic_upload():
+@app.route("/api/v1/profile-pic/<user_id>", methods=["POST"], strict_slashes=False)
+def profile_pic_upload(user_id):
     """upload profile picture"""
     try:
-        req_token = request.headers.get("Authorization").split("Bearer ")[1]
-        payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
-        user_id = payload["sub"]
+        # req_token = request.headers.get("Authorization").split("Bearer ")[1]
+        # payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
+        # user_id = payload["sub"]
 
         # check if the request contains a file
         if "file" not in request.files:
@@ -621,9 +623,7 @@ def profile_pic_upload():
         file = request.files["file"]
         if file and allowed_file(file.filename):
             # construct file name with user id and timestamp
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            file_extension = file.filename.rsplit(".", 1)[1].lower()
-            save_file_as = f"images/{user_id}_{timestamp}.{file_extension}"
+            save_file_as = f"{user_id}_{IMAGE_TIMESTAMP}.jpg"
             file_name = secure_filename(file.filename)
 
             # check if file is selected
@@ -676,6 +676,167 @@ def profile_pic_upload():
         # remove the temporary directory
         os.remove(file_path)
         os.rmdir(temp_dir)
+
+
+# get user profile picture
+@app.route("/api/v1/profile-pic/<user_id>", methods=["GET"], strict_slashes=False)
+def get_profile_pic(user_id):
+    """get profile picture"""
+    try:
+        data = (
+            supabase.table("uploads")
+            .select("profile_pic")
+            .eq("user_id", user_id)
+            .execute()
+        )
+
+        if not len(data.data) > 0:
+            return jsonify({"message": "Profile picture not found!", "status": "failed"}), 404
+        return jsonify({"data": data.data, "status": "success"}), 200
+    except Exception as error:
+        return (
+            jsonify(
+                {"message": "An error occurred!", "error": error, "status": "failed"}
+            ),
+            400,
+        )
+
+
+# update user profile picture
+@app.route("/api/v1/profile-pic/<user_id>", methods=["PUT"], strict_slashes=False)
+def update_profile_image(user_id):
+    """update user's profile image"""
+    try:
+        # check if the request contains a file
+        if "file" not in request.files:
+            return (
+                jsonify({"message": "No file part!", "status": "failed"}),
+                400,
+            )
+        file = request.files["file"]
+        if file and allowed_file(file.filename):
+            # construct file name with user id and timestamp
+            save_file_as = f"{user_id}_{IMAGE_TIMESTAMP}.jpg"
+            file_name = secure_filename(file.filename)
+
+            # check if file is selected
+            if file_name == "":
+                return jsonify({"message": "No file selected", "status": "failed"}), 400
+
+            # create a temporary directory
+            temp_dir = tempfile.mkdtemp()
+            file_path = os.path.join(temp_dir, file_name)
+            file.save(file_path)
+
+            # get file path to be updated in storage
+            data = (
+                supabase.table("uploads")
+                .select("profile_pic")
+                .eq("user_id", user_id)
+                .execute()
+            )
+            if not len(data.data) > 0:
+                return (
+                    jsonify(
+                        {"message": "Profile picture not found!", "status": "failed"}
+                    ),
+                    404,
+                )
+
+            # get image url
+            image_url = data.data[0]["profile_pic"]
+            # get image name
+            image_in_storage = image_url.split("/")[-1]
+
+            storage.from_("profile_image").update(
+                image_in_storage,
+                file_path,
+                {"content-type": "image/jpg", "cacheControl": "3600", "upsert": "true"},
+            )
+
+            # update user profile_pic field in users table
+            image_url = "https://oqctaxhqpoexbvokkqbd.supabase.co/"
+            image_url += f"storage/v1/object/public/profile_image/{save_file_as}"
+            data = (
+                supabase.table("uploads")
+                .update({"profile_pic": image_url})
+                .eq("user_id", user_id)
+                .execute()
+            )
+            if not len(data.data) > 0:
+                return (
+                    jsonify(
+                        {
+                            "message": "Could not update user profile picture!",
+                            "status": "failed",
+                        }
+                    ),
+                    404,
+                )
+            return (
+                jsonify({"data": data.data, "status": "success"}), 201
+            )
+        return jsonify({"message": "File not allowed!", "status": "failed"}), 400
+    except Exception as error:
+        return (
+            jsonify(
+                {"message": "An error occurred!", "error": error, "status": "failed"}
+            ),
+            400,
+        )
+    finally:
+        # remove the temporary directory
+        os.remove(file_path)
+        os.rmdir(temp_dir)
+
+# remove user profile image
+
+@app.route("/api/v1/profile-pic/<user_id>", methods=["DELETE"], strict_slashes=False)
+def remove_image_profile(user_id):
+    """remove user's profile image"""
+    try:
+        data = (
+            supabase.table("uploads")
+            .select("profile_pic")
+            .eq("user_id", user_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return jsonify({"message": "Profile picture not found!", "status": "failed"}), 404
+
+        # get image url
+        image_url = data.data[0]["profile_pic"]
+        # get image name
+        image_name = image_url.split("/")[-1]
+
+        # delete image from storage
+        storage.from_("profile_image").remove(f"{image_name}")
+
+        # update user profile_pic field in users table
+        data = (
+            supabase.table("uploads")
+            .delete()
+            .eq("user_id", user_id)
+            .execute()
+        )
+        if not len(data.data) > 0:
+            return (
+                jsonify(
+                    {
+                        "message": "Could not remove user profile picture!",
+                        "status": "failed",
+                    }
+                ),
+                404,
+            )
+        return jsonify({"status": "success"}), 200
+    except Exception as error:
+        return (
+            jsonify(
+                {"message": "An error occurred!", "error": error, "status": "failed"}
+            ),
+            400,
+        )
 
 
 if __name__ == "__main__":
