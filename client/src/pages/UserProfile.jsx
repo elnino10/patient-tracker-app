@@ -13,12 +13,13 @@ const UserProfile = ({
   showImageMenu
 }) => {
   const [editInput, setEdit] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [specializationName, setSpecializationName] = useState("");
-  const [addressName, setAddressName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
 
   const firstNameInputRef = useRef();
   const lastNameInputRef = useRef();
@@ -44,12 +45,12 @@ const UserProfile = ({
           const data = res.data.data[0];
           setFirstName(data.first_name);
           setLastName(data.last_name);
-          setSpecializationName(data.specialization);
-          setAddressName(data.address);
-          setEmailAddress(data.email);
+          setSpecialization(data.specialization);
+          setAddress(data.address);
+          setEmail(data.email);
         })
         .catch((error) => {
-          console.error(error);
+          error.response && console.error(error.response.data.message);
         });
     }
   }, [editInput]);
@@ -57,31 +58,38 @@ const UserProfile = ({
   // handle profile update
   const handleSubmitEdit = () => {
     setEdit(false);
+    setSubmitting(true);
     let profileData;
     if (category_ === "patient") {
       profileData = {
         first_name: firstName,
         last_name: lastName,
-        address: addressName,
-        email: emailAddress,
+        address: address,
       };
     } else {
       profileData = {
         first_name: firstName,
         last_name: lastName,
-        specialization: specializationName,
-        email: emailAddress,
+        specialization: specialization,
       };
+    }
+    if (profileData) {
+      axios
+        .patch(reqURL, profileData)
+        .then((res) => {
+          if (res.data.data.length > 0) {
+            setSubmitting(false);
+            // console.log(res.data);
+          }
+        })
+        .catch((error) => {
+          setSubmitting(false);
+          error.response && console.log(error.response.data.message);
+        });
     }
   };
 
-  if (
-    !firstName &&
-    !lastName &&
-    !specializationName &&
-    !addressName &&
-    !emailAddress
-  ) {
+  if (!firstName && !lastName && !specialization && !address && !email) {
     return (
       <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
@@ -114,7 +122,7 @@ const UserProfile = ({
             <ProfileImageUploader
               token={token}
               userId={userId}
-              setShowImageMenu={ setShowImageMenu}
+              setShowImageMenu={setShowImageMenu}
               showImageMenu={showImageMenu}
             />
           </div>
@@ -174,8 +182,8 @@ const UserProfile = ({
                     id="specialization"
                     className="border-1  rounded-r px-4 py-2 w-full"
                     type="text"
-                    value={specializationName}
-                    onChange={(e) => setSpecializationName(e.target.value)}
+                    value={specialization}
+                    onChange={(e) => setSpecialization(e.target.value)}
                   />
                 </div>
               </div>
@@ -196,8 +204,8 @@ const UserProfile = ({
                       id="address"
                       className="border-1  rounded-r px-4 py-2 w-full"
                       type="text"
-                      value={addressName}
-                      onChange={(e) => setAddressName(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                     />
                   </div>
                 </div>
@@ -215,18 +223,17 @@ const UserProfile = ({
                 id="email"
                 className="border-1  rounded-r px-4 py-2 w-full"
                 type="email"
-                value={emailAddress}
+                value={email}
               />
               <span className="text-gray-600 pt-4 block opacity-70">
                 Clicking on submit means updating your profile details
               </span>
             </div>
             <button
-              disabled
               onClick={handleSubmitEdit}
               className="-mt-2 w-[50%] flex items-center justify-center text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
             >
-              Submit
+              {submitting ? "Updating..." : "Submit"}
             </button>
           </div>
         </div>
