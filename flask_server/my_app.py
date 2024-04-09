@@ -728,8 +728,28 @@ def update_profile_image(user_id):
             file_path = os.path.join(temp_dir, file_name)
             file.save(file_path)
 
+            # get file path to be updated in storage
+            data = (
+                supabase.table("uploads")
+                .select("profile_pic")
+                .eq("user_id", user_id)
+                .execute()
+            )
+            if not len(data.data) > 0:
+                return (
+                    jsonify(
+                        {"message": "Profile picture not found!", "status": "failed"}
+                    ),
+                    404,
+                )
+
+            # get image url
+            image_url = data.data[0]["profile_pic"]
+            # get image name
+            image_in_storage = image_url.split("/")[-1]
+
             storage.from_("profile_image").update(
-                save_file_as,
+                image_in_storage,
                 file_path,
                 {"content-type": "image/jpg", "cacheControl": "3600", "upsert": "true"},
             )
@@ -788,8 +808,6 @@ def remove_image_profile(user_id):
         image_url = data.data[0]["profile_pic"]
         # get image name
         image_name = image_url.split("/")[-1]
-
-        print(image_name)
 
         # delete image from storage
         storage.from_("profile_image").remove(f"{image_name}")

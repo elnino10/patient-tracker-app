@@ -37,6 +37,7 @@ const ProfileImageUploader = ({
       })
       .catch((error) => {
         setProfileImage(null);
+        setSubmitting(false);
         // console.error(error);
       });
   }, []);
