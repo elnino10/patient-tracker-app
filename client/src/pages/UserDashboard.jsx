@@ -32,7 +32,7 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
     }
   }, []);
 
-  if (!userData.profile_pic && !medicalRecord.id) {
+  if (!userData?.id && !medicalRecord?.id) {
     return (
       <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
@@ -111,11 +111,11 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
               )}
             </div>
           </div>
-          {category_ === "patient" && (
-            <div className="pt-6">
-              <p className="p-6 text-center font-extrabold text-slate-600">
-                Medical Record
-              </p>
+          <p className="mt-8 text-center font-extrabold text-slate-600">
+            Medical Record
+          </p>
+          {category_ === "patient" && userData.med_record_id !== null ? (
+            <div className="mt-3">
               <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
                 <p>
                   <span className="font-bold">Allergies</span>:{" "}
@@ -146,6 +146,10 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
                   {medicalRecord?.medical_info}
                 </p>
               </div>
+            </div>
+          ) : (
+            <div className="flex text-center justify-center text-lg text-red-500">
+              <p>Patient has no medical record yet!</p>
             </div>
           )}
         </div>

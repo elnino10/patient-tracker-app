@@ -11,12 +11,11 @@ function PatientDetailsPage() {
   const [error, setError] = useState(null);
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
-
-  const URL = `${apiURL}/api/v1/patients`;
+  const reqURL = `${apiURL}/api/v1/patients/${id}`;
 
   useEffect(() => {
     axios
-      .get(`${URL}/${id}`)
+      .get(reqURL)
       .then((response) => {
         if (response.data.data) {
           setPatient(response.data.data[0]);
@@ -77,12 +76,21 @@ function PatientDetailsPage() {
           <div>
             <p>Gender: {patient?.gender}</p>
           </div>
-          <Link
-            to={`/patients/${patient.id}/medical-record`}
-            className="pt-11 ml-[65%] text-sm underline text-blue-400"
-          >
-            view medical record
-          </Link>
+          {patient.med_record_id !== null ? (
+            <Link
+              to={`/patients/${patient.id}/medical-record`}
+              className="pt-11 ml-[65%] text-sm underline text-blue-400"
+            >
+              view medical record
+            </Link>
+          ) : (
+            <Link
+              to={`/patients/${patient.id}/create-record`}
+              className="pt-11 ml-[65%] text-sm underline text-blue-400"
+            >
+              create medical record
+            </Link>
+          )}
         </div>
       </div>
     </div>
