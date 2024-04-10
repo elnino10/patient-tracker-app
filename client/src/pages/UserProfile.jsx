@@ -21,11 +21,6 @@ const UserProfile = ({
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
 
-  const firstNameInputRef = useRef();
-  const lastNameInputRef = useRef();
-  const specializationInputRef = useRef();
-  const addressInputRef = useRef();
-
   const category_ = decodedToken.category;
   const userId = decodedToken.sub;
   let patientProfile;
@@ -139,7 +134,6 @@ const UserProfile = ({
               <div className="flex">
                 <input
                   {...(!editInput ? { disabled: true } : {})}
-                  ref={firstNameInputRef}
                   id="first_name"
                   className="border-1 rounded-r px-4 py-2 w-full"
                   type="text"
@@ -158,7 +152,6 @@ const UserProfile = ({
               <div className="flex">
                 <input
                   {...(!editInput ? { disabled: true } : {})}
-                  ref={lastNameInputRef}
                   id="last_name"
                   className="border-1  rounded-r px-4 py-2 w-full"
                   type="text"
@@ -178,7 +171,6 @@ const UserProfile = ({
                 <div className="flex">
                   <input
                     {...(!editInput ? { disabled: true } : {})}
-                    ref={specializationInputRef}
                     id="specialization"
                     className="border-1  rounded-r px-4 py-2 w-full"
                     type="text"
@@ -200,7 +192,6 @@ const UserProfile = ({
                   <div className="flex">
                     <input
                       {...(!editInput ? { disabled: true } : {})}
-                      ref={addressInputRef}
                       id="address"
                       className="border-1  rounded-r px-4 py-2 w-full"
                       type="text"
