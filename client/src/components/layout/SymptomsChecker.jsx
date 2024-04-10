@@ -1,17 +1,24 @@
 import axios from "axios";
 import { useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
+import TextField from "@mui/material/TextField";
 
-const DUMMY_DATA = {
-    symptoms: "blahblah",
-    potentialCauses: ["first cause", "second cause", "third cause"],
-    followUpQuestions: ["question one", "question two", "question three"],
-  }
+
+// const responseData = {
+//     symptoms: "blahblah",
+//     potentialCauses: ["first cause", "second cause", "third cause"],
+//     followUpQuestions: ["question one", "question two", "question three"],
+//   }
 
 
 const SymptomsChecker = () => {
-  // const [userInput, setUserInput] = useState("")
-  // const [responseData, setResponseData] = useState({})
+  const [userInput, setUserInput] = useState("")
+  const [responseData, setResponseData] = useState({})
 
+  const handleInputChange = (e) => {
+    setUserInput(e.target.value);
+  }
+  
   const options = {
     method: "POST",
     url: import.meta.env.VITE_SYMPTOMS_CHECKER_URL,
@@ -31,27 +38,79 @@ const SymptomsChecker = () => {
   const symptomsCheckHandler = async () => {
     try {
       if (!options.data) {
-        console.error("No input data found!");
+        alert("You have to type something first");
         return;
       }
         const response = await axios.request(options);
-        console.log(response.data);
+        setResponseData(response.data);
+        setUserInput("");
+        // console.log(response.data);
     } catch (error) {
+      setUserInput("");
       console.error(error);
     }
+    
+
   };
 
   return (
-    <div>
-      <p>
-        SymptomsChecker: <span onClick={symptomsCheckHandler}>click</span>
+    <div className="flex flex-col items-start w-full md:w-80">
+      <p className="text-center font-bold text-slate-900 pb-1">
+        Describe how you feel
       </p>
-      <div>
-        <p>Potential Causes: {DUMMY_DATA["potentialCauses"]}</p>
-      </div>
-      ;
-      <div>
-        <p>Follow up questions: {DUMMY_DATA["followUpQuestions"]}</p>
+      <TextField
+        style={{ width: "100%"}}
+        variant="outlined"
+        value={userInput}
+        onChange={handleInputChange}
+        placeholder="Type your symptoms"
+        InputProps={{
+          endAdornment: (
+            <SendIcon
+              fontSize="small"
+              color="primary"
+              cursor="pointer"
+              onClick={symptomsCheckHandler}
+            />
+          ),
+        }}
+      />
+      <div className="p-2 mt-4 border w-full min-h-40 border-blue-200 rounded-md">
+        <div className="pt-3">
+          <p
+            className={`${
+              responseData.potentialCauses ? "flex" : "hidden"
+            } font-bold text-slate-800`}
+          >
+            Potential Causes:
+          </p>
+          <ul>
+            {responseData.potentialCauses &&
+              responseData.potentialCauses.map((data, index) => (
+                <li key={index} className="pl-6">
+                  {data}
+                </li>
+              ))}
+          </ul>
+        </div>
+
+        <div className="pt-3">
+          <p
+            className={`${
+              responseData.followupQuestions ? "flex" : "hidden"
+            } font-bold text-slate-800`}
+          >
+            Follow up questions:
+          </p>
+          <ul>
+            {responseData.followupQuestions &&
+              responseData.followupQuestions.map((data, index) => (
+                <li key={index} className="pl-6">
+                  {data}
+                </li>
+              ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

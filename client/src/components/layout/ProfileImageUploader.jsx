@@ -87,7 +87,7 @@ const ProfileImageUploader = ({
         .then((res) => {
           if (res.data.data > 0) {
             setFileUploaded(true);
-            
+
             setSubmitting(false);
             console.log(res.data);
           }

@@ -99,7 +99,7 @@ const HomePage = ({ token }) => {
       {/* BMI and Symptoms check Section */}
       <div className="mb-5">
         {showBMI && (
-          <div className="flex justify-between md:justify-center bg-slate-200">
+          <div className="flex justify-between bg-slate-200 md:justify-center">
             <div className="container mx-auto py-20 flex px-8 pt-5 justify-center">
               <BMICalculator />
             </div>
@@ -114,13 +114,13 @@ const HomePage = ({ token }) => {
           </div>
         )}
         {showSymptomChecker && (
-          <div className="flex justify-between bg-[#87e6d6]">
-            <div className="text-[#696969] container mx-auto py-20 flex px-8 pt-8">
+          <div className="flex justify-between bg-slate-200 md:justify-center">
+            <div className="container mx-auto py-20 flex px-8 pt-5">
               <SymptomsChecker />
             </div>
             <span
               onClick={handleClose}
-              className="border border-black rounded-full p-1 mt-2 mr-2 h-5 flex items-center"
+              className="border border-slate-300 rounded-full pb-1 px-1 mt-2 mr-2 h-5 flex items-center"
             >
               x
             </span>
