@@ -140,23 +140,23 @@ def delete_medic_by_id(medic_id):
 
 ###################      api route for medical history     ####################
 # create an authorization decorator
-def authorize_medic(func):
-    """routes are protected and accessed by medics only"""
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        """functools wrapper function"""
-        token = request.headers.get("Authorization").split("Bearer ")[1]
-        try:
-            payload = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=["HS256"])
-            if payload["category"] == "medic":
-                g.user = payload
-                return func(*args, **kwargs)
-        except jwt.ExpiredSignatureError:
-            return jsonify({"message": "Token expired!"}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({"message": "Invalid token!"}), 401
+# def authorize_medic(func):
+#     """routes are protected and accessed by medics only"""
+#     @wraps(func)
+#     def wrapper(*args, **kwargs):
+#         """functools wrapper function"""
+#         token = request.headers.get("Authorization").split("Bearer ")[1]
+#         try:
+#             payload = jwt.decode(token, environ.get("SECRET_KEY"), algorithms=["HS256"])
+#             if payload["category"] == "medic":
+#                 g.user = payload
+#                 return func(*args, **kwargs)
+#         except jwt.ExpiredSignatureError:
+#             return jsonify({"message": "Token expired!"}), 401
+#         except jwt.InvalidTokenError:
+#             return jsonify({"message": "Invalid token!"}), 401
 
-    return wrapper
+#     return wrapper
 
 # create patient's medical record
 @app.route(
@@ -595,8 +595,6 @@ def signout():
 
 
 ########################   storage route   #############################
-
-
 def allowed_file(filename):
     """check if file extension is allowed"""
     return (
@@ -610,10 +608,6 @@ def allowed_file(filename):
 def profile_pic_upload(user_id):
     """upload profile picture"""
     try:
-        # req_token = request.headers.get("Authorization").split("Bearer ")[1]
-        # payload = jwt.decode(req_token, environ.get("SECRET_KEY"), algorithms=["HS256"])
-        # user_id = payload["sub"]
-
         # check if the request contains a file
         if "file" not in request.files:
             return (

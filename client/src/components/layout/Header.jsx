@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import logo from "../../assets/images/logo.png"
+
 import MenuIcon from "@mui/icons-material/Menu";
 import { MenuOpen } from "@mui/icons-material";
 import HomeIcon from "@mui/icons-material/Home";
 import axios from "axios";
 
 const Header = (props) => {
-  // const [activePage, setActivePage] = useState("home");
   const navigate = useNavigate();
 
   let userId;
@@ -37,7 +37,7 @@ const Header = (props) => {
             <span className="flex md:hidden text-slate-200">
               <HomeIcon />
             </span>
-            <span className="hidden text-white md:flex">Home</span>
+            <span className="hidden text-white md:flex"><img src={logo} alt="logo" className="w-12 rounded-full" /></span>
           </Link>
         </div>
         <div onClick={toggleMenuHandler} className="md:hidden text-slate-200">
