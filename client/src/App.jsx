@@ -136,7 +136,7 @@ const App = () => {
           element={<UserDashboard decodedToken={decodedToken} />}
         />
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
-        <Route path="/patients/:id/medical-record" element={<MedicalRecordPage />} />
+        <Route path="/patients/:id/medical-record" element={<MedicalRecordPage category_={category_} />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <Footer />
