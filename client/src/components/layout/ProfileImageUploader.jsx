@@ -167,14 +167,17 @@ const ProfileImageUploader = ({
         translate-y-[-5rem] translate-x-[10.5rem]
         `}
       >
-        <ul className="text-slate-500 text-sm flex flex-col items-center px-2">
+        <ul className="text-slate-500 text-sm cursor-pointer flex flex-col items-center px-2">
           <li
-            className="border-b border-slate-400 pb-2"
+            className="border-b border-slate-400 pb-2 hover:bg-slate-300 px-5"
             onClick={selectImageHandler}
           >
             select
           </li>
-          <li className="pt-1" onClick={removeImageHandler}>
+          <li
+            className="pt-2 hover:bg-slate-300 px-5"
+            onClick={removeImageHandler}
+          >
             remove
           </li>
           <input
