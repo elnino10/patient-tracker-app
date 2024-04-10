@@ -75,17 +75,7 @@ const Patients = () => {
               <div>
                 <p className="text-gray-600 pt-11">Email: {patient.email}</p>
               </div>
-              <div className="pt-11">
-                <IconButton>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </div>
-              <div className="pt-11">
-                <IconButton size="small">
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </div>
-              <Link to={`/patients/${patient.id}`} className="pt-11">
+              <Link to={`/patients/${patient.id}`} className="pt-11 text-sm underline text-blue-400">
                 view patient's details
               </Link>
             </div>

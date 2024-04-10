@@ -92,7 +92,7 @@ const Header = (props) => {
             {props.token && (
               <li className="list-none py-2 border-b border-blue-900 border-opacity-25 mr-4 md:text-white">
                 <Link
-                  to={`/user-profile/${userId}`}
+                  to='/user-dashboard'
                   className={`w-full flex text-base md:hover:text-blue-200 cursor-pointer
                 ${
                   props.activePage === "my_profile" &&
@@ -100,7 +100,7 @@ const Header = (props) => {
                 }`}
                 onClick={() => props.setActivePage("my_profile")}
               >
-                Profile
+                Dashboard
               </Link>
             </li>)}
             {!props.token ? (

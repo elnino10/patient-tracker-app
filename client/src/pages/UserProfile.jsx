@@ -230,7 +230,7 @@ const UserProfile = ({
                 to="/user-dashboard"
                 className="-mt-2 w-48 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
               >
-                Back to Dashboard
+                Dashboard
               </Link>
             </div>
           </div>
