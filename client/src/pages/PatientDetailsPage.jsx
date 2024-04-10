@@ -18,7 +18,10 @@ function PatientDetailsPage() {
     axios
       .get(`${URL}/${id}`)
       .then((response) => {
-        setPatient(response.data.data[0]);
+        if (response.data.data) {
+          setPatient(response.data.data[0]);
+          // console.log(response.data.data[0]);
+        }
       })
       .catch((error) => {
         console.error("Error fetching patient data:", error);
@@ -47,7 +50,7 @@ function PatientDetailsPage() {
         <div className="flex">
           <div className="pt-4">
             <img
-              src={avatar}
+              src={patient.profile_pic ? patient.profile_pic : avatar}
               alt="patient-image"
               className="w-40 rounded-lg justifty-center bg-gray-300"
             />
@@ -56,7 +59,10 @@ function PatientDetailsPage() {
             {patient?.first_name}
           </h2>
         </div>
-        <div className="p-5 rounded-md border-solid bg-[#FFFFFF] space-y-4 shadow-md md:col-span-1 md:pt-20">
+        <div
+          className="py-5 px-2 rounded-md border-solid bg-[#FFFFFF]
+          space-y-4 shadow-md md:w-[35rem] md:col-span-1 md:mt-20"
+        >
           <div>
             <p>
               Name: {patient?.first_name} {patient?.last_name}
@@ -75,7 +81,7 @@ function PatientDetailsPage() {
             to={`/patients/${patient.id}/medical-record`}
             className="pt-11 ml-[65%] text-sm underline text-blue-400"
           >
-            view patient's medical record
+            view medical record
           </Link>
         </div>
       </div>

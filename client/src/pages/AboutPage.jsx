@@ -2,7 +2,7 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="bg-gray-100 pt-10 h-screen">
+    <div className="bg-gray-100 pt-10 h-full md:h-screen">
       <div className="container mx-auto px-4">
         {/* Medical Records Section */}
         <div className="mb-8 md:flex md:text-center">

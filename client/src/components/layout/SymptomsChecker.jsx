@@ -75,7 +75,7 @@ const SymptomsChecker = () => {
           ),
         }}
       />
-      <div className="p-2 mt-4 border w-full min-h-40 border-blue-200 rounded-md">
+      <div className="p-2 mt-4 border w-full min-h-40 rounded-md shadow-xl">
         <div className="pt-3">
           <p
             className={`${
