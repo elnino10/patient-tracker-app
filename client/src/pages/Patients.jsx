@@ -6,6 +6,7 @@ import avatar from "../assets/images/avatar.png";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Box, CircularProgress } from "@mui/material";
 
 const Patients = () => {
   const [data, setData] = useState([]);
@@ -26,6 +27,16 @@ const Patients = () => {
         console.error(error);
       });
   }, []);
+
+  if (!data.length > 0) {
+    return (
+      <div className="h-screen flex justify-center">
+        <Box sx={{ display: "flex" }} className="p-10">
+          <CircularProgress />
+        </Box>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen">
