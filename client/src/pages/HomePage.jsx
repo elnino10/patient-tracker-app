@@ -115,7 +115,7 @@ const HomePage = ({ token }) => {
         )}
         {showSymptomChecker && (
           <div className="flex justify-between bg-slate-200 md:justify-center">
-            <div className="container mx-auto py-20 flex px-8 pt-5">
+            <div className="container mx-auto py-20 flex px-8 pt-5 md:justify-center">
               <SymptomsChecker />
             </div>
             <span

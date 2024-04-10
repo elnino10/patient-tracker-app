@@ -54,7 +54,7 @@ const SymptomsChecker = () => {
   };
 
   return (
-    <div className="flex flex-col items-start w-full md:w-80">
+    <div className="flex flex-col items-start w-full md:w-[80%]">
       <p className="text-center font-bold text-slate-900 pb-1">
         Describe how you feel
       </p>

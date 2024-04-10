@@ -160,7 +160,7 @@ def delete_medic_by_id(medic_id):
 
 # create patient's medical record
 @app.route(
-    "/api/v1/patients/<patient_id>/medical_record",
+    "/api/v1/patients/<patient_id>/medical-record",
     methods=["POST"],
     strict_slashes=False,
 )
@@ -219,8 +219,8 @@ def get_medical_record(patient_id):
 
 # update patient's medical record
 @app.route(
-    "/api/v1/patients/<patient_id>/medical_record",
-    methods=["PATCH"],
+    "/api/v1/patients/<patient_id>/medical-record",
+    methods=["PATCH", "PUT"],
     strict_slashes=False,
 )
 # @authorize_medic
@@ -251,7 +251,7 @@ def update_medical_record(patient_id):
 
 # delete patient's medical record
 @app.route(
-    "/api/v1/patients/<patient_id>/medical_record",
+    "/api/v1/patients/<patient_id>/medical-record",
     methods=["DELETE"],
     strict_slashes=False,
 )
