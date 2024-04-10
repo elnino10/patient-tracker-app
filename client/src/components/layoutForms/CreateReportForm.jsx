@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -34,24 +34,42 @@ const CreateReportForm = () => {
   const [submit, setSubmit] = useState(false);
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
-  
+
   const reqURL = `${apiURL}/api/v1/patients/${id}/medical_record`;
+
+  // get medical records
+  // useEffect(() => {
+  //   axios
+  //     .get(reqURL)
+  //     .then((res) => {
+  //       console.log(res.date);
+  //     })
+  //     .catch((error) => {
+  //       error.response && console.log(error.response);
+  //     });
+  // }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmit(true);
     try {
       const data = new FormData(event.currentTarget);
-      axios.post(reqURL, {
-        allergies: data.get("allergies"),
-        medication: data.get("medication"),
-        diagnosis: data.get("diagnosis"),
-        history: data.get("history"),
-        medical_info: data.get("medical_info"),
-        patient_id: id,
-      }, {headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`
-      }});
+      axios.post(
+        reqURL,
+        {
+          allergies: data.get("allergies"),
+          medication: data.get("medication"),
+          diagnosis: data.get("diagnosis"),
+          history: data.get("history"),
+          medical_info: data.get("medical_info"),
+          patient_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
       setSubmit(false);
       event.target.reset();
     } catch (error) {
