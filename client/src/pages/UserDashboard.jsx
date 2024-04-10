@@ -67,8 +67,8 @@ const UserDashboard = ({ decodedToken }) => {
     );
   }
   return (
-    <div className="h-screen">
-      <div className="h-full m-8 border-solid rounded-md border-2 border-indigo-600">
+    <div className="h-full md:h-screen">
+      <div className="h-screen m-8 border-solid rounded-md border-2 border-indigo-600 border-b-2 block md:flex">
         <div className="p-6 flex pt-2">
           <div className="pt-4">
             <img
@@ -77,11 +77,19 @@ const UserDashboard = ({ decodedToken }) => {
               className="w-300 h-30 rounded-full bg-gray-300  md:w-38 md:h-38 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
             />
           </div>
-          <div>
-            <h2 className="pl-2 pt-10">{userData?.first_name}</h2>
+          <h2 className="pt-36 text-md font-bold text-gray-800 md:pt-40">
+            {userData?.first_name}
+          </h2>
+          <div className="pt-6 ml-16">
+            <Link
+              to={`/user-profile/${userData?.id}`}
+              className="text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
+            >
+              Edit profile
+            </Link>
           </div>
         </div>
-        <div className="pl-6 pr-4">
+        <div className="pl-6 pr-4 border-b-2 block md:flex">
           <div>
             <p className="p-6 font-extrabold text-center text-blue-600">
               Basic Information
@@ -159,33 +167,6 @@ const UserDashboard = ({ decodedToken }) => {
                   <span className="font-bold">Other Medical Information</span>:{" "}
                   {medicalRecord?.medical_info}
                 </p>
-              </div>
-              <div className="flex justify-end pt-2">
-                <div>
-                  <IconButton>
-                    <EditIcon fontSize="small" color="primary" />
-                  </IconButton>
-                </div>
-                <div>
-                  <IconButton size="small">
-                    <DeleteIcon fontSize="small" color="primary" />
-                  </IconButton>
-                </div>
-                <div>
-                  <Link to="#">
-                    <IconButton>
-                      <AddIcon fontSize="medium" color="primary" />
-                    </IconButton>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={`/user-profile/${userData?.id}`}
-                    className="pt-4 font-bold text-blue-600"
-                  >
-                    Edit my profile
-                  </Link>
-                </div>
               </div>
             </div>
           )}

@@ -213,20 +213,20 @@ const ProfileImageUploader = ({
         <ul className="text-slate-500 text-sm flex flex-col items-center px-2">
           {profileImage ? (
             <li
-              className="border-b border-slate-400 pb-2"
+              className="border-b border-slate-400 pb-2 cursor-pointer"
               onClick={selectImageHandler}
             >
               change
             </li>
           ) : (
             <li
-              className="border-b border-slate-400 pb-2"
+              className="border-b border-slate-400 pb-2 cursor-pointer"
               onClick={selectImageHandler}
             >
               select
             </li>
           )}
-          <li className="pt-1" onClick={removeImageHandler}>
+          <li className="pt-1 cursor-pointer" onClick={removeImageHandler}>
             remove
           </li>
           <input
