@@ -222,13 +222,13 @@ const UserProfile = ({
             <div className="flex">
               <button
                 onClick={handleSubmitEdit}
-                className="-mt-2 mr-20 w-32 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
+                className="-mt-2 w-48 mr-20 w-32 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
               >
                 {submitting ? "Updating..." : "Submit"}
               </button>
               <Link
                 to="/user-dashboard"
-                className="-mt-2 w-40 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
+                className="-mt-2 w-48 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
               >
                 Back to Dashboard
               </Link>
