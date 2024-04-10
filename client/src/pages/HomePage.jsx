@@ -135,10 +135,10 @@ const HomePage = ({ token }) => {
           {/* Feature 1 */}
           <div className="rounded-md border-solid bg-[#FFFFFF] shadow-md col-span-1 md:col-span-1">
             <div className="p-8">
-              <h2 className="text-3xl font-bold mb-4">
-                <img src={securityIcon} alt="secuirtyIcon" />
+              <div className="text-3xl font-bold mb-4 flex items-center">
+                <img src={securityIcon} alt="secuirtyIcon" className="h-7 mr-2" />
                 <strong>Secure</strong>
-              </h2>
+              </div>
               <p className="text-[#696969]">
                 Store sensitive and confidential patient records in a secure
                 cloud-based electronic medical records system that is compliant
@@ -150,9 +150,9 @@ const HomePage = ({ token }) => {
           {/* Feature 2 */}
           <div className="rounded-md border-solid bg-[#FFFFFF] col-span-1 shadow-md md:col-span-1">
             <div className="p-8">
-              <h2 className="text-3xl font-bold mb-4">
+              <div className="text-3xl font-bold mb-4">
                 <strong>Feature 2</strong>
-              </h2>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -162,9 +162,9 @@ const HomePage = ({ token }) => {
           {/* Feature 3 */}
           <div className="rounded-md border-solid bg-[#FFFFFF] shadow-md col-span-1 md:col-span-1">
             <div className="p-8">
-              <h2 className="text-3xl font-bold mb-4">
+              <div className="text-3xl font-bold mb-4">
                 <strong>Feature 3</strong>
-              </h2>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.

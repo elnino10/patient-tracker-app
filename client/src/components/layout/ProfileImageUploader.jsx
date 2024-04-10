@@ -189,7 +189,7 @@ const ProfileImageUploader = ({
 
       <div
         className="absolute bg-white w-5 h-5 items-center justify-center
-          flex border rounded-md translate-x-[8.5rem] translate-y-[-1rem] "
+          flex border rounded-md translate-x-[8.5rem] translate-y-[-1rem] md:translate-x-[12rem] md:translate-y-[-1rem]"
       >
         <IconButton onClick={handleSelectOptions}>
           <EditIcon fontSize="small" />
@@ -207,7 +207,7 @@ const ProfileImageUploader = ({
           !showImageMenu ? "hidden" : ""
         } border border-slate-200 bg-slate-200
         rounded-md shadow-lg items-center flex justify-center absolute z-10 h-20
-        translate-y-[-7rem] translate-x-[10rem]
+        translate-y-[-7rem] translate-x-[10rem] md:translate-x-[14rem] md:translate-y-[-7rem]
         `}
       >
         <ul className="text-slate-500 text-sm flex flex-col items-center px-2">

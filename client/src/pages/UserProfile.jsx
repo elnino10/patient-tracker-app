@@ -1,17 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
 import { ProfileImageUploader } from "../components";
-
-
 
 const UserProfile = ({
   token,
   decodedToken,
   setShowImageMenu,
-  showImageMenu
+  showImageMenu,
 }) => {
   const [editInput, setEdit] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -105,7 +103,8 @@ const UserProfile = ({
             </span>
             <div
               onClick={() => setEdit(!editInput)}
-              className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
+              className="-mt-2 text-md font-bold text-white bg-gray-700
+              rounded-full px-5 py-2 hover:bg-gray-800 cursor-pointer"
             >
               {editInput ? "Cancel" : "Edit"}
             </div>
@@ -222,13 +221,13 @@ const UserProfile = ({
             <div className="flex">
               <button
                 onClick={handleSubmitEdit}
-                className="-mt-2 w-48 mr-20 w-32 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
+                className="mr-20 font-bold text-md text-white bg-blue-500 rounded-xl px-3 py-2 hover:bg-blue-700 shadow-xl"
               >
                 {submitting ? "Updating..." : "Submit"}
               </button>
               <Link
                 to="/user-dashboard"
-                className="-mt-2 w-48 text-md font-bold text-white bg-blue-500 rounded-full px-5 py-2 hover:bg-blue-700"
+                className="mr-20 text-md text-white bg-slate-700 rounded-xl px-3 py-2 hover:bg-slate-900 shadow-2xl"
               >
                 Dashboard
               </Link>

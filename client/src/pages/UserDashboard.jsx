@@ -1,41 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import avatar from "../assets/images/avatar.png";
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-// import { KJUR } from "jsrsasign";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const UserDashboard = ({ decodedToken }) => {
-  const [userData, setUserData] = useState({});
+const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
   const [medicalRecord, setMedicalRecord] = useState({});
 
   const category_ = decodedToken?.category;
   const userId = decodedToken?.sub;
 
-  let reqURL;
   const apiURL = import.meta.env.VITE_API_BASE_URL;
-  if (category_ && userId) {
-    reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
-  }
-
-  // get user information from database
-  useEffect(() => {
-    if (reqURL) {
-      axios
-        .get(reqURL)
-        .then((res) => {
-          setUserData(res.data.data[0]);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, []);
 
   // if user is a patient, display medical record information
   useEffect(() => {
@@ -56,13 +32,12 @@ const UserDashboard = ({ decodedToken }) => {
     }
   }, []);
 
-  if (!userData && !medicalRecord) {
+  if (!userData.profile_pic && !medicalRecord.id) {
     return (
-      <div>
+      <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
           <CircularProgress />
         </Box>
-        {/* <p>Loading...</p> */}
       </div>
     );
   }
@@ -73,9 +48,9 @@ const UserDashboard = ({ decodedToken }) => {
           <div className="flex flex-col justify-center items-center">
             <div className="pt-2">
               <img
-                src={avatar}
+                src={userData.profile_pic ? userData.profile_pic : avatar}
                 alt="patient-image"
-                className="w-300 h-30 rounded-full bg-gray-300  md:w-38 md:h-38 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
+                className="w-32 h-32 rounded-full bg-gray-300 md:w-38 md:h-38 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
               />
             </div>
             <h2 className="text-md text-sm text-gray-500 md:pt-40">
@@ -84,8 +59,9 @@ const UserDashboard = ({ decodedToken }) => {
           </div>
           <div className="pt-6 ml-16">
             <Link
+              onClick={() => setActivePage("")}
               to={`/user-profile/${userData?.id}`}
-              className="text-white bg-gray-700 shadow-xl rounded-full px-2 py-1 text-sm hover:bg-gray-800 md:items-end"
+              className="text-white bg-gray-700 shadow-xl rounded-lg px-2 py-1 text-sm hover:bg-gray-800 md:items-end"
             >
               view profile
             </Link>

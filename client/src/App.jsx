@@ -34,6 +34,7 @@ const App = () => {
   const [authUserData, setAuthUserData] = useState({});
   const [activePage, setActivePage] = useState("");
   const [showImageMenu, setShowImageMenu] = useState(false);
+  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -64,13 +65,27 @@ const App = () => {
           console.error(error);
         });
     }
-
     updateAxiosHeaders();
 
     return () => {
       delete axios.defaults.headers.common["Authorization"];
     };
   }, [token]);
+
+  // get current user's data
+  useEffect(() => {
+    axios
+      .get(reqURL)
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setUserData(res.data.data[0]);
+          // console.log(res.data.data[0]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // if token is null, reset authUserData and decodedToken
   useEffect(() => {
@@ -117,7 +132,7 @@ const App = () => {
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
-        <Route path="/patients" element={<Patients />} />
+        <Route path="/patients" element={<Patients setActivePage={setActivePage} />} />
         <Route path="/patients/:id" element={<PatientDetailsPage />} />
         <Route
           path="/user-profile/:id"
@@ -133,10 +148,15 @@ const App = () => {
         />
         <Route
           path="/user-dashboard"
-          element={<UserDashboard decodedToken={decodedToken} />}
+          element={
+            <UserDashboard decodedToken={decodedToken} userData={userData} setActivePage={setActivePage} />
+          }
         />
         <Route path="/patients/:id/create-record" element={<CreateReport />} />
-        <Route path="/patients/:id/medical-record" element={<MedicalRecordPage category_={category_} />} />
+        <Route
+          path="/patients/:id/medical-record"
+          element={<MedicalRecordPage category_={category_} />}
+        />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <Footer />
