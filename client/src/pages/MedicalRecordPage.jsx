@@ -154,7 +154,7 @@ const MedicalRecordPage = ({ category_ }) => {
   }
 
   return (
-    <div className="h-full md:h-screen">
+    <div className="h-full md:h-screen xl:h-screen lg:h-screen">
       <div className="border-b-2 block md:flex">
         <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
           <div className="flex justify-between">
@@ -164,7 +164,7 @@ const MedicalRecordPage = ({ category_ }) => {
             {category_ === "medic" && (
               <div
                 onClick={updateButtonHandler}
-                className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
+                className="-mt-2 text-md font-bold cursor-pointer text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
               >
                 {editInput ? "Cancel" : "Update"}
               </div>
