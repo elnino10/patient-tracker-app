@@ -50,14 +50,14 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
               <img
                 src={userData.profile_pic ? userData.profile_pic : avatar}
                 alt="patient-image"
-                className="w-32 h-32 rounded-full bg-gray-300 md:w-38 md:h-38 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
+                className="w-32 h-32 rounded-full bg-gray-300 md:w-44 md:h-38 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
               />
             </div>
             <h2 className="text-md text-sm text-gray-500 md:pt-40">
               {userData?.specialization}
             </h2>
           </div>
-          <div className="pt-6 ml-16">
+          <div className="pt-6 ml-11 l:ml-40">
             <Link
               onClick={() => setActivePage("")}
               to={`/user-profile/${userData?.id}`}
@@ -111,51 +111,50 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
               )}
             </div>
           </div>
-          <div className="pt-8">
-          <p className="mt-8 text-center font-extrabold text-slate-600">
-            Medical Record
-          </p>
-          {category_ === "patient" && userData.med_record_id !== null ? (
-            <div className="pt-6">
-              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-                <p>
-                  <span className="font-bold">Allergies</span>:{" "}
-                  {medicalRecord?.allergies}
-                </p>
+          <div className="pt-4">
+            <p className="mt-8 text-center font-extrabold text-slate-600">
+              Medical Record
+            </p>
+            {category_ === "patient" && userData.med_record_id !== null ? (
+              <div className="pt-6">
+                <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                  <p>
+                    <span className="font-bold">Allergies</span>:{" "}
+                    {medicalRecord?.allergies}
+                  </p>
+                </div>
+                <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                  <p>
+                    <span className="font-bold">Diagnosis</span>:{" "}
+                    {medicalRecord?.diagnosis}
+                  </p>
+                </div>
+                <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                  <p>
+                    <span className="font-bold">Medical History</span>:{" "}
+                    {medicalRecord?.history}
+                  </p>
+                </div>
+                <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                  <p>
+                    <span className="font-bold">Current Medication</span>:{" "}
+                    {medicalRecord?.medication}
+                  </p>
+                </div>
+                <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                  <p>
+                    <span className="font-bold">Other Medical Information</span>
+                    : {medicalRecord?.medical_info}
+                  </p>
+                </div>
               </div>
-              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-                <p>
-                  <span className="font-bold">Diagnosis</span>:{" "}
-                  {medicalRecord?.diagnosis}
-                </p>
+            ) : (
+              <div className="flex text-center justify-center text-lg text-red-500">
+                <p>Patient has no medical record yet!</p>
               </div>
-              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-                <p>
-                  <span className="font-bold">Medical History</span>:{" "}
-                  {medicalRecord?.history}
-                </p>
-              </div>
-              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-                <p>
-                  <span className="font-bold">Current Medication</span>:{" "}
-                  {medicalRecord?.medication}
-                </p>
-              </div>
-              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-                <p>
-                  <span className="font-bold">Other Medical Information</span>:{" "}
-                  {medicalRecord?.medical_info}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex text-center justify-center text-lg text-red-500">
-              <p>Patient has no medical record yet!</p>
-            </div>
-           
-          )}
+            )}
+          </div>
         </div>
-         </div>
       </div>
     </div>
   );
