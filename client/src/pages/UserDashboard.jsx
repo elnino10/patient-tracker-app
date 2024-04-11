@@ -111,11 +111,12 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
               )}
             </div>
           </div>
+          <div className="pt-8">
           <p className="mt-8 text-center font-extrabold text-slate-600">
             Medical Record
           </p>
           {category_ === "patient" && userData.med_record_id !== null ? (
-            <div className="mt-3">
+            <div className="pt-6">
               <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
                 <p>
                   <span className="font-bold">Allergies</span>:{" "}
@@ -151,8 +152,10 @@ const UserDashboard = ({ decodedToken, userData, setActivePage }) => {
             <div className="flex text-center justify-center text-lg text-red-500">
               <p>Patient has no medical record yet!</p>
             </div>
+           
           )}
         </div>
+         </div>
       </div>
     </div>
   );
