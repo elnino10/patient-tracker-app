@@ -26,11 +26,11 @@ const HomePage = ({ token }) => {
   return (
     <div className="bg-[#F9F7F0]">
       <div className="text-black py-20 px-6 md:flex items-center justify-between">
-        <div className="md:w-1/2 md:pr-10 mb-6 md:mb-0">
-          <h1 className="text-[#3256a8] text-4xl font-bold mb-4">
+        <div className="md:w-1/2 md:pr-10 mb-6 md:mb-0 md:pt-0">
+          <h1 className="text-[#3256a8] text-4xl font-bold mb-4 xl:text-6xl">
             Your Medical Records, Securely Managed
           </h1>
-          <p className="text-sm text-center">
+          <p className="text-sm text-center xl:text-4xl">
             In the event of emergencies, quick access to your medical
             information can be crucial. Our app offers secure cloud storage,
             allowing you to retrieve your health records anytime, anywhere,
@@ -136,7 +136,11 @@ const HomePage = ({ token }) => {
           <div className="rounded-md border-solid bg-[#FFFFFF] shadow-md col-span-1 md:col-span-1">
             <div className="p-8">
               <div className="text-3xl font-bold mb-4 flex items-center">
-                <img src={securityIcon} alt="secuirtyIcon" className="h-7 mr-2" />
+                <img
+                  src={securityIcon}
+                  alt="secuirtyIcon"
+                  className="h-7 mr-2"
+                />
                 <strong>Secure</strong>
               </div>
               <p className="text-[#696969]">
