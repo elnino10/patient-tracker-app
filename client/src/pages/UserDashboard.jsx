@@ -120,7 +120,7 @@ const UserDashboard = ({
             </p>
             <p className="mb-1">
               <span className="font-bold">Phone: </span>
-              {authUserData?.phone}
+              {authUserData?.phone_number}
             </p>
             {category_ === "patient" && (
               <div>

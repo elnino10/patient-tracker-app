@@ -9,7 +9,7 @@ from . import (
     create_storage_client,
     datetime,
     environ,
-    g,
+    # g,
     json,
     jsonify,
     jwt,
@@ -21,7 +21,7 @@ from . import (
     tempfile,
     time,
     timedelta,
-    wraps,
+    # wraps,
 )
 
 cor = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -477,7 +477,6 @@ def signup():
             session_data = json.loads(session.model_dump_json())
             user_id = session_data.get("user", {}).get("id")
 
-
             data = (
                 supabase.table("users")
                 .update(
@@ -491,7 +490,8 @@ def signup():
                         "dob": birthdate,
                         "gender": user_data.get("gender"),
                         "address": user_data.get("address"),
-                        "user_id": user_id
+                        "phone_number": user_data.get("phone_number"),
+                        "user_id": user_id,
                     }
                 )
                 .eq("id", user_id)

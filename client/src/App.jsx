@@ -26,10 +26,10 @@ import {
 } from "./components";
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  // const [isAuth, setIsAuth] = useState(false);
+  // const [decodedToken, setDecodedToken] = useState(null);
   const [menuVisible, setMenuVisible] = useState(false);
-  const [token, setToken] = useState(null);
-  const [decodedToken, setDecodedToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("access_token"));
   const [category_, setCategory_] = useState("");
   const [userId, setUserId] = useState("");
   const [authUserData, setAuthUserData] = useState(null);
@@ -38,6 +38,7 @@ const App = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [medicalRecord, setMedicalRecord] = useState(null);
   const [data, setData] = useState([]);
+
   const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
@@ -58,7 +59,6 @@ const App = () => {
       }
     };
     updateAxiosHeaders();
-
     return () => {
       delete axios.defaults.headers.common["Authorization"];
     };
@@ -69,15 +69,14 @@ const App = () => {
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
       let decoded = KJUR.jws.JWS.parse(token);
-      setDecodedToken(decoded);
       setCategory_(decoded?.payloadObj.category);
       setUserId(decoded?.payloadObj.sub);
     }
   }, [token])
 
+  // make request to get user data
   useEffect(() => {
     if ((category_ && userId) || fileUploaded) {
-      // make request to get user data
       axios
         .get(reqURL)
         .then((res) => {
@@ -93,12 +92,11 @@ const App = () => {
   useEffect(() => {
     if (token === null) {
       setAuthUserData(null);
-      setDecodedToken(null);
       setMedicalRecord(null);
       setCategory_("");
       setUserId("");
       setActivePage("");
-      navigate("/");
+      navigate("/login");
     }
   }, [token]);
 
@@ -117,7 +115,6 @@ const App = () => {
         activePage={activePage}
         setActivePage={setActivePage}
         setMedicalRecord={setMedicalRecord}
-        setIsAuth={setIsAuth}
       />
       <Routes>
         <Route path="/" element={<HomePage token={token} />} />
@@ -128,7 +125,6 @@ const App = () => {
             <Login
               setToken={setToken}
               setActivePage={setActivePage}
-              setIsAuth={setIsAuth}
             />
           }
         />

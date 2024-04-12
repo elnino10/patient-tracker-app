@@ -106,13 +106,9 @@ const Patients = ({ setActivePage, data, setData }) => {
                 </div>
                 <div>
                   <p
-                    onClick={() => {
-                      setActivePage("");
-                      navigate(`/patients/${patient.id}`);
-                    }}
-                    className="hidden md:flex md:pt-11 md:underline md:text-blue-400 hover:text-blue-500"
+                    className="md:flex md:pt-11 md:text-slate-400"
                   >
-                    patient's details
+                    <span>Phone: </span>{patient.phone}
                   </p>
                 </div>
               </Link>

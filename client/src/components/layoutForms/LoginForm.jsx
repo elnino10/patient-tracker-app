@@ -34,7 +34,7 @@ const Copyright = (props) => {
 };
 const defaultTheme = createTheme();
 
-const Login = ({ setToken, setActivePage, setIsAuth }) => {
+const Login = ({ setToken, setActivePage }) => {
   const [submit, setSubmit] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,12 +54,10 @@ const Login = ({ setToken, setActivePage, setIsAuth }) => {
         password: data.get("password"),
       });
 
-      console.log(response.data)
       const { access_token } = response.data;
       localStorage.setItem("access_token", JSON.stringify(access_token));
       setSubmit(false);
       setToken(access_token);
-      setIsAuth(true);
 
       // redirect to user dashboard
       access_token && navigate("/user-dashboard");
