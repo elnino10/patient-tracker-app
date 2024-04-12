@@ -55,11 +55,11 @@ const SymptomsChecker = () => {
 
   return (
     <div className="flex flex-col items-start w-full md:w-[80%]">
-      <p className="text-center font-bold text-slate-900 pb-1">
+      <p className="text-center font-bold text-slate-900 pb-1 xl:text-2xl xl:pb-3">
         Describe how you feel
       </p>
       <TextField
-        style={{ width: "100%"}}
+        style={{ width: "100%" }}
         variant="outlined"
         value={userInput}
         onChange={handleInputChange}
@@ -80,7 +80,7 @@ const SymptomsChecker = () => {
           <p
             className={`${
               responseData.potentialCauses ? "flex" : "hidden"
-            } font-bold text-slate-800`}
+            } font-bold text-slate-800 xl:text-2xl`}
           >
             Potential Causes:
           </p>
@@ -98,7 +98,7 @@ const SymptomsChecker = () => {
           <p
             className={`${
               responseData.followupQuestions ? "flex" : "hidden"
-            } font-bold text-slate-800`}
+            } font-bold text-slate-800 xl:text-2xl`}
           >
             Follow up questions:
           </p>

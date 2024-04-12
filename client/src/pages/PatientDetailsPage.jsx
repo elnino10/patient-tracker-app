@@ -43,7 +43,7 @@ function PatientDetailsPage() {
   }
 
   return (
-    <div className="h-screen p-8">
+    <div className="h-full p-8">
       <div className="grid md:grid-cols-3 gap-8">
         {/* <div>Patients id: {id}</div> */}
         <div className="flex">
