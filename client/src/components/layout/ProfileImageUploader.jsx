@@ -7,12 +7,14 @@ import EditIcon from "@mui/icons-material/Edit";
 
 const ProfileImageUploader = ({
   token,
+  authUserData,
+  setFileUploaded,
   userId,
   showImageMenu,
   setShowImageMenu,
 }) => {
-  const [profileImage, setProfileImage] = useState(null);
-  const [fileUploaded, setFileUploaded] = useState(false);
+  // const [profileImage, setProfileImage] = useState(null);
+  // const [fileUploaded, setFileUploaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -24,49 +26,44 @@ const ProfileImageUploader = ({
   let imageFile;
 
   // get profile image when page loads
-  useEffect(() => {
-    setSubmitting(true);
-    axios
-      .get(imageStorageURL)
-      .then((res) => {
-        if (res.data.data.length > 0) {
-          setProfileImage(res.data.data[0].profile_pic);
-          setSubmitting(false);
-          // console.log(res.data);
-        } else {
-          setSubmitting(false);
-        }
-      })
-      .catch((error) => {
-        setProfileImage(null);
-        setSubmitting(false);
-        error.response && setErrorMessage(error.response.data.message);
-        console.error(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(imageStorageURL)
+  //     .then((res) => {
+  //       if (res.data.data.length > 0) {
+  //         setProfileImage(res.data.data[0].profile_pic);
+  //         // console.log(res.data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setProfileImage(null);
+  //       error.response && setErrorMessage(error.response.data.message);
+  //       console.error(error);
+  //     });
+  // }, []);
 
   // get new profile image after upload
-  useEffect(() => {
-    setFileUploaded(false);
-    if (fileUploaded && !profileImage) {
-      setSubmitting(true);
-      axios
-        .get(imageStorageURL)
-        .then((res) => {
-          if (res.data.data.length > 0) {
-            setProfileImage(res.data.data[0].profile_pic);
-            setSubmitting(false);
-            // console.log(res.data);
-          }
-        })
-        .catch((error) => {
-          setProfileImage(null);
-          setSubmitting(false);
-          error.response && setErrorMessage(error.response.data.message);
-          console.error(error);
-        });
-    }
-  }, [fileUploaded, profileImage, errorMessage]);
+  // useEffect(() => {
+  //   setFileUploaded(false);
+  //   if (fileUploaded && !profileImage) {
+  //     setSubmitting(true);
+  //     axios
+  //       .get(imageStorageURL)
+  //       .then((res) => {
+  //         if (res.data.data.length > 0) {
+  //           setProfileImage(res.data.data[0].profile_pic);
+  //           setSubmitting(false);
+  //           // console.log(res.data);
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         setProfileImage(null);
+  //         setSubmitting(false);
+  //         error.response && setErrorMessage(error.response.data.message);
+  //         console.error(error);
+  //       });
+  //   }
+  // }, [fileUploaded, profileImage, errorMessage]);
 
   // handle profile image upload
   const handleImageUpload = (e) => {
@@ -74,7 +71,7 @@ const ProfileImageUploader = ({
     setShowImageMenu(false);
     setSubmitting(true);
     // check if image is selected and there isn't an existing image
-    if (imageFile && !profileImage) {
+    if (imageFile && !authUserData.profile_pic) {
       const formData = new FormData();
       formData.append("file", imageFile);
       axios
@@ -97,7 +94,7 @@ const ProfileImageUploader = ({
           error.response && setErrorMessage(error.response.data.message);
           console.error(error);
         });
-    } else if (imageFile && profileImage !== null) {
+    } else if (imageFile && authUserData.profile_pic !== null) {
       // image is selected and there is an existing image
       const formData = new FormData();
       formData.append("file", imageFile);
@@ -111,7 +108,7 @@ const ProfileImageUploader = ({
         .then((res) => {
           if (res.data) {
             setSubmitting(false);
-            setProfileImage(res.data.data[0].profile_pic);
+            // setProfileImage(res.data.data[0].profile_pic);
             // console.log(res.data.data[0].profile_pic);
           }
         })
@@ -138,9 +135,9 @@ const ProfileImageUploader = ({
   const removeImageHandler = () => {
     setSubmitting(true);
     setShowImageMenu(false);
-    setProfileImage(null);
+    // setProfileImage(null);
     // make http request to remove image
-    if (profileImage) {
+    if (authUserData.profile_pic) {
       axios
         .delete(imageStorageURL, {
           headers: {
@@ -182,7 +179,7 @@ const ProfileImageUploader = ({
         </span>
       </div>
       <img
-        src={profileImage ? profileImage : avatar}
+        src={authUserData.profile_pic ? authUserData.profile_pic : avatar}
         alt="user-image"
         className="w-40 h-40 rounded-full bg-gray-300  md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64"
       />
@@ -211,7 +208,7 @@ const ProfileImageUploader = ({
         `}
       >
         <ul className="text-slate-500 text-sm flex flex-col items-center px-2">
-          {profileImage ? (
+          {authUserData.profile_pic ? (
             <li
               className="border-b border-slate-400 pb-2 cursor-pointer"
               onClick={selectImageHandler}

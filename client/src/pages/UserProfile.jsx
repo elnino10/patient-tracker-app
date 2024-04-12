@@ -1,18 +1,23 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
 import { ProfileImageUploader } from "../components";
 
 const UserProfile = ({
   token,
-  decodedToken,
+  authUserData,
+  setFileUploaded,
   setShowImageMenu,
   showImageMenu,
+  category_,
+  userId,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [editInput, setEdit] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -20,15 +25,16 @@ const UserProfile = ({
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
 
-  const category_ = decodedToken.category;
-  const userId = decodedToken.sub;
+  const navigate = useNavigate();
+
   let patientProfile;
 
-  if (decodedToken.category === "patient") patientProfile = true;
+  if (category_ === "patient") patientProfile = true;
   else patientProfile = false;
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
-  const reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
+  let reqURL;
+  if (category_ && userId) reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
 
   // fetch user data
   useEffect(() => {
@@ -44,10 +50,11 @@ const UserProfile = ({
           setEmail(data.email);
         })
         .catch((error) => {
+          error.response && setErrorMessage(error.response.data.message);
           error.response && console.error(error.response.data.message);
         });
     }
-  }, [editInput]);
+  }, [reqURL, editInput]);
 
   // handle profile update
   const handleSubmitEdit = () => {
@@ -78,12 +85,33 @@ const UserProfile = ({
         })
         .catch((error) => {
           setSubmitting(false);
+          error.response && setErrorMessage(error.response.data.message);
           error.response && console.log(error.response.data.message);
         });
     }
   };
 
-  if (!firstName && !lastName && !specialization && !address && !email) {
+  // remove error message
+  const handleErrorMessage = () => {
+    setSubmitting(false);
+    setErrorMessage("");
+  };
+
+  // redirect after 3 seconds if user data is not fetched
+  useEffect(() => {
+    setIsLoading(true);
+    if (!firstName) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        !firstName && navigate("/error");
+      }, 3000);
+      return () => {
+        clearTimeout(timer);
+      };
+    } else setIsLoading(false);
+  }, [firstName, navigate]);
+
+  if (isLoading) {
     return (
       <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
@@ -96,7 +124,7 @@ const UserProfile = ({
   return (
     <div className="h-full md:h-screen">
       <div className="border-b-2 block md:flex">
-        <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
+        <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md relative">
           <div className="flex justify-between">
             <span className="text-xl uppercase italic font-semibold block">
               <span>{category_}'s</span> profile
@@ -114,10 +142,22 @@ const UserProfile = ({
           <div className="w-full p-8 mx-2 flex justify-center">
             <ProfileImageUploader
               token={token}
+              authUserData={authUserData}
+              setFileUploaded={setFileUploaded}
               userId={userId}
               setShowImageMenu={setShowImageMenu}
               showImageMenu={showImageMenu}
             />
+          </div>
+          <div
+            className={`${
+              errorMessage !== "" ? "flex" : "invisible"
+            } text-center justify-between items-center bg-red-100 w-52 px-2 translate-x-[-2rem] translate-y-[13rem] absolute`}
+          >
+            <p className="text-red-500 text-sm py-0">{errorMessage}</p>
+            <span onClick={handleErrorMessage} className="">
+              x
+            </span>
           </div>
         </div>
         <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">

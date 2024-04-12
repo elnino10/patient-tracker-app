@@ -138,7 +138,7 @@ def delete_medic_by_id(medic_id):
         )
 
 
-###################      api route for medical history     ####################
+###################      api route for medical record     ####################
 # create an authorization decorator
 # def authorize_medic(func):
 #     """routes are protected and accessed by medics only"""
@@ -203,6 +203,10 @@ def get_medical_record(patient_id):
             .eq("patient_id", patient_id)
             .execute()
         )
+
+        if len(data.data) == 0:
+            return jsonify({"data": [], "message": "Medical record not found!"}), 200
+
         if not len(data.data) > 0:
             return (
                 jsonify({"message": "Medical record not found!", "status": "failed"}),
@@ -300,6 +304,10 @@ def patients_by_id(patient_id):
     """get patient by id"""
     try:
         data = supabase.table("patients").select("*").eq("id", patient_id).execute()
+
+        if len(data.data) == 0:
+            return jsonify({"data": [], "message": "Patient not found!"}), 200
+
         if not len(data.data) > 0:
             return jsonify({"message": "Patient not found!", "status": "failed"}), 404
         return jsonify({"data": data.data, "status": "success"}), 200
