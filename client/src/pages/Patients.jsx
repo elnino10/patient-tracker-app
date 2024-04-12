@@ -22,7 +22,7 @@ const Patients = ({ setActivePage, data, setData }) => {
           if (response.data) {
             const data = response.data.data;
             setData(data);
-            console.log(data);
+            // console.log(data);
           }
         })
         .catch((error) => {

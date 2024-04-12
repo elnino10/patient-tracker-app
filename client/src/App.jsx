@@ -26,6 +26,7 @@ import {
 } from "./components";
 
 const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [token, setToken] = useState(null);
   const [decodedToken, setDecodedToken] = useState(null);
@@ -35,7 +36,6 @@ const App = () => {
   const [activePage, setActivePage] = useState("");
   const [showImageMenu, setShowImageMenu] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
   const [medicalRecord, setMedicalRecord] = useState(null);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -46,17 +46,15 @@ const App = () => {
     reqURL = `${apiURL}/api/v1/${category_}s/${userId}`;
   }
 
-  // get authenticated user's data on sign in
+  // set token on user sign in
   useEffect(() => {
     const updateAxiosHeaders = () => {
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        localStorage.setItem("access_token", token);
-        setIsAuth(true);
+        localStorage.setItem("access_token", token);        
       } else {
         delete axios.defaults.headers.common["Authorization"];
         localStorage.removeItem("access_token");
-        setIsAuth(false);
       }
     };
     updateAxiosHeaders();
@@ -68,35 +66,32 @@ const App = () => {
 
   // get and decode access token when page loads
   useEffect(() => {
-    if (localStorage.getItem("access_token") && !decodedToken) {
+    const storedToken = localStorage.getItem("access_token");
+    if (storedToken) {
       let decoded = KJUR.jws.JWS.parse(token);
       setDecodedToken(decoded);
       setCategory_(decoded?.payloadObj.category);
       setUserId(decoded?.payloadObj.sub);
     }
-  }, [token]);
+  }, [token])
 
   useEffect(() => {
-    if ((isAuth && reqURL !== undefined) || fileUploaded) {
+    if ((category_ && userId) || fileUploaded) {
       // make request to get user data
       axios
         .get(reqURL)
         .then((res) => {
-          if (res.data.data.length > 0) {
-            setAuthUserData(res.data.data[0]);
-            // console.log(res.data);
-          }
+          if (res.data.data.length > 0) setAuthUserData(res.data.data[0]);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [isAuth, reqURL, fileUploaded]);
+  }, [category_, userId, fileUploaded]);
 
   // if token is null, reset authUserData and decodedToken
   useEffect(() => {
     if (token === null) {
-      setIsAuth(false);
       setAuthUserData(null);
       setDecodedToken(null);
       setMedicalRecord(null);
@@ -104,7 +99,6 @@ const App = () => {
       setUserId("");
       setActivePage("");
       navigate("/");
-    } else {
     }
   }, [token]);
 
@@ -123,14 +117,20 @@ const App = () => {
         activePage={activePage}
         setActivePage={setActivePage}
         setMedicalRecord={setMedicalRecord}
-        setDecodedToken={setDecodedToken}
+        setIsAuth={setIsAuth}
       />
       <Routes>
         <Route path="/" element={<HomePage token={token} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"
-          element={<Login setToken={setToken} setActivePage={setActivePage} />}
+          element={
+            <Login
+              setToken={setToken}
+              setActivePage={setActivePage}
+              setIsAuth={setIsAuth}
+            />
+          }
         />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/register-patient" element={<RegisterPatient />} />
