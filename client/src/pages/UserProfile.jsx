@@ -100,7 +100,7 @@ const UserProfile = ({
   // redirect after 3 seconds if user data is not fetched
   useEffect(() => {
     setIsLoading(true);
-    if (!firstName) {
+    if (!email) {
       const timer = setTimeout(() => {
         setIsLoading(false);
         !firstName && navigate("/error");
@@ -109,7 +109,7 @@ const UserProfile = ({
         clearTimeout(timer);
       };
     } else setIsLoading(false);
-  }, [firstName, navigate]);
+  }, [email, navigate]);
 
   if (isLoading) {
     return (

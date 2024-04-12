@@ -34,7 +34,7 @@ const Copyright = (props) => {
 };
 const defaultTheme = createTheme();
 
-const Login = ({ setToken, setActivePage }) => {
+const Login = ({ setToken, setActivePage, setIsAuth }) => {
   const [submit, setSubmit] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,19 +54,21 @@ const Login = ({ setToken, setActivePage }) => {
         password: data.get("password"),
       });
 
+      console.log(response.data)
       const { access_token } = response.data;
       localStorage.setItem("access_token", JSON.stringify(access_token));
-      setToken(access_token);
       setSubmit(false);
-      
+      setToken(access_token);
+      setIsAuth(true);
+
       // redirect to user dashboard
       access_token && navigate("/user-dashboard");
       setActivePage("dashboard");
       event.target.reset();
     } catch (error) {
-      console.error("Error logging in: ", error.response);
+      console.error("Error logging in: ", error);
       setError(true);
-      setErrorMessage(error.response.data.message);
+      error.response?.data && setErrorMessage(error.response.data.message);
       setSubmit(false);
       event.target.reset();
     }

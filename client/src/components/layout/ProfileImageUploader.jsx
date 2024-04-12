@@ -84,9 +84,8 @@ const ProfileImageUploader = ({
         .then((res) => {
           if (res.data.data > 0) {
             setFileUploaded(true);
-
             setSubmitting(false);
-            console.log(res.data);
+            // console.log(res.data);
           }
         })
         .catch((error) => {
@@ -108,8 +107,7 @@ const ProfileImageUploader = ({
         .then((res) => {
           if (res.data) {
             setSubmitting(false);
-            // setProfileImage(res.data.data[0].profile_pic);
-            // console.log(res.data.data[0].profile_pic);
+            setFileUploaded(true);
           }
         })
         .catch((error) => {
@@ -179,14 +177,14 @@ const ProfileImageUploader = ({
         </span>
       </div>
       <img
-        src={authUserData.profile_pic ? authUserData.profile_pic : avatar}
+        src={authUserData?.profile_pic ? authUserData.profile_pic : avatar}
         alt="user-image"
         className="w-40 h-40 rounded-full bg-gray-300  md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64"
       />
 
       <div
         className="absolute bg-white w-5 h-5 items-center justify-center
-          flex border rounded-md translate-x-[8.5rem] translate-y-[-1rem] md:translate-x-[12rem] md:translate-y-[-1rem]"
+          flex border rounded-md translate-x-[8.5rem] translate-y-[-1rem] md:translate-x-[10rem] md:translate-y-[-1rem]"
       >
         <IconButton onClick={handleSelectOptions}>
           <EditIcon fontSize="small" />
@@ -204,11 +202,11 @@ const ProfileImageUploader = ({
           !showImageMenu ? "hidden" : ""
         } border border-slate-200 bg-slate-200
         rounded-md shadow-lg items-center flex justify-center absolute z-10 h-20
-        translate-y-[-7rem] translate-x-[10rem] md:translate-x-[14rem] md:translate-y-[-7rem]
+        translate-y-[-7rem] translate-x-[10rem] md:translate-x-[12rem] md:translate-y-[-7rem]
         `}
       >
         <ul className="text-slate-500 text-sm flex flex-col items-center px-2">
-          {authUserData.profile_pic ? (
+          {authUserData?.profile_pic ? (
             <li
               className="border-b border-slate-400 pb-2 cursor-pointer"
               onClick={selectImageHandler}
