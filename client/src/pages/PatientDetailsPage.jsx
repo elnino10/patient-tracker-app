@@ -5,7 +5,7 @@ import avatar from "../assets/images/avatar.png";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function PatientDetailsPage() {
+function PatientDetailsPage({ category_ }) {
   const { id } = useParams();
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState(null);
@@ -43,7 +43,7 @@ function PatientDetailsPage() {
   }
 
   return (
-    <div className="h-full p-8">
+    <div className="p-8 h-screen md:mr-20">
       <div className="grid md:grid-cols-3 gap-8">
         {/* <div>Patients id: {id}</div> */}
         <div className="flex">
@@ -76,20 +76,24 @@ function PatientDetailsPage() {
           <div>
             <p>Gender: {patient?.gender}</p>
           </div>
-          {patient.med_record_id !== null ? (
-            <Link
-              to={`/patients/${patient.id}/medical-record`}
-              className="pt-11 ml-[65%] text-sm underline text-blue-400"
-            >
-              view medical record
-            </Link>
-          ) : (
-            <Link
-              to={`/patients/${patient.id}/create-record`}
-              className="pt-11 ml-[65%] text-sm underline text-blue-400"
-            >
-              create medical record
-            </Link>
+          {category_ && category_ === "medic" && (
+            <div>
+              {patient.med_record_id !== null ? (
+                <Link
+                  to={`/patients/${patient.id}/medical-record`}
+                  className="pt-11 ml-[65%] text-sm underline text-blue-400"
+                >
+                  view medical record
+                </Link>
+              ) : (
+                <Link
+                  to={`/patients/${patient.id}/create-record`}
+                  className="pt-11 ml-[65%] text-sm underline text-blue-400"
+                >
+                  create medical record
+                </Link>
+              )}
+            </div>
           )}
         </div>
       </div>
