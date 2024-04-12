@@ -27,10 +27,10 @@ const HomePage = ({ token }) => {
     <div className="bg-[#F9F7F0]">
       <div className="text-black py-20 px-6 md:flex items-center justify-between">
         <div className="md:w-1/2 md:pr-10 mb-6 md:mb-0 md:pt-0">
-          <h1 className="text-[#3256a8] text-4xl font-bold mb-4 xl:text-6xl">
+          <h1 className="text-[#3256a8] text-4xl font-bold mb-4 xl:text-6xl xl:pt-1">
             Your Medical Records, Securely Managed
           </h1>
-          <p className="text-sm text-center xl:text-4xl">
+          <p className="text-sm text-center xl:text-2xl">
             In the event of emergencies, quick access to your medical
             information can be crucial. Our app offers secure cloud storage,
             allowing you to retrieve your health records anytime, anywhere,
@@ -43,13 +43,13 @@ const HomePage = ({ token }) => {
               <div>
                 <Link
                   to="/register-patient"
-                  className="bg-blue-600 text-white py-3 px-6 rounded-full mr-4 hover:bg-blue-700"
+                  className="bg-blue-600 text-white py-3 px-2 rounded-full mr-4 hover:bg-blue-700"
                 >
                   Patient SignUp
                 </Link>
                 <Link
                   to="/register-medic"
-                  className="bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700"
+                  className="bg-blue-600 text-white py-3 px-2 rounded-full hover:bg-blue-700 xs:ml-4"
                 >
                   Medic SignUp
                 </Link>
@@ -69,15 +69,19 @@ const HomePage = ({ token }) => {
       {/* Feature Section */}
       <div className="px-6">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Features</h2>
-          <p className="text-lg">Explore the features of our app:</p>
+          <h2 className="text-3xl text-blue-500 font-bold mb-4 xl:text-4xl">
+            Features
+          </h2>
+          <p className="text-lg text-blue-400 xl:text-2xl">
+            Explore the features of our app:
+          </p>
         </div>
         <div className="flex flex-wrap justify-center">
           {/* AI Response Button */}
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-6">
             <button
               onClick={handleSymptomChecker}
-              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700"
+              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700 xl:text-2xl"
             >
               Get AI Response for Symptoms
             </button>
@@ -86,7 +90,7 @@ const HomePage = ({ token }) => {
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-6">
             <button
               onClick={handleShowBMI}
-              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700"
+              className="bg-blue-600 text-white py-8 px-6 rounded-lg w-full mb-4 hover:bg-blue-700 xl:text-2xl"
             >
               Check Your BMI
             </button>
@@ -143,7 +147,7 @@ const HomePage = ({ token }) => {
                 />
                 <strong>Secure</strong>
               </div>
-              <p className="text-[#696969]">
+              <p className="text-[#696969] xl:font-bold">
                 Store sensitive and confidential patient records in a secure
                 cloud-based electronic medical records system that is compliant
                 with data privacy standards for encryption, data integrity, and
@@ -157,7 +161,7 @@ const HomePage = ({ token }) => {
               <div className="text-3xl font-bold mb-4">
                 <strong>Feature 2</strong>
               </div>
-              <p>
+              <p className="xl:font-bold">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
@@ -169,7 +173,7 @@ const HomePage = ({ token }) => {
               <div className="text-3xl font-bold mb-4">
                 <strong>Feature 3</strong>
               </div>
-              <p>
+              <p className="xl:font-bold">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>

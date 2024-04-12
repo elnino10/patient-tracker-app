@@ -45,11 +45,11 @@ const BMICalculator = () => {
 
   return (
     <div className="pt-1 flex flex-col items-center">
-      <p className="font-bold">
+      <p className="font-bold xl:text-2xl">
         Input your weight and height in units of choice
       </p>
       <div className="pt-3 flex flex-col justify-center items-center mt-3">
-        <div className="">
+        <div className="xl:text-2xl">
           <label>Weight:</label>
           <input
             type="number"
@@ -68,7 +68,7 @@ const BMICalculator = () => {
           </select>
         </div>
         <div>
-          <div className="pt-6">
+          <div className="pt-6 xl:text-2xl">
             <label>Height:</label>
             <input
               type="number"
@@ -109,7 +109,7 @@ const BMICalculator = () => {
           onClick={calculateBMIHandler}
           className={`${
             !weight || !height ? "bg-blue-300" : "bg-blue-600"
-          } ml-2  text-white py-2 px-4 rounded-md pt-2 hover:bg-blue-700`}
+          } ml-2  text-white py-2 px-4 rounded-md pt-2 hover:bg-blue-700 xl:text-2xl`}
         >
           Calculate BMI
         </button>
