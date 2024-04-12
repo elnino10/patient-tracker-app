@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Button from "@mui/material/Button";
@@ -32,27 +32,17 @@ const defaultTheme = createTheme();
 const CreateReportForm = () => {
   const { id } = useParams();
   const [submit, setSubmit] = useState(false);
+  const [isCreated, setIsCreated] = useState(false);
+
+  const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
 
   const reqURL = `${apiURL}/api/v1/patients/${id}/medical_record`;
 
-  // get medical records
-  // useEffect(() => {
-  //   axios
-  //     .get(reqURL)
-  //     .then((res) => {
-  //       console.log(res.date);
-  //     })
-  //     .catch((error) => {
-  //       error.response && console.log(error.response);
-  //     });
-  // }, []);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmit(true);
-    try {
       const data = new FormData(event.currentTarget);
       axios.post(
         reqURL,
@@ -69,81 +59,97 @@ const CreateReportForm = () => {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         }
-      );
+      ).then(res => {
+        console.log(res.data);
+        // if (res.data.status === 201) {
+        //   
+        // }
+      setIsCreated(true);
       setSubmit(false);
       event.target.reset();
-    } catch (error) {
-      console.error("Error occured:", error);
-    }
+      })
+    .catch (error => {
+      console.error("Error occured:", error)
+    })
   };
+
+  // redirect to the patient's medical record page
+  useEffect(() => {
+    if (isCreated) {
+      setIsCreated(false);
+      navigate(`/patients/${id}/medical_record`)
+    }
+  }, [isCreated, id]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Enter Patients Record
-          </Typography>
+      <div className="h-screen">
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
           <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <TextField
-              margin="normal"
-              fullWidth
-              id="allergies"
-              label="Allergies"
-              name="allergies"
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="medication"
-              label="Current medication"
-              type="medication"
-              id="medication"
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="diagnosis"
-              label="Diagnosis"
-              type="diagnosis"
-              id="diagnosis"
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="history"
-              label="Medical history"
-              type="history"
-              id="history"
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="medical_info"
-              label="Other medical info"
-              type="medical_info"
-              id="medical_info"
-            />
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-              {submit ? "Please wait..." : "Submit"}
-            </Button>
+            <Typography component="h1" variant="h5">
+              Enter Patients Record
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                fullWidth
+                id="allergies"
+                label="Allergies"
+                name="allergies"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="medication"
+                label="Current medication"
+                type="medication"
+                id="medication"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="diagnosis"
+                label="Diagnosis"
+                type="diagnosis"
+                id="diagnosis"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="history"
+                label="Medical history"
+                type="history"
+                id="history"
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="medical_info"
+                label="Other medical info"
+                type="medical_info"
+                id="medical_info"
+              />
+              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                {submit ? "Please wait..." : "Submit"}
+              </Button>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </div>
     </ThemeProvider>
   );
 };

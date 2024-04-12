@@ -14,7 +14,6 @@ const Header = ({
   activePage,
   setActivePage,
   setMedicalRecord,
-  setIsAuth
 }) => {
   const apiURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -29,8 +28,6 @@ const Header = ({
     localStorage.removeItem("access_token");
     setToken(null);
     setMedicalRecord(null);
-    setIsAuth(false);
-    // setDecodedToken(null);
     axios.post(reqURL);
   };
 

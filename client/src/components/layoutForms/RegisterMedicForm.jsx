@@ -53,12 +53,15 @@ const RegisterMedic = () => {
       specialization: data.get("specialization"),
       first_name: data.get("firstName"),
       last_name: data.get("lastName"),
+      phone_number: data.get("phoneNumber"),
       category: "medic"
     })
     .then(response => {
       setSubmit(false);
+      alert(
+        "Registration successful! please check your email for verification link."
+      );
       // console.log('Response data:', response.data);
-
       event.target.reset();
     })
     .catch(error => {
@@ -143,6 +146,17 @@ const RegisterMedic = () => {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="phoneNumber"
+                    label="Phone"
+                    type="number"
+                    id="phoneNumber"
+                    autoComplete="phone-number"
                   />
                 </Grid>
               </Grid>

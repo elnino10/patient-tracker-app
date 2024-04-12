@@ -74,6 +74,7 @@ const RegisterPatient = () => {
       address: data.get("address"),
       dob: value.$d,
       gender: data.get("gender"),
+      phone_number: data.get("phoneNumber"),
       category: "patient"
     })
     .then(response => {
@@ -161,22 +162,24 @@ const RegisterPatient = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-               <FormControl fullWidth required>
-                <InputLabel id="gender-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-label"
-                  id="gender"
-                  name="gender"
-                  label="Gender"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <MenuItem value=""><em>None</em></MenuItem>
-                  <MenuItem value={"male"}>Male</MenuItem>
-                  <MenuItem value={"female"}>Female</MenuItem>
-                  <MenuItem value={"private"}>Prefer not to say</MenuItem>
-                </Select>
-               </FormControl>
+                <FormControl fullWidth required>
+                  <InputLabel id="gender-label">Gender</InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    id="gender"
+                    name="gender"
+                    label="Gender"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={"male"}>Male</MenuItem>
+                    <MenuItem value={"female"}>Female</MenuItem>
+                    <MenuItem value={"private"}>Prefer not to say</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -187,6 +190,17 @@ const RegisterPatient = () => {
                   type="address"
                   id="address"
                   autoComplete="address"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="phoneNumber"
+                  label="Phone"
+                  type="number"
+                  id="phoneNumber"
+                  autoComplete="phone-number"
                 />
               </Grid>
               <Grid item xs={12}>
