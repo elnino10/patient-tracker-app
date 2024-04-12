@@ -144,7 +144,7 @@ const App = () => {
             />
           }
         />
-        <Route path="/patients/:id" element={<PatientDetailsPage />} />
+        <Route path="/patients/:id" element={<PatientDetailsPage category_={category_} />} />
         <Route
           path="/user-profile/:id"
           element={

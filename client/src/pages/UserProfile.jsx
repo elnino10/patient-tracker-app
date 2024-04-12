@@ -141,7 +141,6 @@ const UserProfile = ({
               {editInput ? "Cancel" : "Edit"}
             </div>
           </div>
-
           <span className="text-gray-600">Update your profile</span>
           <div className="w-full p-8 mx-2 flex justify-center">
             <ProfileImageUploader

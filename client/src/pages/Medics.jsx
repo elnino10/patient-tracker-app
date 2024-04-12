@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { Box, CircularProgress } from "@mui/material";
@@ -53,14 +54,14 @@ const Medics = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-wrap px-10 my-5 md:px-60">
+      <div className="flex flex-wrap px-10 my-5 md:mx-[2rem] md:my-[2rem]">
         {data &&
           data.map((medic) => (
             <div
               key={medic.id}
-              className="bg-blue-100 w-56 mt-5 mx-auto pb-2
+              className="bg-blue-100 cursor-pointer w-56 mt-5 mx-auto pb-2
                 border border-blue-100 rounded-lg flex flex-col items-center
-                justify-center"
+                justify-center md:my-5"
             >
               <div className="">
                 <img
