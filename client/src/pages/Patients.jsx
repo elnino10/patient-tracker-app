@@ -16,18 +16,18 @@ const Patients = ({ setActivePage, data, setData }) => {
   const URL = `${apiURL}/api/v1/patients`;
 
   useEffect(() => {
-      axios
-        .get(URL)
-        .then((response) => {
-          if (response.data) {
-            const data = response.data.data;
-            setData(data);
-            // console.log(data);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    axios
+      .get(URL)
+      .then((response) => {
+        if (response.data) {
+          const data = response.data.data;
+          setData(data);
+          // console.log(data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   // redirect after 3 seconds if user data is not available
@@ -74,8 +74,8 @@ const Patients = ({ setActivePage, data, setData }) => {
             <div key={patient.id} onClick={() => setActivePage("")}>
               <Link
                 to={`/patients/${patient.id}`}
-                className="bg-white my-2 mx-1 rounded-md flex items-center p-5
-                justify-between border md:min-h-44 md:mx-2 lg:px-10 lg:mx-40"
+                className="bg-white my-2 mx-1 px-2 rounded-md flex items-center py-5
+                justify-between border md:min-h-44 md:mx-10 md:px-5 lg:px-10 lg:mx-40"
               >
                 <div>
                   <img
@@ -85,8 +85,8 @@ const Patients = ({ setActivePage, data, setData }) => {
                   />
                 </div>
                 <div
-                  className="min-w-44 ml-2 flex flex-col justify-between items-start
-                  text-sm text-gray-500 border rounded-md shadow-md px-5 py-2 md:min-w-80
+                  className="min-w-44 flex flex-col justify-between items-start
+                  text-sm text-gray-500 border rounded-md shadow-md px-2 py-2 md:min-w-80
                   md:min-h-32 md:py-3 md:text-[1.2rem] lg:min-w-96"
                 >
                   <p className="flex flex-col mb-2 md:mb-1">
@@ -104,12 +104,13 @@ const Patients = ({ setActivePage, data, setData }) => {
                     <span>{patient.email}</span>
                   </p>
                 </div>
-                <div>
-                  <p
-                    className="md:flex md:pt-11 md:text-slate-400"
-                  >
-                    <span>Phone: </span>{patient.phone}
-                  </p>
+                <div className="min-w-24 flex flex-col text-[0.7rem] px-0 pt-10 md:text-[1rem]">
+                  <span>Phone: </span>
+                  {patient.phone_number ? (
+                    <span>{patient.phone_number}</span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
                 </div>
               </Link>
             </div>

@@ -69,9 +69,9 @@ const UserDashboard = ({
     <div
       className={`${
         category_ === "medic" ? "h-screen" : "h-full"
-      } md:h-screen m-8 border-solid rounded-md block md:flex md:flex-col`}
+      } m-2 mt-4 border-solid rounded-md md:px-5`}
     >
-      <div className="p-6 flex justify-between pt-2 md:p-2">
+      <div className="p-6 flex justify-between pt-2 md:pt-5 md:px-24 md:pb-0 md:mb-0">
         <div className="flex flex-col justify-center items-center md:px-10 ">
           <div className="pt-2">
             <img
@@ -81,7 +81,7 @@ const UserDashboard = ({
                   : avatar
               }
               alt="patient-image"
-              className="w-32 h-32 rounded-full bg-gray-300 md:w-44 md:h-44 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
+              className="w-32 h-32 rounded-full bg-gray-300 md:w-60 md:h-60 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
             />
           </div>
           <h2
@@ -98,45 +98,54 @@ const UserDashboard = ({
           <Link
             onClick={() => setActivePage("")}
             to={`/user-profile/${authUserData?.id}`}
-            className="text-white bg-gray-700 shadow-xl rounded-lg px-2 py-1 text-sm hover:bg-gray-800 md:text-md md:px-4 md:py-2"
+            className="text-white bg-gray-700 shadow-xl rounded-lg px-2 py-1 
+              text-sm hover:bg-gray-800 md:text-[1rem] md:px-4 md:py-2"
           >
             view profile
           </Link>
         </div>
       </div>
-      <div className="pl-6 pr-4 block md:flex md:items-center lg:flex lg:justify-between">
-        <div className="pt-8 md:pt-0">
-          <p className="p-6 font-extrabold text-center text-slate-600 md:p-2">
+      <div className="md:flex">
+        <div className="mt-5 flex flex-col items-center md:mt-0">
+          <p className="font-extrabold text-center text-slate-600">
             Basic Information
           </p>
-          <div className="p-6 rounded-md border-solid border-2 bg-[#FFFFFF] mr-10 shadow-md md:col-span-1">
-            <p className="mb-1">
-              <span className="font-bold">Name: </span>
-              {authUserData?.first_name} {authUserData?.last_name}
+          <div className="min-h-80 p-4 min-w-80 mt-3 rounded-md border-solid border-2 bg-[#FFFFFF] shadow-md md:col-span-1">
+            <p className="flex flex-col mb-2">
+              <span className="font-bold">Name </span>
+              <span>
+                {authUserData?.first_name} {authUserData?.last_name}
+              </span>
             </p>
-            <p className="mb-1">
-              <span className="font-bold">Email: </span>
-              {authUserData?.email}
+            <p className="flex flex-col mb-2">
+              <span className="font-bold">Email </span>
+              <span>{authUserData?.email}</span>
             </p>
-            <p className="mb-1">
-              <span className="font-bold">Phone: </span>
-              {authUserData?.phone_number}
+            <p className="flex flex-col mb-2">
+              <span className="font-bold">Phone </span>
+              {authUserData.phone_number ? (
+                <span>{authUserData?.phone_number}</span>
+              ) : (
+                <span>N/A</span>
+              )}
             </p>
             {category_ === "patient" && (
               <div>
-                <p className="mb-1">
-                  <span className="font-bold">Address: </span>
-                  {authUserData?.address}
+                <p className="flex flex-col mb-2">
+                  <span className="font-bold">Address </span>
+                  <span>{authUserData?.address}</span>
                 </p>
 
-                <p className="mb-1">
-                  <span className="font-bold">Age: </span>
-                  {authUserData?.age_years} years, {authUserData?.age_months}{" "}
-                  months
+                <p className="flex flex-col mb-2">
+                  <span className="font-bold">Age </span>
+                  <span>
+                    {authUserData?.age_years} years, {authUserData?.age_months}{" "}
+                    months
+                  </span>
                 </p>
-                <p className="mb-1">
-                  <span className="font-bold">Gender: </span>
-                  {authUserData?.gender}
+                <p className="flex flex-col mb-2">
+                  <span className="font-bold">Gender </span>
+                  <span>{authUserData?.gender}</span>
                 </p>
               </div>
             )}
@@ -149,39 +158,41 @@ const UserDashboard = ({
           </div>
         </div>
         {category_ === "patient" && authUserData?.med_record_id !== null && (
-          <div className="mt-3">
-            <p className="mt-8 p-6 text-center font-extrabold text-slate-600">
+          <div className="">
+            <p className="mt-6 mb-2 text-center font-extrabold text-slate-600 md:mt-0">
               Medical Record
             </p>
-            <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-              <p>
-                <span className="font-bold">Allergies</span>:{" "}
-                {medicalRecord?.allergies}
-              </p>
-            </div>
-            <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-              <p>
-                <span className="font-bold">Diagnosis</span>:{" "}
-                {medicalRecord?.diagnosis}
-              </p>
-            </div>
-            <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-              <p>
-                <span className="font-bold">Medical History</span>:{" "}
-                {medicalRecord?.history}
-              </p>
-            </div>
-            <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-              <p>
-                <span className="font-bold">Current Medication</span>:{" "}
-                {medicalRecord?.medication}
-              </p>
-            </div>
-            <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
-              <p>
-                <span className="font-bold">Other Medical Information</span>:{" "}
-                {medicalRecord?.medical_info}
-              </p>
+            <div className="mb-5">
+              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                <p className="flex flex-col">
+                  <span className="font-bold">Allergies</span>{" "}
+                  <span>{medicalRecord?.allergies}</span>
+                </p>
+              </div>
+              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                <p className="flex flex-col">
+                  <span className="font-bold">Diagnosis</span>{" "}
+                  <span>{medicalRecord?.diagnosis}</span>
+                </p>
+              </div>
+              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                <p className="flex flex-col">
+                  <span className="font-bold">Medical History</span>{" "}
+                  <span>{medicalRecord?.history}</span>
+                </p>
+              </div>
+              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                <p className="flex flex-col">
+                  <span className="font-bold">Current Medication</span>{" "}
+                  <span>{medicalRecord?.medication}</span>
+                </p>
+              </div>
+              <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
+                <p className="flex flex-col">
+                  <span className="font-bold">Other Medical Information</span>{" "}
+                  <span>{medicalRecord?.medical_info}</span>
+                </p>
+              </div>
             </div>
           </div>
         )}
