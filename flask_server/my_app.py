@@ -9,7 +9,6 @@ from . import (
     create_storage_client,
     datetime,
     environ,
-    # g,
     json,
     jsonify,
     jwt,
@@ -21,7 +20,6 @@ from . import (
     tempfile,
     time,
     timedelta,
-    # wraps,
 )
 
 cor = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -39,6 +37,16 @@ storage.list_buckets()
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 # image upload timestamp
 IMAGE_TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+# def create_app(config_filename=None):
+#     """flask application factory"""
+#     app = Flask(__name__)
+#     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
+#     app.config["CORS_HEADERS"] = "Content-Type"
+#     CORS(app, resources={r"/*": {"origins": "*"}})
+#     return app
+
 
 
 # error handler
