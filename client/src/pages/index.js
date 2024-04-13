@@ -7,6 +7,7 @@ import UserProfile from "./UserProfile.jsx";
 import PatientDetailsPage from "./PatientDetailsPage.jsx";
 import UserDashboard from "./UserDashboard.jsx";
 import MedicalRecordPage from "./MedicalRecordPage.jsx";
+import MedicsDetailsPage from "./MedicsDetailsPage.jsx";
 
 
 export {
@@ -18,5 +19,6 @@ export {
   UserProfile,
   PatientDetailsPage,
   UserDashboard,
-  MedicalRecordPage
+  MedicalRecordPage,
+  MedicsDetailsPage
 };

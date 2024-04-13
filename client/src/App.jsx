@@ -13,6 +13,7 @@ import {
   PatientDetailsPage,
   UserDashboard,
   MedicalRecordPage,
+  MedicsDetailsPage,
 } from "./pages";
 import {
   Login,
@@ -52,7 +53,7 @@ const App = () => {
     const updateAxiosHeaders = () => {
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        localStorage.setItem("access_token", token);        
+        localStorage.setItem("access_token", token);
       } else {
         delete axios.defaults.headers.common["Authorization"];
         localStorage.removeItem("access_token");
@@ -72,7 +73,7 @@ const App = () => {
       setCategory_(decoded?.payloadObj.category);
       setUserId(decoded?.payloadObj.sub);
     }
-  }, [token])
+  }, [token]);
 
   // make request to get user data
   useEffect(() => {
@@ -121,12 +122,7 @@ const App = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"
-          element={
-            <Login
-              setToken={setToken}
-              setActivePage={setActivePage}
-            />
-          }
+          element={<Login setToken={setToken} setActivePage={setActivePage} />}
         />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/register-patient" element={<RegisterPatient />} />
@@ -134,6 +130,7 @@ const App = () => {
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
+        <Route path="/our-doctors/:id" element={<MedicsDetailsPage />} />
         <Route
           path="/patients"
           element={
@@ -144,7 +141,10 @@ const App = () => {
             />
           }
         />
-        <Route path="/patients/:id" element={<PatientDetailsPage category_={category_} />} />
+        <Route
+          path="/patients/:id"
+          element={<PatientDetailsPage category_={category_} />}
+        />
         <Route
           path="/user-profile/:id"
           element={

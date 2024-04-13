@@ -57,16 +57,17 @@ const Medics = () => {
       <div className="flex flex-wrap px-10 my-5 md:mx-[2rem] md:my-[2rem]">
         {data &&
           data.map((medic) => (
-            <div
+            <Link
+              to={`/our-doctors/${medic.id}`}
               key={medic.id}
-              className="bg-blue-100 cursor-pointer w-56 mt-5 mx-auto pb-2
-                border border-blue-100 rounded-lg flex flex-col items-center
-                justify-center md:my-5"
+              className="bg-blue-100 cursor-pointer w-48 my-5 mx-auto pb-2
+                 rounded-lg flex flex-col items-center
+                justify-center"
             >
               <div className="">
                 <img
                   src={medic.profile_pic ? medic.profile_pic : avatar}
-                  className="object-cover h-80 w-72"
+                  className="object-cover h-60 mt-1"
                 />
               </div>
               <div className="flex flex-col items-center justify-center">
@@ -77,7 +78,7 @@ const Medics = () => {
                   {medic.specialization}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
       </div>
     </div>
