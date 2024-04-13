@@ -68,11 +68,11 @@ const UserDashboard = ({
   return (
     <div
       className={`${
-        category_ === "medic" ? "h-screen" : "h-full"
+        category_ === "medic" ? "h-screen" : "h-full md:h-screen lg:h-full"
       } m-2 mt-4 border-solid rounded-md md:px-5`}
     >
-      <div className="p-6 flex justify-between pt-2 md:pt-5 md:px-24 md:pb-0 md:mb-0">
-        <div className="flex flex-col justify-center items-center md:px-10 ">
+      <div className="p-6 flex justify-between pt-2 md:pt-5 md:px-20 md:p-0 md:mt-20 md:max-h-[20rem]">
+        <div className="flex flex-col justify-center items-center md:mb-10">
           <div className="pt-2">
             <img
               src={
@@ -81,14 +81,14 @@ const UserDashboard = ({
                   : avatar
               }
               alt="patient-image"
-              className="w-32 h-32 rounded-full bg-gray-300 md:w-60 md:h-60 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
+              className="w-32 h-32 rounded-lg bg-gray-300 md:w-60 md:h-60 lg:w-46 lg:h-46 xl:w-64 xl:h-64"
             />
           </div>
           <h2
             className={`${
               !category_ === "medic"
                 ? "hidden"
-                : "text-md text-sm text-gray-500 md:pt-40"
+                : "mt-3 text-md text-sm text-gray-500 md:mb-10"
             }`}
           >
             {authUserData?.specialization}
@@ -105,12 +105,26 @@ const UserDashboard = ({
           </Link>
         </div>
       </div>
-      <div className="md:flex">
-        <div className="mt-5 flex flex-col items-center md:mt-0">
+      <div
+        className={`${
+          category_ === "medic" ? "mx-5" : ""
+        } md:flex md:justify-between md:border-t md:border-slate-300 md:pt-5 lg:px-36 lg:pb-10`}
+      >
+        <div
+          className={`${
+            category_ === "medic"
+              ? "md:max-w-[25rem] md:mx-auto"
+              : " mt-5 mb-10 flex flex-col items-center md:mt-0"
+          } border-t border-slate-300 pt-5 md:border-t-0`}
+        >
           <p className="font-extrabold text-center text-slate-600">
             Basic Information
           </p>
-          <div className="min-h-80 p-4 min-w-80 mt-3 rounded-md border-solid border-2 bg-[#FFFFFF] shadow-md md:col-span-1">
+          <div
+            className={`${
+              category_ === "medic" ? "" : "min-h-80"
+            } text-slate-700 p-4 min-w-80 mt-3 rounded-md border-solid border-2 bg-[#FFFFFF] shadow-md md:col-span-1 lg:min-w-[25rem]`}
+          >
             <p className="flex flex-col mb-2">
               <span className="font-bold">Name </span>
               <span>
@@ -123,7 +137,7 @@ const UserDashboard = ({
             </p>
             <p className="flex flex-col mb-2">
               <span className="font-bold">Phone </span>
-              {authUserData.phone_number ? (
+              {authUserData?.phone_number ? (
                 <span>{authUserData?.phone_number}</span>
               ) : (
                 <span>N/A</span>
@@ -159,10 +173,10 @@ const UserDashboard = ({
         </div>
         {category_ === "patient" && authUserData?.med_record_id !== null && (
           <div className="">
-            <p className="mt-6 mb-2 text-center font-extrabold text-slate-600 md:mt-0">
+            <p className="mt-6 mb-2 text-center font-extrabold text-slate-600">
               Medical Record
             </p>
-            <div className="mb-5">
+            <div className="mb-10">
               <div className="p-4 rounded-md border-solid border-2 bg-[#FFFFFF]">
                 <p className="flex flex-col">
                   <span className="font-bold">Allergies</span>{" "}
@@ -201,7 +215,7 @@ const UserDashboard = ({
             category_ === "medic" ||
             (category_ === "patient" && authUserData?.med_record_id !== null)
               ? "hidden"
-              : "flex text-center justify-center text-lg text-red-500"
+              : "flex text-center justify-center text-lg text-red-500 mt-5 mb-10 md:my-auto md:font-bold"
           }`}
         >
           <p>

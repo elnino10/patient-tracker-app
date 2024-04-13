@@ -94,6 +94,7 @@ const BMICalculator = () => {
                 value={inch}
                 placeholder="0"
                 onChange={(e) => {
+                  setResetResult(true);
                   if (e.target.value === "") setInch("");
                   else setInch(parseFloat(e.target.value));
                 }}
