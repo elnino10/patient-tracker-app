@@ -126,7 +126,7 @@ const UserProfile = ({
   }
 
   return (
-    <div className="h-full md:h-screen">
+    <div className="mx-5 my-5 md:my-0 md:mt-5 h-full md:h-screen">
       <div className="border-b-2 block md:flex">
         <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md relative">
           <div className="flex justify-between">
