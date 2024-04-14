@@ -45,22 +45,21 @@ function PatientDetailsPage({ category_ }) {
   return (
     <div className="p-8 h-screen md:mr-20">
       <div className="grid md:grid-cols-3 gap-8">
-        {/* <div>Patients id: {id}</div> */}
-        <div className="flex">
-          <div className="pt-4">
+        <div className="flex md:flex-col">
+          <div className="mt-4">
             <img
               src={patient.profile_pic ? patient.profile_pic : avatar}
               alt="patient-image"
               className="w-40 rounded-lg justifty-center bg-gray-300"
             />
           </div>
-          <h2 className="text-sm text-slate-400 mt-40 ml-2">
+          <h2 className="text-sm text-slate-400 mt-40 ml-2 md:mt-3">
             {patient?.first_name}
           </h2>
         </div>
         <div
-          className="py-5 px-2 rounded-md border-solid bg-[#FFFFFF]
-          space-y-4 shadow-md md:w-[35rem] md:col-span-1 md:mt-20"
+          className="py-5 px-4 rounded-md border-solid bg-[#FFFFFF]
+          space-y-4 shadow-md md:w-[30rem] md:col-span-1 md:mt-20"
         >
           <div>
             <p>

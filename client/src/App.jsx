@@ -13,7 +13,7 @@ import {
   PatientDetailsPage,
   UserDashboard,
   MedicalRecordPage,
-  MedicsDetailsPage,
+  MedicDetailsPage,
 } from "./pages";
 import {
   Login,
@@ -27,8 +27,6 @@ import {
 } from "./components";
 
 const App = () => {
-  // const [isAuth, setIsAuth] = useState(false);
-  // const [decodedToken, setDecodedToken] = useState(null);
   const [menuVisible, setMenuVisible] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("access_token"));
   const [category_, setCategory_] = useState("");
@@ -38,7 +36,6 @@ const App = () => {
   const [showImageMenu, setShowImageMenu] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
   const [medicalRecord, setMedicalRecord] = useState(null);
-  const [data, setData] = useState([]);
 
   const navigate = useNavigate();
 
@@ -130,16 +127,10 @@ const App = () => {
         <Route path="/recover-password" element={<PasswordRecoveryEmail />} />
         <Route path="/reset-password" element={<PasswordResetForm />} />
         <Route path="/our-doctors" element={<Medics />} />
-        <Route path="/our-doctors/:id" element={<MedicsDetailsPage />} />
+        <Route path="/our-doctors/:id" element={<MedicDetailsPage />} />
         <Route
           path="/patients"
-          element={
-            <Patients
-              setActivePage={setActivePage}
-              data={data}
-              setData={setData}
-            />
-          }
+          element={<Patients setActivePage={setActivePage} />}
         />
         <Route
           path="/patients/:id"

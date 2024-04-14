@@ -5,8 +5,9 @@ import avatar from "../assets/images/avatar.png";
 
 import { Box, CircularProgress } from "@mui/material";
 
-const Patients = ({ setActivePage, data, setData }) => {
+const Patients = ({ setActivePage }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -45,7 +46,7 @@ const Patients = ({ setActivePage, data, setData }) => {
       const timer = setTimeout(() => {
         setIsLoading(false);
         navigate("/error");
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(timer);
     } else setIsLoading(false);
   }, [data, navigate]);
