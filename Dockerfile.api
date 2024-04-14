@@ -14,10 +14,7 @@ COPY flask_server/requirements.txt flask_server/__init__.py flask_server/my_app.
 RUN pip install -r ./flask_server/requirements.txt
 
 # environment variables
-ENV SUPABASE_URL https://oqctaxhqpoexbvokkqbd.supabase.co
-ENV SUPABASE_API_KEY eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xY3RheGhxcG9leGJ2b2trcWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE1OTY0MTYsImV4cCI6MjAyNzE3MjQxNn0.fw7HhO21oBKH37I1F6Ix03zqqh3Po8wW36bYM-tmdmE
-ENV SUPABASE_STORAGE_URL https://oqctaxhqpoexbvokkqbd.supabase.co/storage/v1
-ENV SECRET_KEY patient-tracker-secret-key-1234
+# ENV VARIABLE_NAME variable_value
 
 EXPOSE 5000
 CMD ["gunicorn", "-b", ":5000", "flask_server.my_app:app"]
