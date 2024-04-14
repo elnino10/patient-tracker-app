@@ -38,13 +38,14 @@ const CreateReportForm = () => {
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
 
-  const reqURL = `${apiURL}/api/v1/patients/${id}/medical_record`;
+  const reqURL = `${apiURL}/api/v1/patients/${id}/medical-record`;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmit(true);
-      const data = new FormData(event.currentTarget);
-      axios.post(
+    const data = new FormData(event.currentTarget);
+    axios
+      .post(
         reqURL,
         {
           allergies: data.get("allergies"),
@@ -59,25 +60,26 @@ const CreateReportForm = () => {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         }
-      ).then(res => {
+      )
+      .then((res) => {
         console.log(res.data);
         // if (res.data.status === 201) {
-        //   
+        //
         // }
-      setIsCreated(true);
-      setSubmit(false);
-      event.target.reset();
+        setIsCreated(true);
+        setSubmit(false);
+        event.target.reset();
       })
-    .catch (error => {
-      console.error("Error occured:", error)
-    })
+      .catch((error) => {
+        console.error("Error occured:", error);
+      });
   };
 
   // redirect to the patient's medical record page
   useEffect(() => {
     if (isCreated) {
       setIsCreated(false);
-      navigate(`/patients/${id}/medical_record`)
+      navigate(`/patients/${id}/medical-record`);
     }
   }, [isCreated, id]);
 
@@ -109,6 +111,7 @@ const CreateReportForm = () => {
                 id="allergies"
                 label="Allergies"
                 name="allergies"
+                sx={{ mt: 1, "& textarea": { width: "50ch" } }}
               />
               <TextField
                 margin="normal"
@@ -117,6 +120,8 @@ const CreateReportForm = () => {
                 label="Current medication"
                 type="medication"
                 id="medication"
+                sx={{ mt: 1, "& textarea": { width: "50ch" } }}
+                multiline
               />
               <TextField
                 margin="normal"
@@ -125,6 +130,8 @@ const CreateReportForm = () => {
                 label="Diagnosis"
                 type="diagnosis"
                 id="diagnosis"
+                multiline
+                sx={{ mt: 1, "& textarea": { width: "50ch" } }}
               />
               <TextField
                 margin="normal"
@@ -133,6 +140,8 @@ const CreateReportForm = () => {
                 label="Medical history"
                 type="history"
                 id="history"
+                multiline
+                sx={{ mt: 1, "& textarea": { width: "50ch" } }}
               />
               <TextField
                 margin="normal"
@@ -141,6 +150,8 @@ const CreateReportForm = () => {
                 label="Other medical info"
                 type="medical_info"
                 id="medical_info"
+                multiline
+                sx={{ mt: 1, "& textarea": { width: "50ch" } }}
               />
               <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
                 {submit ? "Please wait..." : "Submit"}
