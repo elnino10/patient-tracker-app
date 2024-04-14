@@ -135,8 +135,8 @@ const UserProfile = ({
             </span>
             <div
               onClick={() => setEdit(!editInput)}
-              className="-mt-2 text-md font-bold text-white bg-gray-700
-              rounded-full px-5 py-2 hover:bg-gray-800 cursor-pointer"
+              className="-mt-2 text-md font-bold text-white bg-blue-500
+              rounded-full px-5 py-2 hover:bg-blue-700 cursor-pointer"
             >
               {editInput ? "Cancel" : "Edit"}
             </div>
@@ -288,7 +288,7 @@ const UserProfile = ({
               </button>
               <Link
                 to="/user-dashboard"
-                className="mr-20 text-md text-white bg-slate-700 rounded-xl px-3 py-2 hover:bg-slate-900 shadow-2xl"
+                className="mr-20 text-md text-white bg-blue-500 rounded-xl px-3 py-2 hover:bg-blue-700 shadow-2xl"
               >
                 Dashboard
               </Link>

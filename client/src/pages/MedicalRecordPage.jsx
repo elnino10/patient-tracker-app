@@ -4,6 +4,7 @@ import avatar from "../assets/images/avatar.png";
 import axios from "axios";
 
 import { Box, CircularProgress } from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 const MedicalRecordPage = ({ category_ }) => {
   const [profileImage, setProfileImage] = useState(null);
@@ -188,11 +189,13 @@ const MedicalRecordPage = ({ category_ }) => {
                 Allergies
               </label>
               <div className="flex">
-                <textarea
+                <TextField
                   {...(!editInput && { disabled: true })}
                   id="allergies"
                   className="border-1 rounded-r px-4 py-2 w-full bg-slate-100"
                   type="text"
+                  multiline
+                  sx={{ mt: 0, "& textarea": { fontSize: "i6px", color: "black"} }}
                   value={allergies}
                   onChange={(e) => setAllergies(e.target.value)}
                 />
@@ -206,11 +209,13 @@ const MedicalRecordPage = ({ category_ }) => {
                 Medication
               </label>
               <div className="flex">
-                <textarea
+                <TextField
                   {...(!editInput && { disabled: true })}
                   id="medication"
                   className="border-1  rounded-r px-4 py-2 w-full bg-slate-100"
                   type="text"
+                  multiline
+                  sx={{ mt: 1, "& textarea": { fontSize: "i6px" } }}
                   value={medication}
                   onChange={(e) => setMedication(e.target.value)}
                 />
@@ -224,11 +229,13 @@ const MedicalRecordPage = ({ category_ }) => {
                 Diagnosis
               </label>
               <div className="flex">
-                <textarea
+                <TextField
                   {...(!editInput && { disabled: true })}
                   id="diagnosis"
                   className="border-1  rounded-r px-4 py-2 w-full bg-slate-100"
                   type="text"
+                  multiline
+                  sx={{ mt: 1, "& textarea": { fontSize: "i6px" } }}
                   value={diagnosis}
                   onChange={(e) => setDiagnosis(e.target.value)}
                 />
@@ -243,12 +250,14 @@ const MedicalRecordPage = ({ category_ }) => {
                   Medical History
                 </label>
                 <div className="flex">
-                  <textarea
+                  <TextField
                     {...(!editInput && { disabled: true })}
                     id="history"
                     className="border-1  rounded-r px-4 py-2 w-full bg-slate-100"
                     type="text"
                     value={history}
+                    sx={{ mt: 1, "& textarea": { fontSize: "i6px" } }}
+                    multiline
                     onChange={(e) => setHistory(e.target.value)}
                   />
                 </div>
@@ -261,13 +270,15 @@ const MedicalRecordPage = ({ category_ }) => {
               >
                 Other Medical Information
               </label>
-              <textarea
+              <TextField
                 {...(!editInput ? { disabled: true } : {})}
                 id="medical_info"
                 className="border-1 rounded-r px-4 py-2 w-full bg-slate-100"
                 type="text"
+                sx={{ mt: 1, "& textarea": { fontSize: "i6px" } }}
                 value={medicalInfo}
                 onChange={(e) => setMedicalInfo(e.target.value)}
+                multiline
               />
             </div>
             {category_ === "medic" && (
