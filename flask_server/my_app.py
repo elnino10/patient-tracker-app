@@ -50,17 +50,17 @@ IMAGE_TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 # error handler
-@app.errorhandler(404)
-def not_found(error):
-    """404 Error
-    ---
-    responses:
-      404:
-        description: a resource was not found
-    """
-    return make_response(
-        jsonify({"error": "Not found", "message": error, "status": "failed"}), 404
-    )
+# @app.errorhandler(404)
+# def not_found(error):
+#     """404 Error
+#     ---
+#     responses:
+#       404:
+#         description: a resource was not found
+#     """
+#     return make_response(
+#         jsonify({"error": "Not found", "message": error, "status": "failed"}), 404
+#     )
 
 
 # check status route
