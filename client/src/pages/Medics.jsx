@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Box, CircularProgress } from "@mui/material";
@@ -7,7 +7,10 @@ import avatar from "../assets/images/avatar.png";
 import bgImage from "../assets/images/bg.jpg";
 
 const Medics = () => {
-  const [data, setData] = useState([]);
+  const [medicsData, setMedicsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const apiURL = import.meta.env.VITE_API_BASE_URL;
   const reqURL = `${apiURL}/api/v1/medics`;
@@ -17,8 +20,8 @@ const Medics = () => {
     axios
       .get(reqURL)
       .then((res) => {
-        if (res.data.data.length > 0) {
-          setData(res.data.data);
+        if (res.data.count > 0) {
+          setMedicsData(res.data.data);
           // console.log(res.data.data);
         }
       })
@@ -27,7 +30,19 @@ const Medics = () => {
       });
   }, []);
 
-  if (!data.length > 0) {
+  // redirect after 3 seconds if user data is not available
+  useEffect(() => {
+    setIsLoading(true);
+    if (medicsData.length === 0) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        navigate("/error");
+      }, 5000);
+      return () => clearTimeout(timer);
+    } else setIsLoading(false);
+  }, [medicsData, navigate]);
+
+  if (isLoading) {
     return (
       <div className="h-screen flex justify-center">
         <Box sx={{ display: "flex" }} className="p-10">
@@ -55,30 +70,31 @@ const Medics = () => {
         </div>
       </div>
       <div className="flex flex-wrap px-10 my-5 md:mx-[2rem] md:my-[2rem]">
-        {data &&
-          data.map((medic) => (
-            <Link
-              to={`/our-doctors/${medic.id}`}
-              key={medic.id}
-              className="bg-blue-100 cursor-pointer w-48 my-5 mx-auto pb-2
+        {medicsData &&
+          medicsData.map((medic) => (
+            <div key={medic.id}>
+              <Link
+                to={`/our-doctors/${medic.id}`}
+                className="bg-blue-100 cursor-pointer w-48 my-5 mx-auto pb-2
                  rounded-lg flex flex-col items-center
-                justify-center"
-            >
-              <div className="">
-                <img
-                  src={medic.profile_pic ? medic.profile_pic : avatar}
-                  className="object-cover h-60 mt-1"
-                />
-              </div>
-              <div className="flex flex-col items-center justify-center">
-                <p className="text-lg font-bold pt-2">
-                  {medic.first_name} {medic.last_name}
-                </p>
-                <span className="font-medium text-md text-blue-900">
-                  {medic.specialization}
-                </span>
-              </div>
-            </Link>
+                justify-center md:mx-2"
+              >
+                <div className="">
+                  <img
+                    src={medic.profile_pic ? medic.profile_pic : avatar}
+                    className="object-cover h-60 mt-1"
+                  />
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-lg font-bold pt-2">
+                    {medic.first_name} {medic.last_name}
+                  </p>
+                  <span className="font-medium text-md text-blue-900">
+                    {medic.specialization}
+                  </span>
+                </div>
+              </Link>
+            </div>
           ))}
       </div>
     </div>

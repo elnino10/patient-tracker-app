@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+import avatar from "../assets/images/avatar.png";
+
 import { Box, CircularProgress } from "@mui/material";
 
-function MedicsDetailsPage() {
+function MedicDetailsPage() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
@@ -58,7 +60,7 @@ function MedicsDetailsPage() {
             </span>
           </div>
           <div className="w-full p-8 mx-2 flex justify-center">
-            <img src={data?.profile_pic} alt="profile-pic" />
+            <img src={data?.profile_pic ? data.profile_pic : avatar} alt="profile-pic" />
           </div>
         </div>
         <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
@@ -135,4 +137,4 @@ function MedicsDetailsPage() {
   );
 }
 
-export default MedicsDetailsPage;
+export default MedicDetailsPage;
