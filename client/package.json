@@ -2,7 +2,7 @@
   "name": "patient-tracker-app",
   "private": true,
   "version": "0.0.0",
-  "proxy": "http://localhost:5000",
+  "proxy": "https://patient-tracker-app-4z1n.onrender.com",
   "type": "module",
   "scripts": {
     "dev": "vite",
