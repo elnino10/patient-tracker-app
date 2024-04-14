@@ -40,6 +40,9 @@ secrets.json
 *.tmp
 *.bak
 *.swp
+
 # Ignore Python cache files
 __pycache__/
 *.txt
+requirements.txt
+requirements.txt.bk
