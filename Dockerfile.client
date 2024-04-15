@@ -1,0 +1,21 @@
+# This Dockerfile builds the patient tracker client
+FROM node:20.11
+
+# Set working directory in the container
+WORKDIR /app/client
+
+# Copy necessary files for npm install
+COPY client/ ./
+
+# Install dependencies
+RUN npm install
+
+# Build the project (assuming this script uses Vite)
+RUN npm run build
+
+# Expose the port the app runs on
+# EXPOSE 3000
+
+# Command to run the app
+CMD ["npm", "run", "dev"]
+
