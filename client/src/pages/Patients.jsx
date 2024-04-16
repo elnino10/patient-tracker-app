@@ -46,7 +46,7 @@ const Patients = ({ setActivePage }) => {
       const timer = setTimeout(() => {
         setIsLoading(false);
         navigate("/error");
-      }, 5000);
+      }, 10000);
       return () => clearTimeout(timer);
     } else setIsLoading(false);
   }, [data, navigate]);

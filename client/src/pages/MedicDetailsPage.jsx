@@ -32,7 +32,7 @@ function MedicDetailsPage() {
     if (!data.email) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 3000);
+      }, 10000);
       return () => clearTimeout(timer);
     } else setIsLoading(false);
   }, [data]);
