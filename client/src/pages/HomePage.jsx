@@ -147,7 +147,7 @@ const HomePage = ({ token }) => {
                 />
                 <strong>Secure</strong>
               </div>
-              <p className="text-[#696969] xl:font-bold">
+              <p>
                 Store sensitive and confidential patient records in a secure
                 cloud-based electronic medical records system that is compliant
                 with data privacy standards for encryption, data integrity, and
@@ -161,9 +161,8 @@ const HomePage = ({ token }) => {
               <div className="text-3xl font-bold mb-4">
                 <strong>Feature 2</strong>
               </div>
-              <p className="xl:font-bold">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <p>
+                Secured user authentication and authorization for data access.
               </p>
             </div>
           </div>
@@ -173,9 +172,8 @@ const HomePage = ({ token }) => {
               <div className="text-3xl font-bold mb-4">
                 <strong>Feature 3</strong>
               </div>
-              <p className="xl:font-bold">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <p>
+                Intuitive user interface for easy navigation and data retrieval.
               </p>
             </div>
           </div>

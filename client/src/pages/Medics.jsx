@@ -37,7 +37,7 @@ const Medics = () => {
       const timer = setTimeout(() => {
         setIsLoading(false);
         navigate("/error");
-      }, 5000);
+      }, 10000);
       return () => clearTimeout(timer);
     } else setIsLoading(false);
   }, [medicsData, navigate]);
@@ -62,10 +62,7 @@ const Medics = () => {
         >
           <h3 className="font-bold text-4xl text-white">Our Doctors</h3>
           <p className="text-lg text-blue-900 px-5 text-center md:px-52">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-            maiores in, iure atque fuga at porro rem odit error tempora, cumque
-            blanditiis laudantium, officiis placeat fugiat perspiciatis dolorem
-            provident ex!
+            Our team of experienced and dedicated medical professionals.
           </p>
         </div>
       </div>

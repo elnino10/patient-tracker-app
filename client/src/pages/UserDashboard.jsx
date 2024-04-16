@@ -47,7 +47,7 @@ const UserDashboard = ({
           setActivePage("");
           navigate("/error");
         }
-      }, 3000);
+      }, 10000);
       return () => {
         clearTimeout(timer);
       };
