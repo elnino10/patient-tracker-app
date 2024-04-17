@@ -70,10 +70,10 @@ const HomePage = ({ token }) => {
       <div className="px-6">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl text-blue-500 font-bold mb-4 xl:text-4xl">
-            Features
+            Open Features
           </h2>
           <p className="text-lg text-blue-400 xl:text-2xl">
-            Explore the features of our app:
+            Explore the open features of our app:
           </p>
         </div>
         <div className="flex flex-wrap justify-center">
